@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 60" fill="none">
+  <!-- CARBO - white for dark backgrounds -->
+  <text x="0" y="48" font-family="Arial Black, Impact, sans-serif" font-size="54" font-weight="900" fill="#ffffff" letter-spacing="-1">CARBO</text>
+  <!-- ZÉ - lime green -->
+  <text x="218" y="48" font-family="Arial Black, Impact, sans-serif" font-size="54" font-weight="900" fill="#a9da00" letter-spacing="-1">ZÉ</text>
+  <!-- Water drop above É -->
+  <ellipse cx="303" cy="4" rx="5" ry="7" fill="#a9da00"/>
+</svg>

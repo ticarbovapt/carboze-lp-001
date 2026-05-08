@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-verde-escuro: #093a30;
+  --color-verde-medio: #83ce0d;
+  --color-limao: #a9da00;
+  --color-off-white: #f5f5f0;
+  --color-conceitual: #ede8e3;
+
+  --font-titulo: var(--font-barlow);
+  --font-corpo: var(--font-archivo);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-arquivo, Arial, sans-serif);
+  background: #ffffff;
+  color: #093a30;
+}
+
+/* FAQ accordion animation */
+details summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+details .faq-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+
+details[open] .faq-content {
+  max-height: 500px;
 }
