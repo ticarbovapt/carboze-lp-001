@@ -1,5 +1,3 @@
-import NumberBadge from "./NumberBadge";
-
 const steps = [
   {
     num: "1",
@@ -20,22 +18,30 @@ const steps = [
 
 export default function HowToUse() {
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className="bg-verde-escuro py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
-        {/* Headline */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight max-w-xl mb-12">
-          Três passos. Antes de chegar no posto já está feito.
+        {/* Headline — maior, linha única */}
+        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
+          3 passos. Antes de chegar no posto já está feito.
         </h2>
 
-        {/* Steps */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-10">
+        {/* Steps — cards verde escuro com borda, centralizados */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           {steps.map((s) => (
-            <div key={s.num} className="flex flex-col gap-4">
-              <NumberBadge number={s.num} variant="limao" />
-              <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-verde-escuro text-lg">
+            <div
+              key={s.num}
+              className="bg-white/10 rounded-2xl p-7 flex flex-col items-center text-center gap-4"
+            >
+              {/* Número grande */}
+              <div className="w-14 h-14 rounded-full bg-limao flex items-center justify-center shrink-0">
+                <span className="font-[family-name:var(--font-barlow)] font-extrabold text-verde-escuro text-2xl">
+                  {s.num}
+                </span>
+              </div>
+              <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-white text-lg">
                 {s.title}
               </h3>
-              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/70 text-sm leading-relaxed">
+              <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">
                 {s.body}
               </p>
             </div>
@@ -43,7 +49,7 @@ export default function HowToUse() {
         </div>
 
         {/* Note */}
-        <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/50 text-sm border-t border-verde-escuro/10 pt-6 max-w-xl">
+        <p className="font-[family-name:var(--font-archivo)] text-white/40 text-sm border-t border-white/10 pt-6 max-w-xl">
           Use a cada abastecimento. O tratamento é contínuo porque o combustível
           que entra no tanque é novo toda vez.
         </p>

@@ -7,20 +7,23 @@ export default function CTAFinal() {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
-        {/* Headline emocional */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-2xl sm:text-3xl md:text-5xl leading-tight max-w-3xl mb-10">
+        {/* Headline maior — coluna única */}
+        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-6xl leading-tight max-w-3xl mb-8">
           Sua moto trabalha todo dia.{" "}
           <span className="text-limao">
             Ela precisa de proteção todo dia também.
           </span>
         </h2>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 mb-12">
+        {/* Preço — coluna, depois botão abaixo */}
+        <div className="flex flex-col gap-6 mb-12">
           <PriceBlock variant="dark" showDescription />
-          <CTAButton label="QUERO MEU PACK" size="large" />
+          <div>
+            <CTAButton label="QUERO MEU PACK" size="large" />
+          </div>
         </div>
 
-        {/* Suporte */}
+        {/* Suporte + contato — lado esquerdo */}
         <div className="border-t border-white/15 pt-8 mb-8">
           <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm mb-3">
             Dúvidas?{" "}
@@ -35,29 +38,32 @@ export default function CTAFinal() {
           </p>
           <p className="font-[family-name:var(--font-archivo)] text-white/50 text-sm">
             Disponível também no{" "}
-            <a href={STORES.mercadolivre} className="text-white/70 hover:text-limao transition-colors">
+            <a
+              href={STORES.mercadolivre}
+              className="text-white/70 hover:text-limao transition-colors"
+            >
               Mercado Livre
             </a>
             {" · "}
-            <a href={STORES.shopee} className="text-white/70 hover:text-limao transition-colors">
+            <a
+              href={STORES.shopee}
+              className="text-white/70 hover:text-limao transition-colors"
+            >
               Shopee
             </a>
             {" · "}
-            <a href={STORES.tiktokshop} className="text-white/70 hover:text-limao transition-colors">
+            <a
+              href={STORES.tiktokshop}
+              className="text-white/70 hover:text-limao transition-colors"
+            >
               TikTok Shop
             </a>
           </p>
         </div>
 
-        {/* Rodapé social */}
-        <div className="border-t border-white/15 pt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <Image
-            src="/logo-carboze-moto-white.svg"
-            alt="CarboZé"
-            width={160}
-            height={32}
-            className="h-7 w-auto opacity-70"
-          />
+        {/* Footer: contato esquerda | logo + copyright direita */}
+        <div className="border-t border-white/15 pt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          {/* Esquerda: redes sociais */}
           <div className="flex gap-5 font-[family-name:var(--font-archivo)] text-sm">
             <a
               href={SOCIAL_LINKS.instagram}
@@ -84,9 +90,20 @@ export default function CTAFinal() {
               YT: @carboze
             </a>
           </div>
-          <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs">
-            © 2025 Carbozé. Todos os direitos reservados.
-          </p>
+
+          {/* Direita: logo + copyright */}
+          <div className="flex flex-col items-start sm:items-end gap-2">
+            <Image
+              src="/logo-carboze-moto-white.svg"
+              alt="CarboZé"
+              width={160}
+              height={32}
+              className="h-7 w-auto opacity-70"
+            />
+            <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs">
+              © 2025 Carbozé. Todos os direitos reservados.
+            </p>
+          </div>
         </div>
       </div>
     </section>

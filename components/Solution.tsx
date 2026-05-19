@@ -20,26 +20,29 @@ const mechanisms = [
 
 export default function Solution() {
   return (
-    <section className="bg-verde-escuro py-16 md:py-24">
+    <section className="bg-off-white py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
-        {/* Headline — full width */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-2xl sm:text-3xl md:text-4xl leading-tight mb-6">
+        {/* Headline */}
+        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-6">
           Um sachê antes de abastecer. O combustível entra no motor{" "}
-          <span className="text-limao">já vacinado.</span>
+          <span className="text-verde-medio">já vacinado.</span>
         </h2>
 
-        {/* Corpo introdutório — full width */}
-        <p className="font-[family-name:var(--font-archivo)] text-white/70 text-base md:text-lg leading-relaxed mb-14">
+        {/* Corpo introdutório */}
+        <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/70 text-base md:text-lg leading-relaxed mb-14">
           O CarboZé foi desenvolvido para a composição química específica do
           combustível brasileiro. Não é adaptação de fórmula estrangeira. É um
           produto construído a partir do problema que o nosso etanol e o nosso
           biodiesel criam dentro do nosso motor.
         </p>
 
-        {/* 3 mecanismos — grid igual ao wireframe */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+        {/* 3 mecanismos — cards verde escuro */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
           {mechanisms.map((m) => (
-            <div key={m.num} className="flex flex-col gap-4">
+            <div
+              key={m.num}
+              className="bg-verde-escuro rounded-2xl p-6 flex flex-col items-center text-center gap-4"
+            >
               <NumberBadge number={m.num} variant="limao" />
               <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-white text-base md:text-lg leading-snug">
                 {m.title}
