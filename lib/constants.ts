@@ -21,6 +21,13 @@ export const CHECKOUT_MOTOS = [
     price: "R$ 179,70",
     url: "https://app.vindi.com.br/customer/pages/083c7085-403a-4c4d-9b7c-ff57d8dab3c1/subscriptions/new",
   },
+  {
+    qty: "4x",
+    label: "Pack 4x",
+    sachets: 40,
+    price: "R$ 239,60",
+    url: "https://app.vindi.com.br/customer/pages/46e1bc8c-a973-4b77-aa2e-89fa4d5ac782/subscriptions/new",
+  },
 ];
 
 export const CHECKOUT_URL = CHECKOUT_MOTOS[0].url;

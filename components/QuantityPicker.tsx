@@ -11,7 +11,7 @@ export default function QuantityPicker({ variant = "dark" }: QuantityPickerProps
   const textMuted = variant === "dark" ? "text-white/60" : "text-verde-escuro/60";
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+    <div className="grid grid-cols-2 gap-4 w-full">
       {CHECKOUT_MOTOS.map((opt) => (
         <a
           key={opt.qty}
