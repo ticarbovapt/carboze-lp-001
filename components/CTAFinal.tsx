@@ -1,13 +1,11 @@
 import Image from "next/image";
-import CTAButton from "./CTAButton";
-import PriceBlock from "./PriceBlock";
+import QuantityPicker from "./QuantityPicker";
 import { WHATSAPP_URL, SOCIAL_LINKS, STORES } from "@/lib/constants";
 
 export default function CTAFinal() {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
-        {/* Headline maior — coluna única */}
         <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-6xl leading-tight max-w-3xl mb-8">
           Sua moto trabalha todo dia.{" "}
           <span className="text-limao">
@@ -15,15 +13,10 @@ export default function CTAFinal() {
           </span>
         </h2>
 
-        {/* Preço — coluna, depois botão abaixo */}
-        <div className="flex flex-col gap-6 mb-12">
-          <PriceBlock variant="dark" showDescription />
-          <div>
-            <CTAButton label="QUERO MEU PACK" size="large" />
-          </div>
+        <div className="mb-12">
+          <QuantityPicker variant="dark" />
         </div>
 
-        {/* Suporte + contato — lado esquerdo */}
         <div className="border-t border-white/15 pt-8 mb-8">
           <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm mb-3">
             Dúvidas?{" "}
@@ -61,9 +54,7 @@ export default function CTAFinal() {
           </p>
         </div>
 
-        {/* Footer: contato esquerda | logo + copyright direita */}
         <div className="border-t border-white/15 pt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-          {/* Esquerda: redes sociais */}
           <div className="flex gap-5 font-[family-name:var(--font-archivo)] text-sm">
             <a
               href={SOCIAL_LINKS.instagram}
@@ -91,7 +82,6 @@ export default function CTAFinal() {
             </a>
           </div>
 
-          {/* Direita: logo + copyright */}
           <div className="flex flex-col items-start sm:items-end gap-2">
             <Image
               src="/logo-carboze-moto-white.svg"
