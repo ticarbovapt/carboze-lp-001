@@ -20,14 +20,26 @@ export default function CheckoutSachePage() {
 
       {/* ── Header ── */}
       <header className="relative z-10 shrink-0 flex items-center justify-between px-5 sm:px-8 py-3.5 border-b border-white/10">
-        <Image
-          src="/logo-carboze-1.png"
-          alt="CarboZé"
-          width={180}
-          height={36}
-          priority
-          className="h-8 w-auto"
-        />
+        <div className="flex items-center gap-3">
+          {/* Back to LP */}
+          <a
+            href="/"
+            aria-label="Voltar para a página inicial"
+            className="flex items-center justify-center w-8 h-8 rounded-full border border-white/20 text-off-white/60 hover:text-off-white hover:border-white/40 transition-all"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </a>
+          <Image
+            src="/logo-carboze-moto-white.svg"
+            alt="CarboZé"
+            width={140}
+            height={32}
+            priority
+            className="h-7 w-auto"
+          />
+        </div>
         <div className="flex items-center gap-2 text-off-white/70 text-xs font-[family-name:var(--font-barlow)] font-semibold">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -106,8 +118,6 @@ export default function CheckoutSachePage() {
       {/* ── Trust footer ── */}
       <footer className="relative z-10 shrink-0 flex items-center justify-center flex-wrap gap-x-3 sm:gap-x-5 gap-y-1 px-4 py-3 border-t border-white/10 text-off-white/35 text-xs font-[family-name:var(--font-barlow)]">
         <span>PIX</span>
-        <span className="text-off-white/20" aria-hidden="true">·</span>
-        <span>Boleto</span>
         <span className="text-off-white/20" aria-hidden="true">·</span>
         <span>Cartão de crédito</span>
         <span className="text-off-white/20" aria-hidden="true">·</span>
