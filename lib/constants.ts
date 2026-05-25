@@ -30,6 +30,38 @@ export const CHECKOUT_MOTOS = [
   },
 ];
 
+export const CHECKOUT_CARROS = [
+  {
+    qty: "1x",
+    label: "Pack 1x",
+    bottles: 5,
+    price: "R$ 149,50",
+    url: "https://app.vindi.com.br/customer/pages/e7b441fb-0c0a-4d02-af4d-63534b35ccb4/subscriptions/new",
+  },
+  {
+    qty: "2x",
+    label: "Pack 2x",
+    bottles: 10,
+    price: "R$ 299,00",
+    url: "https://app.vindi.com.br/customer/pages/dff3ea9b-9ea1-476d-aca5-45060c99505d/subscriptions/new",
+    popular: true,
+  },
+  {
+    qty: "3x",
+    label: "Pack 3x",
+    bottles: 15,
+    price: "R$ 448,50",
+    url: "https://app.vindi.com.br/customer/pages/61d31b71-365d-4092-a618-8c5c462efcf6/subscriptions/new",
+  },
+  {
+    qty: "4x",
+    label: "Pack 4x",
+    bottles: 20,
+    price: "R$ 598,00",
+    url: "https://app.vindi.com.br/customer/pages/315f1e86-72b8-4872-8762-c2fc1e51a94d/subscriptions/new",
+  },
+];
+
 export const CHECKOUT_URL = CHECKOUT_MOTOS[0].url;
 
 export const WHATSAPP_NUMBER = "5511400021128";
