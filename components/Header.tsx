@@ -1,4 +1,4 @@
-import { WHATSAPP_URL, STORES } from "@/lib/constants";
+import { WHATSAPP_URL } from "@/lib/constants";
 import Image from "next/image";
 
 export default function Header() {
@@ -27,12 +27,10 @@ export default function Header() {
 
           {/* Compre Online */}
           <a
-            href={STORES.mercadolivre}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/checkoutsache"
             className="hidden sm:inline text-verde-escuro hover:text-verde-medio transition-colors"
           >
-            Compre Online
+            Comprar online
           </a>
 
           {/* WhatsApp — destaque */}
