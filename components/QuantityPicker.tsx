@@ -38,7 +38,7 @@ export default function QuantityPicker({ variant = "dark" }: QuantityPickerProps
           >
             {opt.price}
           </p>
-          <p className={`text-xs ${textMuted}`}>à vista · PIX, Boleto ou Cartão</p>
+          <p className={`text-xs ${textMuted}`}>à vista · R$ 5,99/tanque</p>
           <span className="mt-3 block text-center font-[family-name:var(--font-barlow)] font-bold uppercase text-sm py-2.5 rounded-full bg-limao text-verde-escuro transition-all group-hover:bg-verde-medio group-hover:text-white">
             COMPRAR AGORA
           </span>
