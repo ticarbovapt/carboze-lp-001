@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Background rounded square -->
-  <rect width="32" height="32" rx="6" fill="#093a30"/>
-  <!-- ZÉ centered -->
-  <text x="16" y="23" font-family="Arial Black, Impact, sans-serif" font-size="17" font-weight="900" fill="#a9da00" text-anchor="middle" letter-spacing="-0.5">ZÉ</text>
-  <!-- Water drop above É -->
-  <ellipse cx="23.5" cy="5" rx="2.2" ry="3" fill="#a9da00"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Squircle verde-limão -->
+  <rect width="100" height="100" rx="22" fill="#6CC000"/>
+  <!-- Gota branca com ponta para cima -->
+  <path d="M50,17 C38,30 27,45 27,61 A23,23 0 0,0 73,61 C73,45 62,30 50,17 Z" fill="white"/>
 </svg>

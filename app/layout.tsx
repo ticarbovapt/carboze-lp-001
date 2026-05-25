@@ -21,11 +21,7 @@ export const metadata: Metadata = {
   description:
     "Pack com 10 sachês de 10ml. Elimina umidade, melhora a combustão e limpa o motor a cada abastecimento. R$ 5,99 por tanque.",
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
-    apple: "/favicon.svg",
+    icon: "/icon.svg",
   },
   openGraph: {
     title: "CarboZé Moto — Combustível protegido, motor saudável",

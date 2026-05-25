@@ -8,12 +8,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Aliases curtos → páginas de checkout reais
-      { source: "/sache",   destination: "/checkoutsache",   permanent: true },
-      { source: "/sachê",   destination: "/checkoutsache",   permanent: true },
-      { source: "/moto",    destination: "/checkoutsache",   permanent: true },
-      { source: "/pack100", destination: "/checkoutpack100", permanent: true },
-      { source: "/carro",   destination: "/checkoutpack100", permanent: true },
+      // Aliases com acento e variantes curtas → páginas reais
+      { source: "/sachê", destination: "/sache",   permanent: true },
+      { source: "/moto",       destination: "/sache",   permanent: true },
+      { source: "/carro",      destination: "/pack100", permanent: true },
     ];
   },
 };
