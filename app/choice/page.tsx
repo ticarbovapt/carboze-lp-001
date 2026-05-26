@@ -34,10 +34,16 @@ function CarIcon() {
 export default function ChoicePage() {
   return (
     <main className="h-dvh flex flex-col bg-verde-escuro relative overflow-hidden">
-      {/* Subtle background texture */}
+      {/* Background image */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.06] pointer-events-none select-none"
-        style={{ backgroundImage: "url('/hero-bg.png')" }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 pointer-events-none select-none"
+        style={{ backgroundImage: "url('/cz-choice-bg.jpg')" }}
+        aria-hidden="true"
+      />
+      {/* Overlay para legibilidade dos cards */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "rgba(9,58,48,0.60)" }}
         aria-hidden="true"
       />
 
