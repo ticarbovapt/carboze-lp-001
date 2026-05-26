@@ -42,7 +42,7 @@ export default function CostValue100() {
           <div className="relative w-full rounded-2xl overflow-hidden aspect-[4/3]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/cz-vehicle-pickup.jpg"
+              src="/cz-pack100-costvalue.jpg"
               alt="CarboZé — Para carros e caminhonetes"
               className="w-full h-full object-cover"
             />
