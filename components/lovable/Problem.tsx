@@ -4,7 +4,7 @@ export default function Problem() {
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         {/* Headline */}
         <div className="max-w-3xl mb-12">
-          <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-8">
+          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-8">
             Moto mais gastona e começando a falhar por uma razão que ninguém sabe
             explicar corretamente.
           </h2>
@@ -41,7 +41,7 @@ export default function Problem() {
         {/* 2 cards — fundo verde escuro, título limão */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
           <div className="bg-verde-escuro rounded-2xl p-8 border-l-4 border-limao">
-            <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-lg mb-4">
+            <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-lg mb-4">
               Partida falhando de manhã
             </h3>
             <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
@@ -52,7 +52,7 @@ export default function Problem() {
             </p>
           </div>
           <div className="bg-verde-escuro rounded-2xl p-8 border-l-4 border-limao">
-            <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-lg mb-4">
+            <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-lg mb-4">
               Bico entupindo antes do prazo
             </h3>
             <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">

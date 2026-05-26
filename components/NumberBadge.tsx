@@ -14,7 +14,7 @@ export default function NumberBadge({
 
   return (
     <span
-      className={`inline-flex items-center justify-center w-12 h-12 rounded-full font-[family-name:var(--font-barlow)] font-extrabold text-lg shrink-0 ${styles}`}
+      className={`inline-flex items-center justify-center w-12 h-12 rounded-full font-[family-name:var(--font-basement)] font-extrabold text-lg shrink-0 ${styles}`}
     >
       {number}
     </span>

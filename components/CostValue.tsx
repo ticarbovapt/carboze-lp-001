@@ -5,7 +5,7 @@ export default function CostValue() {
     <section className="bg-off-white py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
         {/* Headline */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
           R$ 5,99 por tanque.{" "}
           <span className="text-verde-medio">
             O custo de proteger a ferramenta do seu trabalho — e gerar uma
@@ -37,10 +37,10 @@ export default function CostValue() {
           {/* Destaque numérico + imagem do pack */}
           <div className="flex flex-col gap-6">
             <div className="bg-verde-escuro rounded-2xl p-7 flex flex-col justify-center gap-3">
-              <p className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-xs tracking-widest">
+              <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-xs tracking-widest">
                 Resumindo
               </p>
-              <p className="font-[family-name:var(--font-barlow)] font-extrabold text-white text-xl md:text-2xl leading-snug">
+              <p className="font-[family-name:var(--font-basement)] font-extrabold text-white text-xl md:text-2xl leading-snug">
                 10 sachês{" "}
                 <span className="text-white/40">=</span>{" "}
                 10 tanques{" "}

@@ -3,7 +3,7 @@ import { Barlow, Archivo } from "next/font/google";
 import "./globals.css";
 
 const barlow = Barlow({
-  variable: "--font-barlow",
+  variable: "--font-basement",
   subsets: ["latin"],
   weight: ["400", "600", "700", "800"],
   display: "swap",

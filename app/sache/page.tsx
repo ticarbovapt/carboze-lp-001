@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import LovableHeader from "@/components/LovableHeader";
 import Hero from "@/components/lovable/Hero";
 import Problem from "@/components/lovable/Problem";
-import WhyName from "@/components/lovable/WhyName";
 import Solution from "@/components/lovable/Solution";
 import Sachet from "@/components/lovable/Sachet";
 import CostValue from "@/components/lovable/CostValue";
@@ -21,7 +20,6 @@ export default function SachePage() {
       <LovableHeader checkoutHref="/checkoutsache" />
       <Hero />
       <Problem />
-      <WhyName />
       <Solution />
       <Sachet />
       <CostValue />

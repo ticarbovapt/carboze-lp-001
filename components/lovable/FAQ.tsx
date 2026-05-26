@@ -21,7 +21,7 @@ export default function FAQ() {
   return (
     <section id="faq" className="bg-off-white py-16 md:py-28">
       <div className="max-w-6xl mx-auto px-5">
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
           Perguntas e respostas
         </h2>
 
@@ -31,7 +31,7 @@ export default function FAQ() {
               key={i}
               className="group border-b border-verde-escuro/8 last:border-0"
             >
-              <summary className="flex items-center justify-between gap-6 py-6 font-[family-name:var(--font-barlow)] font-bold text-verde-escuro text-base md:text-lg select-none cursor-pointer list-none">
+              <summary className="flex items-center justify-between gap-6 py-6 font-[family-name:var(--font-basement)] font-bold text-verde-escuro text-base md:text-lg select-none cursor-pointer list-none">
                 {faq.q}
                 <span className="shrink-0 w-6 h-6 rounded-full border border-verde-escuro/15 flex items-center justify-center text-verde-medio transition-transform duration-300 group-open:rotate-45">
                   <svg viewBox="0 0 12 12" fill="none" className="w-3 h-3">

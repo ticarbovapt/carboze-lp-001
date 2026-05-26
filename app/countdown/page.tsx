@@ -37,7 +37,7 @@ function Unit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white/[0.05] ring-1 ring-white/10 flex items-center justify-center">
-        <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-4xl sm:text-5xl md:text-6xl tabular-nums leading-none">
+        <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-4xl sm:text-5xl md:text-6xl tabular-nums leading-none">
           {pad(value)}
         </span>
       </div>
@@ -148,7 +148,7 @@ function VIPModal({ onClose }: { onClose: () => void }) {
               ✅
             </div>
             <div>
-              <p className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-xl">
+              <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-xl">
                 Cadastro confirmado!
               </p>
               <p className="font-[family-name:var(--font-archivo)] text-white/50 text-sm mt-2 leading-relaxed">
@@ -168,7 +168,7 @@ function VIPModal({ onClose }: { onClose: () => void }) {
           <form onSubmit={handleSubmit} className="p-6 sm:p-8 flex flex-col gap-5">
             {/* Cabeçalho */}
             <div className="border-b border-white/10 pb-4 pr-6">
-              <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-base tracking-wide">
+              <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-base tracking-wide">
                 Lista VIP — Vacine seu combustível
               </h2>
               <p className="font-[family-name:var(--font-archivo)] text-white/40 text-xs mt-1">
@@ -244,7 +244,7 @@ function VIPModal({ onClose }: { onClose: () => void }) {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="w-full bg-limao text-verde-escuro font-[family-name:var(--font-barlow)] font-extrabold uppercase text-base py-4 rounded-xl hover:brightness-110 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed mt-1 tracking-wide"
+              className="w-full bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-extrabold uppercase text-base py-4 rounded-xl hover:brightness-110 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed mt-1 tracking-wide"
             >
               {status === "loading" ? (
                 <span className="flex items-center justify-center gap-2">
@@ -319,7 +319,7 @@ export default function CountdownPage() {
 
           {/* Headline */}
           <div className="max-w-2xl">
-            <h1 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-7xl leading-tight">
+            <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-7xl leading-tight">
               Vacine seu
               <span className="text-limao block">combustível.</span>
             </h1>
@@ -332,18 +332,18 @@ export default function CountdownPage() {
           {/* ── Countdown ───────────────────────────────── */}
           <div className="flex items-start gap-3 sm:gap-5">
             <Unit value={time.days}    label="dias"     />
-            <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
+            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
             <Unit value={time.hours}   label="horas"    />
-            <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
+            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
             <Unit value={time.minutes} label="minutos"  />
-            <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
+            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
             <Unit value={time.seconds} label="segundos" />
           </div>
 
           {/* ── CTA ─────────────────────────────────────── */}
           <button
             onClick={() => setModalOpen(true)}
-            className="group inline-flex items-center gap-3 bg-limao text-verde-escuro font-[family-name:var(--font-barlow)] font-extrabold uppercase text-base px-10 py-4 rounded-xl hover:brightness-110 transition-all active:scale-[0.98] tracking-widest shadow-lg shadow-limao/15"
+            className="group inline-flex items-center gap-3 bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-extrabold uppercase text-base px-10 py-4 rounded-xl hover:brightness-110 transition-all active:scale-[0.98] tracking-widest shadow-lg shadow-limao/15"
           >
             Quero ser notificado
             <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform duration-200">

@@ -16,7 +16,7 @@ export default function PriceBlock({
   return (
     <div className={`border ${borderColor} rounded-2xl p-5 w-full`}>
       <p
-        className={`text-xs uppercase tracking-widest font-[family-name:var(--font-barlow)] font-bold ${textMuted} mb-1`}
+        className={`text-xs uppercase tracking-widest font-[family-name:var(--font-basement)] font-bold ${textMuted} mb-1`}
       >
         Pack com 10 sachês de 10ml
       </p>
@@ -27,7 +27,7 @@ export default function PriceBlock({
       )}
       <div className="flex items-baseline gap-3 mb-3">
         <span
-          className={`text-4xl font-[family-name:var(--font-barlow)] font-extrabold ${textMain}`}
+          className={`text-4xl font-[family-name:var(--font-basement)] font-extrabold ${textMain}`}
         >
           R$ 59,90
         </span>

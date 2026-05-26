@@ -14,7 +14,7 @@ export default function CTAButton({
   size = "default",
 }: CTAButtonProps) {
   const base =
-    "inline-block font-[family-name:var(--font-barlow)] font-bold uppercase tracking-wide rounded-full bg-limao text-verde-escuro transition-all hover:bg-verde-medio active:scale-95 focus:outline-none focus:ring-2 focus:ring-limao focus:ring-offset-2";
+    "inline-block font-[family-name:var(--font-basement)] font-bold uppercase tracking-wide rounded-full bg-limao text-verde-escuro transition-all hover:bg-verde-medio active:scale-95 focus:outline-none focus:ring-2 focus:ring-limao focus:ring-offset-2";
   const sizes =
     size === "large"
       ? "px-10 py-5 text-xl"

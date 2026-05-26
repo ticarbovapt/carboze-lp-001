@@ -28,7 +28,7 @@ export default function Hero() {
           </p>
 
           {/* H1 */}
-          <h1 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-7">
+          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-7">
             Ciência aplicada em cada gota.{" "}
             <span className="text-limao">Combustível protegido.</span>
           </h1>

@@ -13,7 +13,7 @@ export default function CTAFinal100() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start mb-16">
             {/* Esquerda */}
             <div>
-              <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl leading-tight mb-10">
+              <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl leading-tight mb-10">
                 <span className="block">Seu veículo trabalha todo dia.</span>
                 <span className="block text-limao">
                   Ele precisa de proteção todo dia também.
@@ -25,7 +25,7 @@ export default function CTAFinal100() {
                 <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.12em] uppercase mb-1">
                   Frasco 100ml
                 </p>
-                <p className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-6xl md:text-7xl leading-none">
+                <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-6xl md:text-7xl leading-none">
                   R$ 149,90
                 </p>
                 <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">

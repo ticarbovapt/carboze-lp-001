@@ -5,7 +5,7 @@ export default function CostValue100() {
     <section className="bg-off-white py-16 md:py-28">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         <div className="max-w-3xl mb-12">
-          <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
+          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
             R$ 149,90 por frasco.{" "}
             <span className="text-verde-medio">
               O custo de proteger o motor por 100 litros — com retorno maior que

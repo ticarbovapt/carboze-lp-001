@@ -21,7 +21,7 @@ export default function HowToUse() {
     <section className="bg-verde-escuro py-16 md:py-28 overflow-hidden">
       <div className="max-w-6xl mx-auto px-5">
         {/* Headline */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-16 max-w-xl">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-16 max-w-xl">
           3 passos. Antes de chegar no posto já está feito.
         </h2>
 
@@ -35,17 +35,17 @@ export default function HowToUse() {
               <div key={s.num} className="flex flex-col gap-5">
                 {/* Número como backdrop decorativo */}
                 <div className="relative">
-                  <span className="font-[family-name:var(--font-barlow)] font-extrabold text-7xl leading-none text-white/[0.06] select-none absolute -top-4 -left-2" aria-hidden="true">
+                  <span className="font-[family-name:var(--font-basement)] font-extrabold text-7xl leading-none text-white/[0.06] select-none absolute -top-4 -left-2" aria-hidden="true">
                     {s.num}
                   </span>
                   <div className="relative w-16 h-16 rounded-2xl bg-limao flex items-center justify-center">
-                    <span className="font-[family-name:var(--font-barlow)] font-extrabold text-verde-escuro text-2xl">
+                    <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-2xl">
                       {s.num}
                     </span>
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-white text-lg mb-2">
+                  <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-lg mb-2">
                     {s.title}
                   </h3>
                   <p className="font-[family-name:var(--font-archivo)] text-white/50 text-sm leading-relaxed">

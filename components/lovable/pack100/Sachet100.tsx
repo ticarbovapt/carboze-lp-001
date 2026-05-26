@@ -6,7 +6,7 @@ export default function Sachet100() {
 
           {/* Coluna esquerda: título + corpo + specs */}
           <div>
-            <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase leading-tight mb-8 text-3xl sm:text-4xl md:text-5xl">
+            <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase leading-tight mb-8 text-3xl sm:text-4xl md:text-5xl">
               <span className="text-white block">
                 Calibrado para cada litro.
               </span>
@@ -30,7 +30,7 @@ export default function Sachet100() {
 
             {/* Specs */}
             <div className="bg-white/[0.04] rounded-2xl p-6">
-              <p className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao/60 text-xs tracking-widest mb-4">
+              <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao/60 text-xs tracking-widest mb-4">
                 Especificações
               </p>
               <ul className="space-y-3">

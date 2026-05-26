@@ -20,7 +20,7 @@ export default function Hero() {
             Proteção de combustível para motos
           </p>
 
-          <h1 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-8">
+          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-8">
             Moto engasgada não é só aborrecimento.{" "}
             <span className="text-limao">É prejuízo!</span>
           </h1>

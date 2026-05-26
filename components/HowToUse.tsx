@@ -21,7 +21,7 @@ export default function HowToUse() {
     <section className="bg-verde-escuro py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
         {/* Headline — maior, linha única */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
           3 passos. Antes de chegar no posto já está feito.
         </h2>
 
@@ -34,11 +34,11 @@ export default function HowToUse() {
             >
               {/* Número grande */}
               <div className="w-14 h-14 rounded-full bg-limao flex items-center justify-center shrink-0">
-                <span className="font-[family-name:var(--font-barlow)] font-extrabold text-verde-escuro text-2xl">
+                <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-2xl">
                   {s.num}
                 </span>
               </div>
-              <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-white text-lg">
+              <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-lg">
                 {s.title}
               </h3>
               <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">

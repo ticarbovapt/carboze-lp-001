@@ -22,7 +22,7 @@ export default function Solution() {
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         {/* Headline */}
         <div className="max-w-3xl mb-14">
-          <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
+          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
             Um sachê antes de abastecer. O combustível entra no motor{" "}
             <span className="text-verde-medio">já vacinado.</span>
           </h2>
@@ -43,11 +43,11 @@ export default function Solution() {
               className="bg-verde-escuro rounded-2xl p-8 flex flex-col gap-5"
             >
               {/* Número pequeno e refinado */}
-              <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao/40 text-4xl leading-none select-none">
+              <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/40 text-4xl leading-none select-none">
                 {m.num}
               </span>
               <div>
-                <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-white text-base leading-snug mb-3">
+                <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-base leading-snug mb-3">
                   {m.title}
                 </h3>
                 <p className="font-[family-name:var(--font-archivo)] text-white/55 text-sm leading-relaxed">

@@ -3,7 +3,7 @@ export default function WhyName() {
     <section className="bg-verde-escuro py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
         <div className="max-w-3xl">
-          <p className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-xs tracking-widest mb-6">
+          <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-xs tracking-widest mb-6">
             O porquê do nome
           </p>
           <p className="font-[family-name:var(--font-archivo)] text-white/80 text-base md:text-lg leading-relaxed">

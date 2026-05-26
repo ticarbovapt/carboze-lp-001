@@ -5,7 +5,7 @@ export default function CostValue() {
     <section className="bg-off-white py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
         {/* Headline */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
           R$ 5,99 por tanque.{" "}
           <span className="text-verde-medio">
             O custo de proteger a ferramenta do seu trabalho — e gerar uma

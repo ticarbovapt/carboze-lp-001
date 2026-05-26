@@ -23,7 +23,7 @@ export default function Solution() {
     <section className="bg-off-white py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
         {/* Headline */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-6">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-6">
           Um sachê antes de abastecer. O combustível entra no motor{" "}
           <span className="text-verde-medio">já vacinado.</span>
         </h2>
@@ -44,7 +44,7 @@ export default function Solution() {
               className="bg-verde-escuro rounded-2xl p-6 flex flex-col items-center text-center gap-4"
             >
               <NumberBadge number={m.num} variant="limao" />
-              <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-white text-base md:text-lg leading-snug">
+              <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-base md:text-lg leading-snug">
                 {m.title}
               </h3>
               <p className="font-[family-name:var(--font-archivo)] text-white/65 text-sm md:text-base leading-relaxed">

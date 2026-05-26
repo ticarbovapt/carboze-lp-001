@@ -6,7 +6,7 @@ export default function CTAFinal() {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-6xl leading-tight max-w-3xl mb-8">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-6xl leading-tight max-w-3xl mb-8">
           Sua moto trabalha todo dia.{" "}
           <span className="text-limao">
             Ela precisa de proteção todo dia também.
@@ -17,7 +17,7 @@ export default function CTAFinal() {
         <div className="mb-8">
           <div className="border border-white/20 rounded-2xl p-6 inline-block">
             <div className="flex items-baseline gap-3 flex-wrap">
-              <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-5xl md:text-6xl">
+              <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-5xl md:text-6xl">
                 R$ 59,90
               </span>
               <span className="font-[family-name:var(--font-archivo)] text-white/60 text-sm">

@@ -21,10 +21,10 @@ export default function FAQ() {
   return (
     <section id="faq" className="bg-off-white py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
-        <p className="font-[family-name:var(--font-barlow)] font-bold uppercase text-verde-escuro/50 text-xs tracking-widest mb-4">
+        <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-verde-escuro/50 text-xs tracking-widest mb-4">
           Dúvidas frequentes
         </p>
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
           Perguntas e respostas
         </h2>
 
@@ -34,7 +34,7 @@ export default function FAQ() {
               key={i}
               className="group bg-white border border-verde-escuro/10 rounded-2xl overflow-hidden"
             >
-              <summary className="flex items-center justify-between gap-4 px-6 py-5 font-[family-name:var(--font-barlow)] font-bold text-verde-escuro text-base md:text-lg select-none">
+              <summary className="flex items-center justify-between gap-4 px-6 py-5 font-[family-name:var(--font-basement)] font-bold text-verde-escuro text-base md:text-lg select-none">
                 {faq.q}
                 <span className="faq-icon shrink-0 text-verde-medio text-2xl font-light transition-transform duration-300">
                   +

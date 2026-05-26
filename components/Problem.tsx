@@ -3,7 +3,7 @@ export default function Problem() {
     <section className="bg-white py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-5">
         {/* Headline atualizado */}
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
           A moto está bebendo mais que o normal e começando a falhar por uma
           razão que ninguém explica direito.
         </h2>
@@ -39,7 +39,7 @@ export default function Problem() {
         {/* 2 cards — fundo verde escuro, título limão */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           <div className="bg-verde-escuro rounded-2xl p-6">
-            <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-lg mb-3">
+            <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-lg mb-3">
               Partida falhando de manhã
             </h3>
             <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">
@@ -48,7 +48,7 @@ export default function Problem() {
             </p>
           </div>
           <div className="bg-verde-escuro rounded-2xl p-6">
-            <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-lg mb-3">
+            <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-lg mb-3">
               Bico entupindo antes do prazo
             </h3>
             <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">
@@ -61,7 +61,7 @@ export default function Problem() {
 
         {/* Parágrafo conceitual — fundo verde escuro */}
         <div className="bg-verde-escuro rounded-2xl p-7 md:p-9">
-          <p className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-xs tracking-widest mb-4">
+          <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-xs tracking-widest mb-4">
             O porquê do nome
           </p>
           <p className="font-[family-name:var(--font-archivo)] text-white/80 text-base md:text-lg leading-relaxed">

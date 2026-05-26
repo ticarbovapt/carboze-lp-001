@@ -62,7 +62,7 @@ export default function LovableHeader({ checkoutHref = "/choice" }: LovableHeade
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 bg-limao text-verde-escuro px-4 py-2 rounded-full font-[family-name:var(--font-barlow)] font-bold text-xs hover:brightness-110 transition-all active:scale-95"
+            className="flex items-center gap-1.5 bg-limao text-verde-escuro px-4 py-2 rounded-full font-[family-name:var(--font-basement)] font-bold text-xs hover:brightness-110 transition-all active:scale-95"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

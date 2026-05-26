@@ -14,7 +14,7 @@ export default function CTAFinal() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start mb-16">
             {/* Esquerda */}
             <div>
-              <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl leading-tight mb-10">
+              <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl leading-tight mb-10">
                 <span className="block">Sua moto trabalha todo dia.</span>
                 <span className="block text-limao">
                   Ela precisa de proteção todo dia também.
@@ -26,7 +26,7 @@ export default function CTAFinal() {
                 <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.12em] uppercase mb-1">
                   Pack com 10 sachês
                 </p>
-                <p className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-6xl md:text-7xl leading-none">
+                <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-6xl md:text-7xl leading-none">
                   R$ 59,90
                 </p>
                 <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">

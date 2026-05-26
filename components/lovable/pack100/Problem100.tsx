@@ -51,7 +51,7 @@ export default function Problem100() {
     <section className="bg-off-white py-16 md:py-28">
       <div className="max-w-6xl mx-auto px-5">
         <div className="max-w-2xl mb-12">
-          <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
+          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
             O combustível também envelhece —{" "}
             <span className="text-verde-medio">e o motor sente.</span>
           </h2>
@@ -72,7 +72,7 @@ export default function Problem100() {
                 <p.Icon />
               </span>
               <div>
-                <h3 className="font-[family-name:var(--font-barlow)] font-bold uppercase text-limao text-base mb-2">
+                <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-base mb-2">
                   {p.title}
                 </h3>
                 <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">

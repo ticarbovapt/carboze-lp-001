@@ -27,7 +27,7 @@ export default function Hero100() {
             Proteção de combustível para carros e caminhonetes
           </p>
 
-          <h1 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-[3.25rem] lg:text-[3.75rem] leading-[0.95] mb-6">
+          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-[3.25rem] lg:text-[3.75rem] leading-[0.95] mb-6">
             Um frasco.{" "}
             <span className="whitespace-nowrap">100 litros</span>{" "}
             protegidos.{" "}
@@ -49,7 +49,7 @@ export default function Hero100() {
             <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.12em] uppercase mb-1">
               Frasco 100ml
             </p>
-            <p className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-5xl md:text-6xl leading-none">
+            <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-5xl md:text-6xl leading-none">
               R$ 149,90
             </p>
             <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">
