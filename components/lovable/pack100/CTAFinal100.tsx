@@ -26,7 +26,7 @@ export default function CTAFinal100() {
                   Frasco 100ml
                 </p>
                 <p className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-6xl md:text-7xl leading-none">
-                  R$ 149,50
+                  R$ 149,90
                 </p>
                 <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">
                   100ml · trata até 100L · R$ 1,49/litro protegido
