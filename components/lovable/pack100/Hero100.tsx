@@ -7,7 +7,7 @@ export default function Hero100() {
       {/* Background — imagem de carro */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-55"
-        style={{ backgroundImage: "url('/cz-vehicle-car.jpg')" }}
+        style={{ backgroundImage: "url('/cz-pack100-hero-bg.jpg')" }}
         aria-hidden="true"
       />
       {/* Gradient — mais denso à esquerda para legibilidade, abre à direita para o mockup */}
