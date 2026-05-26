@@ -16,7 +16,7 @@ const CANAIS = [
 ];
 
 /* ─── Target date ────────────────────────────────────────── */
-const TARGET = new Date("2025-06-02T09:00:00-03:00");
+const TARGET = new Date("2026-06-02T09:00:00-03:00");
 
 function getTimeLeft() {
   const diff = Math.max(0, TARGET.getTime() - Date.now());
