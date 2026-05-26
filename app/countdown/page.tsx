@@ -8,11 +8,11 @@ const SUPABASE_URL = "https://wpkfirmapxevzpxjovjr.supabase.co";
 const SUPABASE_ANON =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2Zpcm1hcHhldnpweGpvdmpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MDQwMzAsImV4cCI6MjA5MjQ4MDAzMH0.WIqNNoO77SNQu_WvixRH_a5J3kZYSo2HEwkaXGyaPB8";
 
-const INFLUENCERS = [
-  "@tiago_dionisio",
-  "@rodrigotarjapreta",
-  "@nenellucas",
-  "@talitamoura._",
+const CANAIS = [
+  "Ponto de venda CarboZé",
+  "Influenciador - @tiagodionisio",
+  "Influenciador - @nenellucas",
+  "Influenciador - @rodrigotarjapreta",
 ];
 
 /* ─── Target date ────────────────────────────────────────── */
@@ -206,9 +206,9 @@ function VIPModal({ onClose }: { onClose: () => void }) {
               />
             </div>
 
-            {/* Influenciador */}
+            {/* Canal */}
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="influencer" required>Influenciador</Label>
+              <Label htmlFor="influencer" required>Qual canal te trouxe até aqui?</Label>
               <div className="relative">
                 <select
                   id="influencer" required value={influencer}
@@ -218,9 +218,9 @@ function VIPModal({ onClose }: { onClose: () => void }) {
                   }`}
                 >
                   <option value="" disabled hidden>Escolher</option>
-                  {INFLUENCERS.map((inf) => (
-                    <option key={inf} value={inf} className="bg-verde-escuro text-white">
-                      {inf}
+                  {CANAIS.map((canal) => (
+                    <option key={canal} value={canal} className="bg-verde-escuro text-white">
+                      {canal}
                     </option>
                   ))}
                 </select>
