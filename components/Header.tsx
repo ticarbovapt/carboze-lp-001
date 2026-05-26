@@ -25,6 +25,13 @@ export default function Header() {
             <strong className="text-verde-escuro">R$ 59,90</strong>
           </span>
 
+          {/* Onde Encontrar */}
+          <a
+            href="/lojas"
+            className="hidden md:inline text-verde-escuro hover:text-verde-medio transition-colors text-xs uppercase tracking-wide font-semibold"
+          >
+            Onde Encontrar
+          </a>
           {/* Compre Online */}
           <a
             href="/choice"

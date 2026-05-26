@@ -41,7 +41,7 @@ export default function CostValue() {
           <div className="relative w-full rounded-2xl overflow-hidden bg-verde-escuro/10 aspect-[4/3]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/produto-dobra5.png"
+              src="/lp-produto-secao5.png"
               alt="Pack CarboZé — 10 sachês"
               className="w-full h-full object-cover"
             />

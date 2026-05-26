@@ -10,9 +10,9 @@ export default function CTAFinal() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start mb-16">
           {/* Esquerda */}
           <div>
-            <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-6xl leading-tight tracking-wide mb-8">
-              Sua moto trabalha todo dia.{" "}
-              <span className="text-limao">
+            <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight tracking-wide mb-8">
+              <span className="block">Sua moto trabalha todo dia.</span>
+              <span className="block text-limao">
                 Ela precisa de proteção todo dia também.
               </span>
             </h2>
@@ -38,7 +38,7 @@ export default function CTAFinal() {
           <div className="relative w-full rounded-2xl overflow-hidden bg-white/5 aspect-[4/3]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/produto-dobra8.png"
+              src="/lp-produto-secao8.png"
               alt="CarboZé — Pack 10 sachês"
               className="w-full h-full object-cover"
             />

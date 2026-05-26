@@ -7,7 +7,6 @@ const navLinks = [
   { label: "Como usar",  href: "#como-usar"  },
   { label: "Para quem",  href: "#para-quem"  },
   { label: "FAQ",        href: "#faq"        },
-  { label: "Revenda",    href: "#revenda"    },
 ];
 
 interface LovableHeaderProps {
@@ -45,6 +44,13 @@ export default function LovableHeader({ checkoutHref = "/choice" }: LovableHeade
 
         {/* Right CTAs */}
         <nav className="flex items-center gap-3 text-sm font-[family-name:var(--font-barlow)] font-semibold shrink-0">
+          {/* Onde Encontrar — hidden on small screens */}
+          <a
+            href="/lojas"
+            className="hidden md:inline text-verde-escuro hover:text-verde-medio transition-colors text-xs uppercase tracking-wide"
+          >
+            Onde Encontrar
+          </a>
           {/* Compre Online — hidden on small screens */}
           <a
             href={checkoutHref}
