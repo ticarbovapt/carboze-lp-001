@@ -82,13 +82,13 @@ export default function ChoicePage() {
     <main className="min-h-dvh flex flex-col bg-verde-escuro relative overflow-hidden">
       {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 pointer-events-none select-none"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 pointer-events-none select-none"
         style={{ backgroundImage: "url('/cz-choice-bg.jpg')" }}
         aria-hidden="true"
       />
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "linear-gradient(180deg, rgba(9,58,48,0.75) 0%, rgba(9,58,48,0.85) 100%)" }}
+        style={{ background: "linear-gradient(180deg, rgba(9,58,48,0.45) 0%, rgba(9,58,48,0.60) 100%)" }}
         aria-hidden="true"
       />
 
