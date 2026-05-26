@@ -13,6 +13,23 @@ export default function CTAFinal() {
           </span>
         </h2>
 
+        {/* Bloco de preço destacado */}
+        <div className="mb-8">
+          <div className="border border-white/20 rounded-2xl p-6 inline-block">
+            <div className="flex items-baseline gap-3 flex-wrap">
+              <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-5xl md:text-6xl">
+                R$ 59,90
+              </span>
+              <span className="font-[family-name:var(--font-archivo)] text-white/60 text-sm">
+                Pack com 10 sachês
+              </span>
+            </div>
+            <p className="font-[family-name:var(--font-archivo)] text-white/50 text-xs mt-2">
+              10 sachês · 10 tanques · R$ 5,99/tanque
+            </p>
+          </div>
+        </div>
+
         <div className="mb-12">
           <QuantityPicker variant="dark" />
         </div>

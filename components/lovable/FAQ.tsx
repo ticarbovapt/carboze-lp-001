@@ -1,19 +1,19 @@
 const faqs = [
   {
     q: "Funciona em qualquer moto?",
-    a: "Em qualquer moto a gasolina ou flex. Urbana, trail, sport, scooter, moto de entrega. Se usa gasolina ou etanol, o CarboZé trata.",
+    a: "Em qualquer moto a gasolina, etanol ou flex — urbana, trail, sport, scooter, moto de entrega. O CarboZé é compatível com todos os combustíveis líquidos e não interfere em nenhum componente mecânico.",
   },
   {
-    q: "Por que 10ml e não mais?",
-    a: "Porque é a dose certa. A proporção é 1ml para cada 1.000ml de combustível. O sachê de 10ml trata exatamente 10L, o tanque cheio da maioria das motos. Mais do que isso não melhora o resultado.",
+    q: "Por que 10ml e não mais? A dose não deveria ser maior?",
+    a: "A proporção correta é 1ml para cada 1.000ml de combustível. O sachê de 10ml trata exatamente 10L — o tanque cheio da maioria das motos brasileiras. Aumentar a dose não melhora o resultado; a fórmula já é calculada para eficiência máxima nessa proporção.",
   },
   {
     q: "Quanto tempo até sentir diferença na prática?",
-    a: "Muitos usuários relatam melhora na partida e na suavidade já no primeiro sachê. O efeito de limpeza progressiva se completa após 3 abastecimentos consecutivos.",
+    a: "Muitos usuários relatam melhora na partida e na suavidade já no primeiro sachê. O efeito de limpeza progressiva se completa após 3 abastecimentos consecutivos — a partir daí o motor está trabalhando no seu estado ótimo.",
   },
   {
     q: "Preciso usar toda vez que abastecer?",
-    a: "Sim. A cada tanque novo entra combustível novo que precisa ser estabilizado. O tratamento funciona por acumulação, e a interrupção desfaz parte do progresso já feito.",
+    a: "Sim. A cada abastecimento entra combustível novo que precisa ser estabilizado. O tratamento funciona por acumulação — interromper desfaz parte do progresso. Use sempre: é R$ 5,99 para proteger um motor que pode custar muito mais para consertar.",
   },
 ];
 

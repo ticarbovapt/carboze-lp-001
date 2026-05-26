@@ -36,7 +36,7 @@ export default function Hero100() {
                 Pack 100ml
               </p>
               <p className="font-[family-name:var(--font-barlow)] font-extrabold text-white text-4xl">
-                R$ <span className="text-limao">[A DEFINIR]</span>
+                R$ <span className="text-limao">149,90</span>
               </p>
               <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm mt-1">
                 Trata até 100L de combustível

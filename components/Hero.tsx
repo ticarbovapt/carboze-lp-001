@@ -13,7 +13,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-6xl mx-auto px-5 w-full">
         <div className="max-w-3xl">
           <h1 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
-            Sachê engasgado não é só aborrecimento.{" "}
+            Moto engasgada não é só aborrecimento!{" "}
             <span className="text-limao">É prejuízo!</span>
           </h1>
 

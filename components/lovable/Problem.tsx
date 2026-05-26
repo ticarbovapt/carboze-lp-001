@@ -43,8 +43,10 @@ export default function Problem() {
               Partida falhando de manhã
             </h3>
             <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">
-              Combustível com resíduo de umidade não dá bem quando o motor está
-              frio. Você tenta, tenta, gasta energia e já se aborrece.
+              Combustível com resíduo de umidade não ignita bem quando o motor está frio. Você tenta, tenta, gasta energia e já se aborrece antes de sair de casa.
+            </p>
+            <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed mt-2">
+              Com o tempo, o motor começa a depender de tentativas extras a cada manhã — sinal claro de degradação silenciosa no sistema.
             </p>
           </div>
           <div className="bg-verde-escuro rounded-2xl p-6">
@@ -57,6 +59,14 @@ export default function Problem() {
               pior momento.
             </p>
           </div>
+        </div>
+
+        {/* Parágrafo conceitual — vacina do motor */}
+        <div className="mt-10 bg-verde-escuro/5 border-l-4 border-verde-medio rounded-r-2xl p-6 max-w-2xl">
+          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro text-base md:text-lg leading-relaxed">
+            Pense no CarboZé como uma{" "}
+            <strong className="text-verde-escuro">vacina do motor</strong> — você aplica antes do problema aparecer, a cada abastecimento, para que o dano nunca aconteça.
+          </p>
         </div>
 
       </div>
