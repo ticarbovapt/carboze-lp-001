@@ -4,13 +4,6 @@ import { WHATSAPP_URL } from "@/lib/constants";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const navLinks = [
-  { label: "Problema",   href: "#problema"   },
-  { label: "Benefícios", href: "#beneficios" },
-  { label: "Como usar",  href: "#como-usar"  },
-  { label: "Para quem",  href: "#para-quem"  },
-  { label: "FAQ",        href: "#faq"        },
-];
 
 interface LovableHeaderProps {
   checkoutHref?: string;
@@ -47,20 +40,7 @@ export default function LovableHeader({ checkoutHref = "/choice" }: LovableHeade
           />
         </a>
 
-        {/* Anchor nav — visible on lg+ */}
-        <nav className="hidden lg:flex items-center gap-6 text-xs font-[family-name:var(--font-archivo)] tracking-wide">
-          {navLinks.map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              className="text-white/40 hover:text-white transition-colors"
-            >
-              {label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Right CTAs */}
+{/* Right CTAs */}
         <nav className="flex items-center gap-4 shrink-0">
           {/* Onde Encontrar */}
           <a
