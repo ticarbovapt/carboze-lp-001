@@ -15,7 +15,7 @@ const INFLUENCERS = [
 ];
 
 /* ─── Target date ────────────────────────────────────────── */
-const TARGET = new Date("2025-08-01T00:00:00-03:00");
+const TARGET = new Date("2025-06-02T09:00:00-03:00");
 
 function getTimeLeft() {
   const diff = Math.max(0, TARGET.getTime() - Date.now());
@@ -161,8 +161,18 @@ export default function CountdownPage() {
           <Unit value={time.seconds} label="segundos" />
         </div>
 
+        {/* ── CTA âncora ──────────────────────────────── */}
+        {status !== "success" && (
+          <a
+            href="#formulario"
+            className="inline-flex items-center gap-2 bg-limao text-verde-escuro font-[family-name:var(--font-barlow)] font-extrabold uppercase text-base px-8 py-4 rounded-xl hover:brightness-110 transition-all active:scale-[0.98] tracking-wide shadow-lg"
+          >
+            Quero ser notificado →
+          </a>
+        )}
+
         {/* ── Formulário ──────────────────────────────── */}
-        <div className="w-full max-w-md">
+        <div id="formulario" className="w-full max-w-md">
           {status === "success" ? (
             /* ── Sucesso ──────────────────────────────── */
             <div className="bg-limao/10 border border-limao/20 rounded-2xl p-8 text-center flex flex-col items-center gap-4">
