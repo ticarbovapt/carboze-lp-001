@@ -40,9 +40,9 @@ export default function CTAFinal100() {
             <div className="relative w-full rounded-2xl overflow-hidden bg-white/[0.03] aspect-[4/3]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/produto-dobra8.png"
+                src="/cz-pack100-cta.png"
                 alt="CarboZé — Pack 100ml"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>
