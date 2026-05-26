@@ -3,7 +3,7 @@ import Image from "next/image";
 import { CHECKOUT_CARROS } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Escolha seu Kit — CarboZé Carro",
+  title: "CarboZé — Vacine seu combustível",
   description:
     "Frasco 100ml para carros. Elimina umidade, melhora a combustão e protege o motor a cada abastecimento.",
 };
@@ -23,8 +23,8 @@ export default function CheckoutPack100Page() {
         <div className="flex items-center gap-3">
           {/* Back to LP */}
           <a
-            href="/"
-            aria-label="Voltar para a página inicial"
+            href="/pack100"
+            aria-label="Voltar para CarboZé Carro"
             className="flex items-center justify-center w-8 h-8 rounded-full border border-white/20 text-off-white/60 hover:text-off-white hover:border-white/40 transition-all"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">

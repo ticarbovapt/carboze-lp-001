@@ -10,7 +10,7 @@ import FAQ from "@/components/lovable/FAQ";
 import CTAFinal100 from "@/components/lovable/pack100/CTAFinal100";
 
 export const metadata: Metadata = {
-  title: "CarboZé Carro — Frasco 100ml para carros",
+  title: "CarboZé — Vacine seu combustível",
   description: "O frasco CarboZé 100ml elimina umidade, melhora a combustão e protege o motor a cada abastecimento. Feito para carros.",
 };
 

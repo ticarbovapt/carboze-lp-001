@@ -3,7 +3,7 @@ import Image from "next/image";
 import { CHECKOUT_MOTOS } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Escolha seu Kit — CarboZé Moto",
+  title: "CarboZé — Vacine seu combustível",
   description:
     "Sachê 10ml para motos. Elimina umidade, melhora a combustão e limpa o motor a cada abastecimento.",
 };
@@ -23,8 +23,8 @@ export default function CheckoutSachePage() {
         <div className="flex items-center gap-3">
           {/* Back to LP */}
           <a
-            href="/"
-            aria-label="Voltar para a página inicial"
+            href="/sache"
+            aria-label="Voltar para CarboZé Moto"
             className="flex items-center justify-center w-8 h-8 rounded-full border border-white/20 text-off-white/60 hover:text-off-white hover:border-white/40 transition-all"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">

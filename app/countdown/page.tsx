@@ -36,7 +36,7 @@ function pad(n: number) {
 function Unit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center">
+      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white/[0.05] ring-1 ring-white/10 flex items-center justify-center">
         <span className="font-[family-name:var(--font-barlow)] font-extrabold text-limao text-4xl sm:text-5xl md:text-6xl tabular-nums leading-none">
           {pad(value)}
         </span>
@@ -309,8 +309,12 @@ export default function CountdownPage() {
         <section className="flex-1 flex flex-col items-center justify-center px-5 py-16 md:py-24 gap-10 text-center">
 
           {/* Badge */}
-          <span className="inline-flex items-center gap-2 bg-limao/10 border border-limao/30 text-limao text-xs font-[family-name:var(--font-barlow)] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
-            🚀 Lista VIP — Em breve
+          <span className="inline-flex items-center gap-2 bg-limao/10 border border-limao/20 text-limao text-xs font-[family-name:var(--font-archivo)] tracking-[0.12em] uppercase px-4 py-1.5 rounded-full">
+            <svg viewBox="0 0 12 12" fill="none" className="w-3 h-3 shrink-0" aria-hidden="true">
+              <circle cx="6" cy="6" r="2.5" fill="currentColor"/>
+              <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2"/>
+            </svg>
+            Lista VIP — Em breve
           </span>
 
           {/* Headline */}
@@ -339,9 +343,12 @@ export default function CountdownPage() {
           {/* ── CTA ─────────────────────────────────────── */}
           <button
             onClick={() => setModalOpen(true)}
-            className="inline-flex items-center gap-2 bg-limao text-verde-escuro font-[family-name:var(--font-barlow)] font-extrabold uppercase text-lg px-10 py-4 rounded-xl hover:brightness-110 transition-all active:scale-[0.98] tracking-wide shadow-lg shadow-limao/20"
+            className="group inline-flex items-center gap-3 bg-limao text-verde-escuro font-[family-name:var(--font-barlow)] font-extrabold uppercase text-base px-10 py-4 rounded-xl hover:brightness-110 transition-all active:scale-[0.98] tracking-widest shadow-lg shadow-limao/15"
           >
-            Quero ser notificado →
+            Quero ser notificado
+            <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform duration-200">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
 
           <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm">

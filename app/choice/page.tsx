@@ -2,9 +2,34 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "CarboZé — Escolha seu Produto",
+  title: "CarboZé — Vacine seu combustível",
   description: "CarboZé para Moto (sachê 10ml) ou para Carro (frasco 100ml). Escolha o ideal para você.",
 };
+
+/* SVG icons inline — moto e carro minimalistas */
+function MotoIcon() {
+  return (
+    <svg viewBox="0 0 48 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-12 h-auto">
+      <circle cx="10" cy="20" r="6" stroke="currentColor" strokeWidth="2.2" fill="none"/>
+      <circle cx="38" cy="20" r="6" stroke="currentColor" strokeWidth="2.2" fill="none"/>
+      <path d="M16 20h6l4-10h8l4 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M22 10l-2-6h6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M30 16h4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+function CarIcon() {
+  return (
+    <svg viewBox="0 0 52 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-12 h-auto">
+      <rect x="4" y="12" width="44" height="10" rx="3" stroke="currentColor" strokeWidth="2.2" fill="none"/>
+      <path d="M8 12l5-8h22l5 8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="14" cy="22" r="4" stroke="currentColor" strokeWidth="2.2" fill="none"/>
+      <circle cx="38" cy="22" r="4" stroke="currentColor" strokeWidth="2.2" fill="none"/>
+      <path d="M4 16h44" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.4"/>
+    </svg>
+  );
+}
 
 export default function ChoicePage() {
   return (
@@ -17,12 +42,12 @@ export default function ChoicePage() {
       />
 
       {/* Header */}
-      <header className="relative z-10 shrink-0 flex items-center justify-between px-5 sm:px-8 py-3.5 border-b border-white/10">
+      <header className="relative z-10 shrink-0 flex items-center justify-between px-6 sm:px-10 py-4 border-b border-white/8">
         <div className="flex items-center gap-3">
           <a
             href="/"
             aria-label="Voltar para a página inicial"
-            className="flex items-center justify-center w-8 h-8 rounded-full border border-white/20 text-off-white/60 hover:text-off-white hover:border-white/40 transition-all"
+            className="flex items-center justify-center w-8 h-8 rounded-full border border-white/15 text-white/40 hover:text-white hover:border-white/30 transition-all"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
               <path d="M15 18l-6-6 6-6" />
@@ -37,8 +62,9 @@ export default function ChoicePage() {
             className="h-7 w-auto"
           />
         </div>
-        <div className="flex items-center gap-2 text-off-white/70 text-xs font-[family-name:var(--font-barlow)] font-semibold">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-limao shrink-0" aria-hidden="true">
+        <div className="flex items-center gap-2 text-white/40 text-xs font-[family-name:var(--font-archivo)]">
+          {/* Shield icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-limao shrink-0" aria-hidden="true">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           Compra 100% segura
@@ -46,18 +72,19 @@ export default function ChoicePage() {
       </header>
 
       {/* Main content */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6 gap-6 min-h-0">
-        {/* Badge */}
-        <span className="inline-flex items-center gap-1.5 bg-limao/10 border border-limao/30 text-limao text-[11px] font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full font-[family-name:var(--font-barlow)] whitespace-nowrap">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-5 py-8 gap-8 min-h-0">
+
+        {/* Label */}
+        <p className="font-[family-name:var(--font-archivo)] text-white/35 text-xs tracking-[0.15em] uppercase">
           CarboZé — Escolha seu produto
-        </span>
+        </p>
 
         {/* Heading */}
-        <div className="text-center space-y-1.5">
-          <h1 className="font-[family-name:var(--font-barlow)] font-extrabold text-2xl sm:text-3xl text-off-white uppercase leading-tight tracking-tight">
+        <div className="text-center">
+          <h1 className="font-[family-name:var(--font-barlow)] font-extrabold text-3xl sm:text-4xl text-white uppercase leading-tight tracking-tight">
             Para qual veículo?
           </h1>
-          <p className="text-off-white/50 text-sm">
+          <p className="text-white/40 text-sm mt-2 font-[family-name:var(--font-archivo)]">
             Temos a fórmula certa para cada motor
           </p>
         </div>
@@ -67,47 +94,81 @@ export default function ChoicePage() {
           {/* Moto card */}
           <a
             href="/checkoutsache"
-            className="relative border-2 border-white/15 hover:border-limao rounded-2xl p-5 flex flex-col gap-2 transition-all duration-200 hover:scale-[1.02] group bg-white/[0.03] hover:bg-white/[0.06]"
+            className="relative rounded-2xl p-6 flex flex-col gap-3 transition-all duration-200 group bg-white/[0.04] hover:bg-white/[0.08] hover:shadow-xl hover:shadow-limao/10 hover:-translate-y-0.5 border border-white/8 hover:border-limao/30"
           >
-            <p className="font-[family-name:var(--font-barlow)] font-extrabold text-xl uppercase text-off-white/90 tracking-wide">
-              🏍 Moto
-            </p>
-            <p className="text-xs text-off-white/40 leading-relaxed">
-              Sachê 10ml<br />a partir de R$ 59,90
-            </p>
-            <span className="mt-3 block text-center font-[family-name:var(--font-barlow)] font-bold uppercase text-xs py-2 rounded-full bg-limao text-verde-escuro transition-all duration-200 group-hover:bg-verde-medio group-hover:text-white">
-              QUERO PARA MOTO
+            <span className="text-white/60 group-hover:text-limao transition-colors">
+              <MotoIcon />
+            </span>
+            <div>
+              <p className="font-[family-name:var(--font-barlow)] font-extrabold text-lg uppercase text-white tracking-wide">
+                Moto
+              </p>
+              <p className="text-xs text-white/35 leading-relaxed mt-0.5 font-[family-name:var(--font-archivo)]">
+                Sachê 10ml<br />a partir de R$ 59,90
+              </p>
+            </div>
+            <span className="mt-1 block text-center font-[family-name:var(--font-barlow)] font-bold uppercase text-xs py-2.5 rounded-xl bg-limao text-verde-escuro transition-all duration-200 group-hover:brightness-110">
+              Quero para moto
             </span>
           </a>
 
-          {/* Carro card */}
+          {/* Carro card — featured */}
           <a
             href="/checkoutpack100"
-            className="relative border-2 border-limao rounded-2xl p-5 flex flex-col gap-2 transition-all duration-200 hover:scale-[1.02] group bg-white/[0.03] hover:bg-white/[0.06]"
+            className="relative rounded-2xl p-6 flex flex-col gap-3 transition-all duration-200 group bg-white/[0.04] hover:bg-white/[0.08] hover:shadow-xl hover:shadow-limao/10 hover:-translate-y-0.5 border border-limao/25 hover:border-limao/50"
           >
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-limao text-verde-escuro text-[10px] font-extrabold uppercase px-3 py-0.5 rounded-full font-[family-name:var(--font-barlow)] whitespace-nowrap">
-              Mais vendido
+            {/* Ribbon "Mais vendido" */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-limao rounded-t-2xl" />
+            <span className="absolute top-3 right-3 bg-limao/15 text-limao text-[9px] font-[family-name:var(--font-barlow)] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
+              + Vendido
             </span>
-            <p className="font-[family-name:var(--font-barlow)] font-extrabold text-xl uppercase text-off-white/90 tracking-wide">
-              🚗 Carro
-            </p>
-            <p className="text-xs text-off-white/40 leading-relaxed">
-              Frasco 100ml<br />a partir de R$ 149,50
-            </p>
-            <span className="mt-3 block text-center font-[family-name:var(--font-barlow)] font-bold uppercase text-xs py-2 rounded-full bg-limao text-verde-escuro transition-all duration-200 group-hover:bg-verde-medio group-hover:text-white">
-              QUERO PARA CARRO
+            <span className="text-white/60 group-hover:text-limao transition-colors">
+              <CarIcon />
+            </span>
+            <div>
+              <p className="font-[family-name:var(--font-barlow)] font-extrabold text-lg uppercase text-white tracking-wide">
+                Carro
+              </p>
+              <p className="text-xs text-white/35 leading-relaxed mt-0.5 font-[family-name:var(--font-archivo)]">
+                Frasco 100ml<br />a partir de R$ 149,50
+              </p>
+            </div>
+            <span className="mt-1 block text-center font-[family-name:var(--font-barlow)] font-bold uppercase text-xs py-2.5 rounded-xl bg-limao text-verde-escuro transition-all duration-200 group-hover:brightness-110">
+              Quero para carro
             </span>
           </a>
         </div>
       </div>
 
       {/* Trust footer */}
-      <footer className="relative z-10 shrink-0 flex items-center justify-center flex-wrap gap-x-3 sm:gap-x-5 gap-y-1 px-4 py-3 border-t border-white/10 text-off-white/35 text-xs font-[family-name:var(--font-barlow)]">
-        <span>PIX</span>
-        <span className="text-off-white/20" aria-hidden="true">·</span>
-        <span>Cartão de crédito</span>
-        <span className="text-off-white/20" aria-hidden="true">·</span>
-        <span>Entrega em todo Brasil</span>
+      <footer className="relative z-10 shrink-0 flex items-center justify-center flex-wrap gap-x-5 gap-y-1 px-5 py-3.5 border-t border-white/8">
+        {/* PIX icon */}
+        <span className="flex items-center gap-1.5 text-white/30 text-xs font-[family-name:var(--font-archivo)]">
+          <svg viewBox="0 0 20 20" fill="none" className="w-4 h-4 opacity-60">
+            <path d="M10 2L13.5 5.5M10 2L6.5 5.5M10 2V10M10 18L13.5 14.5M10 18L6.5 14.5M10 18V10M2 10L5.5 13.5M2 10L5.5 6.5M2 10H10M18 10L14.5 13.5M18 10L14.5 6.5M18 10H10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          PIX
+        </span>
+        <span className="text-white/15" aria-hidden="true">·</span>
+        {/* Card icon */}
+        <span className="flex items-center gap-1.5 text-white/30 text-xs font-[family-name:var(--font-archivo)]">
+          <svg viewBox="0 0 20 14" fill="none" className="w-4 h-4 opacity-60">
+            <rect x="1" y="1" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="1.4"/>
+            <path d="M1 5h18" stroke="currentColor" strokeWidth="1.4"/>
+            <rect x="3" y="8" width="4" height="2" rx="0.5" fill="currentColor" opacity="0.5"/>
+          </svg>
+          Cartão de crédito
+        </span>
+        <span className="text-white/15" aria-hidden="true">·</span>
+        {/* Truck icon */}
+        <span className="flex items-center gap-1.5 text-white/30 text-xs font-[family-name:var(--font-archivo)]">
+          <svg viewBox="0 0 22 16" fill="none" className="w-4 h-4 opacity-60">
+            <path d="M1 1h13v10H1zM14 4h4l3 4v3h-7V4z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+            <circle cx="5" cy="13" r="2" stroke="currentColor" strokeWidth="1.4"/>
+            <circle cx="17" cy="13" r="2" stroke="currentColor" strokeWidth="1.4"/>
+          </svg>
+          Entrega em todo Brasil
+        </span>
       </footer>
     </main>
   );

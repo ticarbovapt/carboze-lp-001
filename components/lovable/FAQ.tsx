@@ -19,29 +19,28 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section id="faq" className="bg-off-white py-16 md:py-24">
+    <section id="faq" className="bg-off-white py-16 md:py-28">
       <div className="max-w-6xl mx-auto px-5">
-        <p className="font-[family-name:var(--font-barlow)] font-bold uppercase text-verde-escuro/50 text-xs tracking-widest mb-4">
-          Dúvidas frequentes
-        </p>
-        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-2xl sm:text-3xl md:text-4xl leading-tight mb-10">
+        <h2 className="font-[family-name:var(--font-barlow)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
           Perguntas e respostas
         </h2>
 
-        <div className="max-w-3xl space-y-3">
+        <div className="max-w-3xl">
           {faqs.map((faq, i) => (
             <details
               key={i}
-              className="group bg-white border border-verde-escuro/10 rounded-2xl overflow-hidden"
+              className="group border-b border-verde-escuro/8 last:border-0"
             >
-              <summary className="flex items-center justify-between gap-4 px-6 py-5 font-[family-name:var(--font-barlow)] font-bold text-verde-escuro text-base md:text-lg select-none">
+              <summary className="flex items-center justify-between gap-6 py-6 font-[family-name:var(--font-barlow)] font-bold text-verde-escuro text-base md:text-lg select-none cursor-pointer list-none">
                 {faq.q}
-                <span className="faq-icon shrink-0 text-verde-medio text-2xl font-light transition-transform duration-300">
-                  +
+                <span className="shrink-0 w-6 h-6 rounded-full border border-verde-escuro/15 flex items-center justify-center text-verde-medio transition-transform duration-300 group-open:rotate-45">
+                  <svg viewBox="0 0 12 12" fill="none" className="w-3 h-3">
+                    <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
                 </span>
               </summary>
-              <div className="faq-content">
-                <p className="px-6 pb-5 font-[family-name:var(--font-archivo)] text-verde-escuro/70 text-sm md:text-base leading-relaxed">
+              <div className="pb-6 -mt-1">
+                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm md:text-base leading-relaxed max-w-2xl">
                   {faq.a}
                 </p>
               </div>

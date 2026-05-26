@@ -11,7 +11,7 @@ import FAQ from "@/components/lovable/FAQ";
 import CTAFinal from "@/components/lovable/CTAFinal";
 
 export const metadata: Metadata = {
-  title: "CarboZé Moto — Sachê 10ml para motos",
+  title: "CarboZé — Vacine seu combustível",
   description: "O sachê CarboZé 10ml elimina umidade, melhora a combustão e limpa o motor a cada abastecimento. Feito para motos.",
 };
 

@@ -17,14 +17,14 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "CarboZé Moto — Combustível protegido, motor saudável",
+  title: "CarboZé — Vacine seu combustível",
   description:
     "Pack com 10 sachês de 10ml. Elimina umidade, melhora a combustão e limpa o motor a cada abastecimento. R$ 5,99 por tanque.",
   icons: {
     icon: "/icon.svg",
   },
   openGraph: {
-    title: "CarboZé Moto — Combustível protegido, motor saudável",
+    title: "CarboZé — Vacine seu combustível",
     description:
       "Pack com 10 sachês de 10ml. Elimina umidade, melhora a combustão e limpa o motor a cada abastecimento.",
     type: "website",
