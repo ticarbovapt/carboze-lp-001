@@ -138,10 +138,10 @@ export default function ChoicePage() {
                 onClick={() => setSelected(product.id)}
                 className={`
                   relative text-left rounded-2xl p-6 flex flex-col gap-5
-                  transition-all duration-300 cursor-pointer
+                  transition-all duration-300 cursor-pointer backdrop-blur-sm
                   ${isSelected
-                    ? "bg-white/[0.10] border-2 border-limao shadow-[0_0_40px_rgba(169,218,0,0.18)] -translate-y-1"
-                    : "bg-white/[0.05] border-2 border-white/10 hover:bg-white/[0.07] hover:border-white/25 hover:-translate-y-0.5"
+                    ? "bg-verde-escuro/80 border-2 border-limao shadow-[0_0_40px_rgba(169,218,0,0.22)] -translate-y-1"
+                    : "bg-verde-escuro/65 border-2 border-white/20 hover:bg-verde-escuro/75 hover:border-white/35 hover:-translate-y-0.5"
                   }
                 `}
               >
@@ -153,22 +153,22 @@ export default function ChoicePage() {
                 {/* Label chip */}
                 <span className={`
                   self-start text-[10px] font-[family-name:var(--font-archivo)] uppercase tracking-widest px-3 py-1 rounded-full transition-colors duration-300
-                  ${isSelected ? "bg-limao/20 text-limao" : "bg-white/8 text-white/40"}
+                  ${isSelected ? "bg-limao/20 text-limao" : "bg-white/12 text-white/70"}
                 `}>
                   {product.label}
                 </span>
 
                 {/* Icon */}
-                <span className={`transition-colors duration-300 ${isSelected ? "text-limao" : "text-white/50"}`}>
+                <span className={`transition-colors duration-300 ${isSelected ? "text-limao" : "text-white/75"}`}>
                   {product.icon(isSelected)}
                 </span>
 
                 {/* Title */}
                 <div>
-                  <p className={`font-[family-name:var(--font-basement)] font-black text-2xl uppercase leading-tight transition-colors duration-300 ${isSelected ? "text-white" : "text-white/80"}`}>
+                  <p className={`font-[family-name:var(--font-basement)] font-black text-2xl uppercase leading-tight transition-colors duration-300 ${isSelected ? "text-white" : "text-white"}`}>
                     {product.title}
                   </p>
-                  <p className="font-[family-name:var(--font-archivo)] text-white/40 text-xs mt-0.5">
+                  <p className="font-[family-name:var(--font-archivo)] text-white/60 text-xs mt-0.5">
                     {product.subtitle}
                   </p>
                 </div>
@@ -177,8 +177,8 @@ export default function ChoicePage() {
                 <ul className="flex flex-col gap-2">
                   {product.benefits.map((b) => (
                     <li key={b} className="flex items-start gap-2.5">
-                      <span className={`mt-0.5 shrink-0 w-1.5 h-1.5 rounded-full transition-colors duration-300 ${isSelected ? "bg-limao" : "bg-white/25"}`}/>
-                      <span className={`font-[family-name:var(--font-archivo)] text-xs leading-snug transition-colors duration-300 ${isSelected ? "text-white/75" : "text-white/35"}`}>
+                      <span className={`mt-0.5 shrink-0 w-1.5 h-1.5 rounded-full transition-colors duration-300 ${isSelected ? "bg-limao" : "bg-white/50"}`}/>
+                      <span className={`font-[family-name:var(--font-archivo)] text-xs leading-snug transition-colors duration-300 ${isSelected ? "text-white" : "text-white/80"}`}>
                         {b}
                       </span>
                     </li>
@@ -186,11 +186,11 @@ export default function ChoicePage() {
                 </ul>
 
                 {/* Price */}
-                <div className={`pt-4 border-t transition-colors duration-300 ${isSelected ? "border-limao/25" : "border-white/8"}`}>
-                  <p className={`font-[family-name:var(--font-basement)] font-black text-3xl leading-none transition-colors duration-300 ${isSelected ? "text-limao" : "text-white/60"}`}>
+                <div className={`pt-4 border-t transition-colors duration-300 ${isSelected ? "border-limao/30" : "border-white/20"}`}>
+                  <p className={`font-[family-name:var(--font-basement)] font-black text-3xl leading-none transition-colors duration-300 ${isSelected ? "text-limao" : "text-white"}`}>
                     {product.price}
                   </p>
-                  <p className="font-[family-name:var(--font-archivo)] text-white/35 text-[11px] mt-1">
+                  <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[11px] mt-1">
                     {product.priceNote}
                   </p>
                 </div>
