@@ -3,9 +3,17 @@
 /* ─── Basement Grotesque ──────────────────────────────────── */
 @font-face {
   font-family: 'BasementGrotesque';
-  src: url('/fonts/BasementGrotesque-Black.woff2') format('woff2'),
-       url('/fonts/BasementGrotesque-Black.woff') format('woff');
-  font-weight: 900;
+  src: url('/fonts/BasementGrotesque-Regular.woff2') format('woff2'),
+       url('/fonts/BasementGrotesque-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'BasementGrotesque';
+  src: url('/fonts/BasementGrotesque-Medium.woff2') format('woff2'),
+       url('/fonts/BasementGrotesque-Medium.woff') format('woff');
+  font-weight: 500 600;
   font-style: normal;
   font-display: swap;
 }
@@ -19,9 +27,9 @@
 }
 @font-face {
   font-family: 'BasementGrotesque';
-  src: url('/fonts/BasementGrotesque-Regular.woff2') format('woff2'),
-       url('/fonts/BasementGrotesque-Regular.woff') format('woff');
-  font-weight: 400;
+  src: url('/fonts/BasementGrotesque-Black.woff2') format('woff2'),
+       url('/fonts/BasementGrotesque-Black.woff') format('woff');
+  font-weight: 800 900;
   font-style: normal;
   font-display: swap;
 }
@@ -47,7 +55,7 @@ html {
 }
 
 body {
-  font-family: var(--font-arquivo, Arial, sans-serif);
+  font-family: var(--font-archivo, Arial, sans-serif);
   background: #ffffff;
   color: #093a30;
 }

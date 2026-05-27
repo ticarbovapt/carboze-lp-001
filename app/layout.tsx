@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Barlow, Archivo } from "next/font/google";
+import { Archivo } from "next/font/google";
 import "./globals.css";
-
-const barlow = Barlow({
-  variable: "--font-basement",
-  subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
-  display: "swap",
-});
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -37,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${barlow.variable} ${archivo.variable}`}>
+    <html lang="pt-BR" className={`${archivo.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );
