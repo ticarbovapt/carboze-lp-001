@@ -5,8 +5,8 @@ import { WHATSAPP_URL, SOCIAL_LINKS } from "@/lib/constants";
 export default function CTAFinal100() {
   return (
     <>
-      {/* Transição suave off-white → verde-escuro */}
-      <div className="h-20 bg-gradient-to-b from-off-white to-verde-escuro" aria-hidden="true" />
+      {/* Transição suave → verde-escuro */}
+      <div className="h-20 bg-gradient-to-b from-verde-escuro to-verde-escuro" aria-hidden="true" />
 
       <section className="bg-verde-escuro pb-16 md:pb-24">
         <div className="max-w-6xl mx-auto px-6 md:px-10">
@@ -14,29 +14,19 @@ export default function CTAFinal100() {
             {/* Esquerda */}
             <div>
               <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-6xl leading-tight mb-10">
-                <span className="block">Seu veículo trabalha todo dia.</span>
-                <span className="block text-limao">
-                  Ele precisa de proteção todo dia também.
+                <span className="block">
+                  O combustível brasileiro não vai mudar, o meio ambiente precisa dessa
+                  composição para sobreviver.
+                </span>
+                <span className="block text-limao mt-3">
+                  O seu combustível, do CarboZé para se proteger.
                 </span>
               </h2>
-
-              {/* Preço em tipografia pura */}
-              <div className="mb-10">
-                <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.12em] uppercase mb-1">
-                  Frasco 100ml
-                </p>
-                <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-6xl md:text-7xl leading-none">
-                  R$ 149,90
-                </p>
-                <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">
-                  100ml · trata até 100L · R$ 1,49/litro protegido
-                </p>
-              </div>
 
               <CTAButton label="QUERO O PACK 100ML" size="large" href="/checkoutpack100" />
             </div>
 
-            {/* Direita: imagem produto */}
+            {/* Direita: imagem produto + badge */}
             <div className="relative w-full rounded-2xl overflow-hidden bg-white/[0.03] aspect-[4/3]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -44,6 +34,18 @@ export default function CTAFinal100() {
                 alt="CarboZé — Pack 100ml"
                 className="w-full h-full object-contain"
               />
+              {/* Badge preço */}
+              <div className="absolute bottom-4 left-4 right-4 bg-verde-escuro/85 rounded-xl p-4 text-center">
+                <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[10px] uppercase tracking-widest mb-1">
+                  Frasco 100ml
+                </p>
+                <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-3xl leading-none">
+                  R$ 149,90
+                </p>
+                <p className="font-[family-name:var(--font-archivo)] text-white/40 text-xs mt-1">
+                  Trata até 100L · R$ 1,49/litro protegido
+                </p>
+              </div>
             </div>
           </div>
 

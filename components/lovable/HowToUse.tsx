@@ -1,66 +1,59 @@
-const steps = [
+const benefits = [
   {
-    num: "1",
-    title: "Rasge o sachê",
-    body: "Rasge o sachê antes de abastecer.",
+    title: "Proteção na partida fria",
+    body: "Com o combustível tratado, o motor ignita melhor quando está frio. Menos tentativas, menos desgaste, mais confiança em cada manhã.",
   },
   {
-    num: "2",
-    title: "Despeje no tanque",
-    body: "Despeje o conteúdo inteiro no tanque vazio ou quase vazio.",
+    title: "Bicos injetores mais limpos",
+    body: "O efeito de limpeza se acumula a cada uso. Menos depósito nos bicos = combustão mais eficiente e revisão chegando na hora certa.",
   },
   {
-    num: "3",
-    title: "Abasteça normalmente",
-    body: "O CarboZé mistura sozinho e começa a agir enquanto você roda.",
+    title: "Consumo reduzido com o tempo",
+    body: "Combustível bem queimado não é desperdiçado. A economia aparece na bomba e na manutenção — o investimento se paga sozinho.",
   },
 ];
 
 export default function HowToUse() {
   return (
     <section className="bg-verde-escuro py-16 md:py-28 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-5">
-        {/* Headline */}
-        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-16 max-w-xl">
-          3 passos. Antes de chegar no posto já está feito.
-        </h2>
+      <div className="max-w-6xl mx-auto px-6 md:px-10">
 
-        {/* Steps — horizontal com linha conectora */}
-        <div className="relative">
-          {/* Linha conectora (desktop) */}
-          <div className="hidden sm:block absolute top-8 left-[3.5rem] right-[3.5rem] h-px bg-white/10" aria-hidden="true" />
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6">
-            {steps.map((s) => (
-              <div key={s.num} className="flex flex-col gap-5">
-                {/* Número como backdrop decorativo */}
-                <div className="relative">
-                  <span className="font-[family-name:var(--font-basement)] font-extrabold text-7xl leading-none text-white/[0.06] select-none absolute -top-4 -left-2" aria-hidden="true">
-                    {s.num}
-                  </span>
-                  <div className="relative w-16 h-16 rounded-2xl bg-limao flex items-center justify-center">
-                    <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-2xl">
-                      {s.num}
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-lg mb-2">
-                    {s.title}
-                  </h3>
-                  <p className="font-[family-name:var(--font-archivo)] text-white/50 text-sm leading-relaxed">
-                    {s.body}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Callout de preço */}
+        <div className="bg-limao/10 border border-limao/20 rounded-2xl p-6 text-center mb-14">
+          <p className="font-[family-name:var(--font-basement)] font-bold text-limao text-base md:text-lg uppercase tracking-wide">
+            10 SACHÊS = 10 TANQUES = MAIS DE 1 MÊS DE PROTEÇÃO ={" "}
+            <span className="text-white">R$ 59,90</span>
+          </p>
         </div>
 
-        {/* Note */}
+        {/* Headline */}
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-14 max-w-2xl mx-auto text-center">
+          Proteção que você sente abastecimento a abastecimento.
+        </h2>
+
+        {/* 3 cards — brancos */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {benefits.map((b) => (
+            <div key={b.title} className="bg-white rounded-2xl p-7 flex flex-col gap-5">
+              <div className="w-10 h-10 rounded-full bg-limao flex items-center justify-center shrink-0">
+                <div className="w-4 h-4 rounded-full bg-verde-escuro" />
+              </div>
+              <div>
+                <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-verde-escuro text-base leading-snug mb-3">
+                  {b.title}
+                </h3>
+                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm leading-relaxed">
+                  {b.body}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Nota */}
         <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm border-t border-white/8 pt-8 mt-14 max-w-xl">
-          Use a cada abastecimento. O tratamento é contínuo porque o combustível
-          que entra no tanque é novo toda vez.
+          Use a cada abastecimento. O tratamento é contínuo porque o combustível que entra
+          no tanque é novo toda vez.
         </p>
       </div>
     </section>

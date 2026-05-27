@@ -7,7 +7,7 @@ const mechanisms = [
   {
     num: "02",
     title: "Queima mais completa, motor mais eficiente",
-    body: "Melhora a eficiência da combustão, gerando mais energia por litro. Com o combustível estabilizado, a câmara de combustão trabalha com o que deveria trabalhar. Menos esforço, mais resposta no acelerador.",
+    body: "Melhora a eficiência da combustão, gerando mais energia por litro. Com o combustível estabilizado, a câmara de combustão trabalha com o que deveria trabalhar.",
   },
   {
     num: "03",
@@ -18,39 +18,37 @@ const mechanisms = [
 
 export default function Solution() {
   return (
-    <section className="bg-off-white py-16 md:py-28">
+    <section className="bg-verde-escuro rounded-t-3xl -mt-4 py-16 md:py-28 relative z-10">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         {/* Headline */}
         <div className="max-w-3xl mb-14">
-          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
+          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
             Um sachê antes de abastecer. O combustível entra no motor{" "}
-            <span className="text-verde-medio">já vacinado.</span>
+            <span className="text-limao">já vacinado.</span>
           </h2>
 
-          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/55 text-base md:text-lg leading-relaxed">
-            O CarboZé foi desenvolvido para a composição química específica do
-            combustível brasileiro. Não é adaptação de fórmula estrangeira. É um
-            produto construído a partir do problema que o nosso etanol e o nosso
-            biodiesel criam dentro do nosso motor.
+          <p className="font-[family-name:var(--font-archivo)] text-white/55 text-base md:text-lg leading-relaxed">
+            O CarboZé foi desenvolvido para a composição química específica do combustível
+            brasileiro. Não é adaptação de fórmula estrangeira. É um produto construído a partir
+            do problema que o nosso etanol cria dentro do nosso motor.
           </p>
         </div>
 
-        {/* 3 mecanismos */}
+        {/* 3 mecanismos — cards brancos */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {mechanisms.map((m) => (
             <div
               key={m.num}
-              className="bg-verde-escuro rounded-2xl p-8 flex flex-col gap-5"
+              className="bg-white rounded-2xl p-8 flex flex-col gap-5"
             >
-              {/* Número pequeno e refinado */}
-              <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/40 text-4xl leading-none select-none">
+              <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/20 text-4xl leading-none select-none">
                 {m.num}
               </span>
               <div>
-                <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-base leading-snug mb-3">
+                <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-verde-escuro text-base leading-snug mb-3">
                   {m.title}
                 </h3>
-                <p className="font-[family-name:var(--font-archivo)] text-white/55 text-sm leading-relaxed">
+                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm leading-relaxed">
                   {m.body}
                 </p>
               </div>

@@ -3,65 +3,74 @@ import CTAButton from "../CTAButton";
 export default function Hero100() {
   return (
     <section className="relative bg-verde-escuro py-20 md:py-28 overflow-hidden min-h-[580px] flex items-center">
-      {/* Background — imagem do produto */}
+      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
         style={{ backgroundImage: "url('/cz-pack100-hero-bg.jpg')" }}
         aria-hidden="true"
       />
-      {/* Gradient lateral */}
+      {/* Gradient lateral — forte na esquerda, transparente na direita */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(100deg, rgba(9,58,48,0.97) 0%, rgba(9,58,48,0.80) 50%, rgba(9,58,48,0.30) 100%)",
+            "linear-gradient(100deg, rgba(9,58,48,0.97) 0%, rgba(9,58,48,0.80) 55%, rgba(9,58,48,0.20) 100%)",
         }}
         aria-hidden="true"
       />
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 w-full">
-        <div className="max-w-xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
-          <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.18em] uppercase mb-6">
-            Proteção de combustível para carros e caminhonetes
-          </p>
-
-          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-[3.25rem] lg:text-[3.75rem] leading-[0.95] mb-6">
-            Um frasco.{" "}
-            <span className="whitespace-nowrap">100 litros</span>{" "}
-            protegidos.{" "}
-            <span className="text-limao">
-              Motor tratado tanque a tanque.
-            </span>
-          </h1>
-
-          <p className="font-[family-name:var(--font-archivo)] text-white/60 text-base leading-relaxed mb-8 max-w-md">
-            O CarboZé Pack 100ml trata até 100 litros de combustível — gasolina,
-            etanol ou diesel. Proteção contínua com{" "}
-            <strong className="text-white/90 font-semibold">
-              mais performance, menos quebra e mais economia.
-            </strong>
-          </p>
-
-          {/* Preço */}
-          <div className="mb-8">
-            <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.12em] uppercase mb-1">
-              Frasco 100ml
+          {/* Coluna esquerda — texto */}
+          <div>
+            <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.18em] uppercase mb-6">
+              Proteção de combustível para carros e caminhonetes
             </p>
-            <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-5xl md:text-6xl leading-none">
-              R$ 149,90
+
+            <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-[3.25rem] lg:text-[3.75rem] leading-[0.95] mb-6">
+              Combustível protegido,{" "}
+              <span className="text-limao">motor saudável.</span>
+            </h1>
+
+            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-base leading-relaxed mb-8 max-w-md">
+              O combustível brasileiro tem uma composição química que não existe em
+              nenhum outro país. O CarboZé é o único estabilizador desenvolvido
+              especificamente para ela. Trata gasolina, diesel e etanol{" "}
+              <strong className="text-white/90 font-semibold">com uma única fórmula.</strong>
             </p>
-            <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">
-              Trata até 100L · R$ 1,49/litro protegido
+
+            {/* Bloco de preço */}
+            <div className="bg-white/[0.06] border border-white/15 rounded-2xl p-5 mb-8 max-w-sm">
+              <p className="font-[family-name:var(--font-archivo)] text-white/40 text-xs tracking-[0.12em] uppercase mb-1">
+                Frasco 100ml
+              </p>
+              <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-5xl md:text-6xl leading-none">
+                R$ 149,90
+              </p>
+              <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">
+                Trata até 100L · R$ 1,49/litro protegido
+              </p>
+            </div>
+
+            <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutpack100" />
+
+            <p className="mt-5 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
+              Disponível no Mercado Livre, Shopee e TikTok Shop
             </p>
           </div>
 
-          <CTAButton label="QUERO O PACK 100ML" size="large" href="/checkoutpack100" />
+          {/* Coluna direita — produto */}
+          <div className="hidden md:flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/cz-product-pack100.png"
+              alt="CarboZé Pack 100ml"
+              className="w-full max-w-sm object-contain drop-shadow-2xl"
+            />
+          </div>
 
-          <p className="mt-5 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
-            Disponível no Mercado Livre, Shopee e TikTok Shop
-          </p>
         </div>
       </div>
     </section>

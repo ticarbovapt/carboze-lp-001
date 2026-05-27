@@ -19,47 +19,37 @@ const mechanisms = [
     title: "Protege o sistema de injeção",
     body: "Melhora a lubricidade e reduz o acúmulo de depósitos nos bicos injetores — revisão chega na hora certa.",
   },
-  {
-    num: "05",
-    title: "Reduz emissões",
-    body: "Combustão mais eficiente significa menos fumaça, menos CO e menos resíduo no sistema de escapamento.",
-  },
-  {
-    num: "06",
-    title: "Combate bactérias (Diesel B15)",
-    body: "Inibe a proliferação de microrganismos no biodiesel — um problema crescente com o aumento do B15.",
-  },
 ];
 
 export default function Solution100() {
   return (
-    <section className="bg-off-white py-16 md:py-28">
+    <section className="bg-verde-escuro py-16 md:py-28">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         <div className="max-w-3xl mb-14">
-          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
-            Como o CarboZé{" "}
-            <span className="text-verde-medio">age no combustível</span>
+          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
+            Do tanque até a câmara de combustão.{" "}
+            <span className="text-limao">O tratamento é completo.</span>
           </h2>
-          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/55 text-base md:text-lg leading-relaxed">
-            Uma fórmula multifuncional que atua em três frentes: protege, otimiza
-            e preserva — a cada abastecimento, em qualquer combustível.
+          <p className="font-[family-name:var(--font-archivo)] text-white/55 text-base md:text-lg leading-relaxed">
+            Uma fórmula multifuncional que atua em quatro frentes: protege, otimiza e preserva
+            — a cada abastecimento, em qualquer combustível.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {mechanisms.map((m) => (
             <div
               key={m.num}
-              className="bg-verde-escuro rounded-2xl p-8 flex flex-col gap-5"
+              className="bg-white rounded-2xl p-7 flex flex-col gap-5"
             >
-              <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/40 text-4xl leading-none select-none">
+              <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/20 text-4xl leading-none select-none">
                 {m.num}
               </span>
               <div>
-                <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-base leading-snug mb-3">
+                <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-verde-escuro text-base leading-snug mb-3">
                   {m.title}
                 </h3>
-                <p className="font-[family-name:var(--font-archivo)] text-white/55 text-sm leading-relaxed">
+                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm leading-relaxed">
                   {m.body}
                 </p>
               </div>

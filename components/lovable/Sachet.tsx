@@ -8,6 +8,11 @@ export default function Sachet() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch">
           {/* Coluna esquerda: título + corpo + specs */}
           <div>
+            {/* Label */}
+            <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-xs tracking-widest mb-4">
+              Pack 10 Sachê
+            </p>
+
             {/* Título em 2 linhas */}
             <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase leading-tight mb-8 text-2xl sm:text-3xl md:text-4xl">
               <span className="text-white block">
