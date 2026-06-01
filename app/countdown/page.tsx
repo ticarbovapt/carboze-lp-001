@@ -15,6 +15,37 @@ const CANAIS = [
   "Influenciador - @rodrigotarjapreta",
 ];
 
+/* ─── Estados (27 UFs, ordem alfabética) ─────────────────── */
+const ESTADOS: { sigla: string; nome: string }[] = [
+  { sigla: "AC", nome: "Acre" },
+  { sigla: "AL", nome: "Alagoas" },
+  { sigla: "AP", nome: "Amapá" },
+  { sigla: "AM", nome: "Amazonas" },
+  { sigla: "BA", nome: "Bahia" },
+  { sigla: "CE", nome: "Ceará" },
+  { sigla: "DF", nome: "Distrito Federal" },
+  { sigla: "ES", nome: "Espírito Santo" },
+  { sigla: "GO", nome: "Goiás" },
+  { sigla: "MA", nome: "Maranhão" },
+  { sigla: "MT", nome: "Mato Grosso" },
+  { sigla: "MS", nome: "Mato Grosso do Sul" },
+  { sigla: "MG", nome: "Minas Gerais" },
+  { sigla: "PA", nome: "Pará" },
+  { sigla: "PB", nome: "Paraíba" },
+  { sigla: "PR", nome: "Paraná" },
+  { sigla: "PE", nome: "Pernambuco" },
+  { sigla: "PI", nome: "Piauí" },
+  { sigla: "RJ", nome: "Rio de Janeiro" },
+  { sigla: "RN", nome: "Rio Grande do Norte" },
+  { sigla: "RS", nome: "Rio Grande do Sul" },
+  { sigla: "RO", nome: "Rondônia" },
+  { sigla: "RR", nome: "Roraima" },
+  { sigla: "SC", nome: "Santa Catarina" },
+  { sigla: "SP", nome: "São Paulo" },
+  { sigla: "SE", nome: "Sergipe" },
+  { sigla: "TO", nome: "Tocantins" },
+];
+
 /* ─── Target date ────────────────────────────────────────── */
 const TARGET = new Date("2026-06-02T09:00:00-03:00");
 
@@ -75,10 +106,44 @@ const inputClass =
 /* ─── Modal ──────────────────────────────────────────────── */
 function VIPModal({ onClose }: { onClose: () => void }) {
   const [nome, setNome]           = useState("");
+  const [estado, setEstado]       = useState("");
   const [cidade, setCidade]       = useState("");
+  const [cidades, setCidades]     = useState<string[]>([]);
+  const [loadingCidades, setLoadingCidades] = useState(false);
   const [celular, setCelular]     = useState("");
   const [influencer, setInfluencer] = useState("");
   const [status, setStatus]       = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  /* Carrega municípios do estado escolhido (API de localidades do IBGE) */
+  useEffect(() => {
+    setCidade("");
+    setCidades([]);
+    if (!estado) return;
+
+    const controller = new AbortController();
+    setLoadingCidades(true);
+
+    fetch(
+      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`,
+      { signal: controller.signal }
+    )
+      .then((r) => {
+        if (!r.ok) throw new Error("IBGE error");
+        return r.json();
+      })
+      .then((data: { nome: string }[]) => {
+        const nomes = data
+          .map((m) => m.nome)
+          .sort((a, b) => a.localeCompare(b, "pt-BR"));
+        setCidades(nomes);
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") setCidades([]);
+      })
+      .finally(() => setLoadingCidades(false));
+
+    return () => controller.abort();
+  }, [estado]);
 
   /* Fechar com ESC */
   const handleKey = useCallback(
@@ -107,7 +172,12 @@ function VIPModal({ onClose }: { onClose: () => void }) {
           Authorization: `Bearer ${SUPABASE_ANON}`,
           Prefer: "return=minimal",
         },
-        body: JSON.stringify({ nome, cidade, celular, influencer }),
+        body: JSON.stringify({
+          nome,
+          cidade: `${cidade} – ${estado}`,
+          celular,
+          influencer,
+        }),
       });
 
       if (!res.ok) throw new Error("Supabase error");
@@ -186,14 +256,65 @@ function VIPModal({ onClose }: { onClose: () => void }) {
               />
             </div>
 
-            {/* Cidade e estado */}
+            {/* Estado */}
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="cidade" required>Cidade e estado</Label>
-              <input
-                id="cidade" type="text" placeholder="Ex: São Paulo – SP"
-                required value={cidade} onChange={(e) => setCidade(e.target.value)}
-                className={inputClass}
-              />
+              <Label htmlFor="estado" required>Estado</Label>
+              <div className="relative">
+                <select
+                  id="estado" required value={estado}
+                  onChange={(e) => setEstado(e.target.value)}
+                  className={`${inputClass} appearance-none cursor-pointer pr-10 ${
+                    estado === "" ? "text-white/25" : "text-white"
+                  }`}
+                >
+                  <option value="" disabled hidden>Escolher estado</option>
+                  {ESTADOS.map((uf) => (
+                    <option key={uf.sigla} value={uf.sigla} className="bg-verde-escuro text-white">
+                      {uf.nome}
+                    </option>
+                  ))}
+                </select>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Cidade */}
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="cidade" required>Cidade</Label>
+              <div className="relative">
+                <select
+                  id="cidade" required value={cidade}
+                  disabled={!estado || loadingCidades}
+                  onChange={(e) => setCidade(e.target.value)}
+                  className={`${inputClass} appearance-none pr-10 disabled:opacity-60 disabled:cursor-not-allowed ${
+                    !estado || loadingCidades ? "cursor-not-allowed" : "cursor-pointer"
+                  } ${cidade === "" ? "text-white/25" : "text-white"}`}
+                >
+                  <option value="" disabled hidden>
+                    {!estado
+                      ? "Escolha o estado primeiro"
+                      : loadingCidades
+                        ? "Carregando cidades…"
+                        : "Escolher cidade"}
+                  </option>
+                  {cidades.map((c) => (
+                    <option key={c} value={c} className="bg-verde-escuro text-white">
+                      {c}
+                    </option>
+                  ))}
+                </select>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
             </div>
 
             {/* Celular */}
