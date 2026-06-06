@@ -23,14 +23,14 @@ const mechanisms = [
 
 export default function Solution100() {
   return (
-    <section className="bg-verde-escuro py-16 md:py-28">
+    <section className="bg-white py-16 md:py-28">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         <div className="max-w-3xl mb-14">
-          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
+          <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
             Do tanque até a câmara de combustão.{" "}
-            <span className="text-limao">O tratamento é completo.</span>
+            <span className="text-verde-medio">O tratamento é completo.</span>
           </h2>
-          <p className="font-[family-name:var(--font-archivo)] text-white/55 text-base md:text-lg leading-relaxed">
+          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-base md:text-lg leading-relaxed">
             Uma fórmula multifuncional que atua em quatro frentes: protege, otimiza e preserva
             — a cada abastecimento, em qualquer combustível.
           </p>
@@ -40,7 +40,7 @@ export default function Solution100() {
           {mechanisms.map((m) => (
             <div
               key={m.num}
-              className="bg-white rounded-2xl p-7 flex flex-col gap-5"
+              className="bg-verde-escuro/[0.05] border border-verde-escuro/10 rounded-2xl p-7 flex flex-col gap-5"
             >
               <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/20 text-4xl leading-none select-none">
                 {m.num}

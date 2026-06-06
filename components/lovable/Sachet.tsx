@@ -3,27 +3,21 @@ import SachetVideo from "./SachetVideo";
 export default function Sachet() {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
-      <div className="max-w-6xl mx-auto px-5">
-        {/* Grid: texto à esq, vídeo/imagem à dir */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-stretch">
-          {/* Coluna esquerda: título + corpo + specs */}
+      <div className="max-w-6xl mx-auto px-6 md:px-10">
+
+        {/* Headline full-width */}
+        <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-xs tracking-widest mb-4">
+          Pack 10 Sachê
+        </p>
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase leading-[0.92] mb-12 text-3xl sm:text-4xl md:text-5xl">
+          <span className="text-white block">Calibrado para o tanque.</span>
+          <span className="text-limao block">Sem sobra, sem desperdício.</span>
+        </h2>
+
+        {/* Grid: texto + specs à esq, vídeo à dir */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
+          {/* Coluna esquerda: corpo + specs */}
           <div>
-            {/* Label */}
-            <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-xs tracking-widest mb-4">
-              Pack 10 Sachê
-            </p>
-
-            {/* Título em 2 linhas */}
-            <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase leading-tight mb-8 text-2xl sm:text-3xl md:text-4xl">
-              <span className="text-white block">
-                Calibrado para o tanque.
-              </span>
-              <span className="text-limao block">
-                Sem sobra, sem desperdício.
-              </span>
-            </h2>
-
-            {/* Corpo */}
             <div className="space-y-4 font-[family-name:var(--font-archivo)] text-white/80 text-base md:text-lg leading-relaxed mb-8">
               <p>
                 A proporção do CarboZé é 1ml para cada 1.000ml de combustível.
@@ -36,7 +30,6 @@ export default function Sachet() {
               </p>
             </div>
 
-            {/* Specs — abaixo do texto */}
             <div className="bg-white/10 rounded-2xl p-6">
               <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-xs tracking-widest mb-4">
                 Especificações
@@ -60,10 +53,11 @@ export default function Sachet() {
           </div>
 
           {/* Coluna direita: vídeo em loop */}
-          <div className="flex items-stretch justify-center min-h-[400px] md:min-h-0">
+          <div className="min-h-[400px]">
             <SachetVideo />
           </div>
         </div>
+
       </div>
     </section>
   );

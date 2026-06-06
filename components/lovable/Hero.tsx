@@ -2,76 +2,74 @@ import CTAButton from "./CTAButton";
 
 export default function Hero() {
   return (
-    <section className="relative bg-verde-escuro py-20 md:py-28 overflow-hidden min-h-[600px] flex items-center">
-      {/* Background image */}
+    <section className="relative bg-verde-escuro overflow-hidden flex items-end sm:items-center min-h-screen sm:min-h-[600px] pb-10 sm:pb-0 sm:py-28">
+
+      {/* Background — mobile */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
+        className="absolute inset-0 bg-cover bg-top bg-no-repeat block sm:hidden"
+        style={{ backgroundImage: "url('/LP_SACHE_MOBILE.png')" }}
+        aria-hidden="true"
+      />
+      {/* Background — desktop */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 hidden sm:block"
         style={{ backgroundImage: "url('/hero-bg.png')" }}
         aria-hidden="true"
       />
-      {/* Gradient lateral — forte na esquerda */}
+
+      {/* Gradient — mobile: forte na base, deixa produto visível no topo */}
       <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(100deg, rgba(9,58,48,0.97) 0%, rgba(9,58,48,0.80) 55%, rgba(9,58,48,0.20) 100%)",
-        }}
+        className="absolute inset-0 block sm:hidden"
+        style={{ background: "linear-gradient(to top, rgba(9,58,48,1) 0%, rgba(9,58,48,0.97) 35%, rgba(9,58,48,0.65) 60%, rgba(9,58,48,0.10) 100%)" }}
+        aria-hidden="true"
+      />
+      {/* Gradient — desktop */}
+      <div
+        className="absolute inset-0 hidden sm:block"
+        style={{ background: "linear-gradient(100deg, rgba(9,58,48,0.97) 0%, rgba(9,58,48,0.80) 55%, rgba(9,58,48,0.20) 100%)" }}
         aria-hidden="true"
       />
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <div className="max-w-xl">
 
-          {/* Coluna esquerda — texto */}
-          <div>
-            <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs tracking-[0.18em] uppercase mb-6">
-              Proteção de combustível para motos
+          <p className="font-[family-name:var(--font-archivo)] text-white/50 text-[11px] sm:text-xs tracking-[0.16em] uppercase mb-4">
+            Proteção de combustível para motos
+          </p>
+
+          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-5xl md:text-[3.25rem] lg:text-[3.75rem] leading-[0.92] mb-5">
+            Moto engasgada não é só aborrecimento.{" "}
+            <span className="text-limao">É prejuízo!</span>
+          </h1>
+
+          <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm sm:text-base leading-relaxed mb-6 max-w-md hidden sm:block">
+            O CarboZé trata o combustível e protege o motor a cada abastecimento.
+            Um sachê por tanque ={" "}
+            <strong className="text-white/90 font-semibold">
+              mais performance, menos quebra e mais economia.
+            </strong>
+          </p>
+
+          {/* Bloco de preço */}
+          <div id="hero-price-block" className="bg-white/[0.10] border border-white/20 rounded-2xl p-5 mb-6 max-w-sm">
+            <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-5xl sm:text-6xl md:text-7xl leading-none">
+              R$ 5,99
             </p>
-
-            <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-[3.25rem] lg:text-[3.75rem] leading-[0.95] mb-6">
-              Moto engasgada não é só aborrecimento.{" "}
-              <span className="text-limao">É prejuízo!</span>
-            </h1>
-
-            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-base leading-relaxed mb-8 max-w-md">
-              O CarboZé trata o combustível e protege o motor a cada abastecimento.
-              Um sachê por tanque ={" "}
-              <strong className="text-white/90 font-semibold">
-                mais performance, menos quebra e mais economia.
-              </strong>
+            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm mt-1">
+              por sachê
             </p>
-
-            {/* Bloco de preço */}
-            <div className="bg-white/[0.06] border border-white/15 rounded-2xl p-5 mb-8 max-w-sm">
-              <p className="font-[family-name:var(--font-archivo)] text-white/40 text-xs tracking-[0.12em] uppercase mb-1">
-                Pack com 10 sachês de 10ml
-              </p>
-              <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-5xl md:text-6xl leading-none">
-                R$ 59,90
-              </p>
-              <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm mt-2">
-                10 sachês · R$ 5,99/tanque protegido
-              </p>
-            </div>
-
-            <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutsache" />
-
-            <p className="mt-5 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
-              Disponível no Mercado Livre, Shopee e TikTok Shop
+            <hr className="border-white/10 my-3" />
+            <p className="font-[family-name:var(--font-archivo)] text-white/35 text-xs">
+              Kit Sachê 10ml com 10 unidades: R$ 59,90
             </p>
           </div>
 
-          {/* Coluna direita — produto */}
-          <div className="hidden md:flex items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/lp-produto-secao5.png"
-              alt="CarboZé — Sachê 10ml"
-              className="w-full max-w-xs object-contain drop-shadow-2xl"
-            />
-          </div>
+          <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutsache" />
 
+          <p className="mt-4 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
+            Disponível no Mercado Livre e Amazon
+          </p>
         </div>
       </div>
     </section>

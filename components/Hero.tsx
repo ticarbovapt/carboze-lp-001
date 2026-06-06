@@ -55,7 +55,7 @@ export default function Hero() {
           <QuantityPicker variant="dark" />
 
           <p className="mt-6 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
-            Disponível no Mercado Livre, Shopee e TikTok Shop
+            Disponível no Mercado Livre e Amazon
           </p>
         </div>
       </div>

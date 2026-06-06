@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wireframe — /choice (Seleção de Veículo)</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { background: #0d2a22; }
+  .choice-bg { background: linear-gradient(180deg,#093a30 0%,#0a3228 100%); }
+  .vehicle-card { border: 2px solid; border-radius: 12px; padding: 20px; cursor: pointer; transition: all .2s; }
+  .vehicle-card.inactive { background: rgba(9,58,48,.65); border-color: rgba(255,255,255,.2); }
+  .vehicle-card.active   { background: rgba(9,58,48,.8); border-color: #a9da00; box-shadow: 0 0 30px rgba(169,218,0,.2); }
+  .check-circle { width: 22px; height: 22px; border-radius: 50%; background: #a9da00; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #093a30; font-weight: 900; }
+</style>
+</head>
+<body>
+
+<div class="float-wa">WA</div>
+
+<div class="wf" style="background:transparent;box-shadow:none;">
+  <div class="wf-title">
+    <span>WIREFRAME</span>
+    <span>/choice — Seleção de Veículo</span>
+  </div>
+
+  <div style="background:linear-gradient(180deg,#093a30 0%,#0d3028 100%);min-height:100vh;padding:0;">
+
+    <!-- HEADER inline (não usa LovableHeader) -->
+    <div style="padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:12px;">←</div>
+        <div class="logo" style="background:#a9da00;"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.4);">
+        <span style="color:#a9da00;">🛡</span> Compra 100% segura
+      </div>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div style="padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:32px;">
+
+      <!-- Heading -->
+      <div style="text-align:center;max-width:500px;">
+        <p style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.18em;margin-bottom:14px;">CarboZé — Escolha seu produto</p>
+        <div class="h1 white" style="font-size:40px;">Qual é o seu<br><span class="lime">veículo?</span></div>
+        <p style="font-size:13px;color:rgba(255,255,255,.45);margin-top:10px;">Selecione abaixo — a fórmula certa faz diferença.</p>
+      </div>
+
+      <!-- Cards de veículo -->
+      <div class="g2" style="width:100%;max-width:640px;">
+
+        <!-- Card Moto (selecionado) -->
+        <div class="vehicle-card active">
+          <div style="display:flex;justify-content:space-between;align-items:start;">
+            <span style="font-size:10px;background:rgba(169,218,0,.2);color:#a9da00;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.12em;">Para motos</span>
+            <div class="check-circle">✓</div>
+          </div>
+          <div style="color:#a9da00;margin:14px 0 10px;">
+            <svg viewBox="0 0 56 32" fill="none" width="56" height="32" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="23" r="7"/><circle cx="45" cy="23" r="7"/><path d="M18 23h7l5-12h10l5 7"/><path d="M25 11l-3-8h8"/><path d="M36 18h5"/></svg>
+          </div>
+          <div>
+            <p class="white" style="font-size:20px;font-weight:900;text-transform:uppercase;line-height:1.2;">SACHÊ 10ML</p>
+            <p style="font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;">Proteção tanque a tanque</p>
+          </div>
+          <ul style="list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:6px;">
+            <li style="display:flex;gap:8px;align-items:start;"><span style="width:6px;height:6px;border-radius:50%;background:#a9da00;margin-top:4px;flex-shrink:0;"></span><span style="font-size:11px;color:rgba(255,255,255,.8);">Elimina umidade do combustível</span></li>
+            <li style="display:flex;gap:8px;align-items:start;"><span style="width:6px;height:6px;border-radius:50%;background:#a9da00;margin-top:4px;flex-shrink:0;"></span><span style="font-size:11px;color:rgba(255,255,255,.8);">Melhora ignição a frio</span></li>
+            <li style="display:flex;gap:8px;align-items:start;"><span style="width:6px;height:6px;border-radius:50%;background:#a9da00;margin-top:4px;flex-shrink:0;"></span><span style="font-size:11px;color:rgba(255,255,255,.8);">Limpa bicos injetores</span></li>
+          </ul>
+          <div style="border-top:1px solid rgba(169,218,0,.3);margin-top:16px;padding-top:14px;">
+            <p style="font-size:28px;font-weight:900;color:#a9da00;line-height:1;">R$ 59,90</p>
+            <p style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">Pack com 10 sachês · R$ 5,99/tanque</p>
+          </div>
+        </div>
+
+        <!-- Card Carro (inativo) -->
+        <div class="vehicle-card inactive">
+          <span style="font-size:10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.12em;">Para carros e caminhonetes</span>
+          <div style="color:rgba(255,255,255,.75);margin:14px 0 10px;">
+            <svg viewBox="0 0 60 32" fill="none" width="56" height="32" stroke="currentColor" stroke-width="2.5"><rect x="4" y="14" width="52" height="12" rx="3.5"/><path d="M9 14l6-10h30l6 10"/><circle cx="16" cy="26" r="4.5"/><circle cx="44" cy="26" r="4.5"/></svg>
+          </div>
+          <div>
+            <p class="white" style="font-size:20px;font-weight:900;text-transform:uppercase;line-height:1.2;">FRASCO 100ML</p>
+            <p style="font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;">Proteção por 100 litros</p>
+          </div>
+          <ul style="list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:6px;">
+            <li style="display:flex;gap:8px;align-items:start;"><span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);margin-top:4px;flex-shrink:0;"></span><span style="font-size:11px;color:rgba(255,255,255,.8);">Protege bicos injetores</span></li>
+            <li style="display:flex;gap:8px;align-items:start;"><span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);margin-top:4px;flex-shrink:0;"></span><span style="font-size:11px;color:rgba(255,255,255,.8);">Reduz consumo de combustível</span></li>
+            <li style="display:flex;gap:8px;align-items:start;"><span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);margin-top:4px;flex-shrink:0;"></span><span style="font-size:11px;color:rgba(255,255,255,.8);">Combate bactérias no diesel B15</span></li>
+          </ul>
+          <div style="border-top:1px solid rgba(255,255,255,.2);margin-top:16px;padding-top:14px;">
+            <p style="font-size:28px;font-weight:900;color:#fff;line-height:1;">R$ 149,50</p>
+            <p style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">Frasco 100ml · R$ 1,50/litro protegido</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA (aparece ao selecionar) -->
+      <div style="width:100%;max-width:640px;">
+        <div style="background:#a9da00;color:#093a30;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;padding:18px;text-align:center;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:12px;">
+          Quero para minha moto → /checkoutsache
+          <span style="font-size:16px;">→</span>
+        </div>
+        <p style="text-align:center;font-size:11px;color:rgba(255,255,255,.25);margin-top:8px;">Aparece apenas após selecionar um cartão</p>
+      </div>
+    </div>
+
+    <!-- TRUST FOOTER -->
+    <div style="padding:12px 20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:rgba(255,255,255,.3);">⬡ PIX</span>
+      <span style="color:rgba(255,255,255,.15);">·</span>
+      <span style="font-size:11px;color:rgba(255,255,255,.3);">▭ Cartão de crédito</span>
+      <span style="color:rgba(255,255,255,.15);">·</span>
+      <span style="font-size:11px;color:rgba(255,255,255,.3);">🚚 Entrega em todo Brasil</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

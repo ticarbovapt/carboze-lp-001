@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wireframe — /countdown (Pré-lançamento)</title>
+<link rel="stylesheet" href="_base.css">
+</head>
+<body>
+<div class="wf">
+  <div class="wf-title"><span>WIREFRAME</span><span>/countdown — Pré-lançamento · Lista VIP</span></div>
+
+  <div style="background:#093a30;display:flex;flex-direction:column;">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="logo"></div>
+      <nav class="nav">
+        <a href="#">Onde Encontrar</a>
+        <div class="nav-cta">Compre Online → /choice</div>
+      </nav>
+    </div>
+
+    <!-- MAIN -->
+    <main style="flex:1;display:flex;flex-direction:column;align-items:center;padding:60px 20px;gap:28px;text-align:center;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(169,218,0,.1);border:1px solid rgba(169,218,0,.2);color:#a9da00;font-size:11px;text-transform:uppercase;letter-spacing:.12em;padding:6px 16px;border-radius:20px;">
+        ● Lista VIP — Em breve
+      </div>
+      <div>
+        <div class="h1 white" style="font-size:52px;">Vacine seu<br><span class="lime">combustível.</span></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.6);margin-top:16px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">Quer ser um dos primeiros a conhecer o CarboZé? Cadastre-se e receba em primeira mão todas as novidades sobre o lançamento.</p>
+      </div>
+
+      <!-- Timer -->
+      <div style="display:flex;align-items:start;gap:10px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:84px;height:84px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;"><span class="lime" style="font-size:40px;font-weight:900;">04</span></div>
+          <span style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.14em;">dias</span>
+        </div>
+        <span class="lime" style="font-size:40px;font-weight:900;opacity:.5;margin-top:16px;">:</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:84px;height:84px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;"><span class="lime" style="font-size:40px;font-weight:900;">09</span></div>
+          <span style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.14em;">horas</span>
+        </div>
+        <span class="lime" style="font-size:40px;font-weight:900;opacity:.5;margin-top:16px;">:</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:84px;height:84px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;"><span class="lime" style="font-size:40px;font-weight:900;">32</span></div>
+          <span style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.14em;">minutos</span>
+        </div>
+        <span class="lime" style="font-size:40px;font-weight:900;opacity:.5;margin-top:16px;">:</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:84px;height:84px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;"><span class="lime" style="font-size:40px;font-weight:900;">47</span></div>
+          <span style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.14em;">segundos</span>
+        </div>
+      </div>
+
+      <span class="btn btn-lime" style="padding:16px 36px;font-size:13px;letter-spacing:.1em;border-radius:10px;">Quero ser notificado →</span>
+      <p style="font-size:12px;color:rgba(255,255,255,.3);">02 de junho · 9h · Lançamento oficial</p>
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="border-top:1px solid rgba(255,255,255,.1);padding:20px 28px;">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="logo" style="opacity:.6;"></div>
+          <p style="font-size:11px;color:rgba(255,255,255,.25);">© 2025 CarboZé. Todos os direitos reservados.</p>
+        </div>
+        <div style="display:flex;gap:16px;">
+          <span style="font-size:11px;color:rgba(255,255,255,.25);">Política de Privacidade</span>
+          <span style="font-size:11px;color:rgba(255,255,255,.25);">Termos de Uso</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODAL VIP (overlay separado) -->
+  <div style="background:#fffde7;padding:12px 16px;border-left:3px solid #f0a000;">
+    <p style="font-size:12px;font-weight:700;color:#555;">📋 Modal Lista VIP — abre ao clicar no CTA (backdrop: bg-black/70 blur)</p>
+  </div>
+  <div style="background:rgba(0,0,0,.75);padding:28px;display:flex;justify-content:center;">
+    <div style="background:#093a30;border:1px solid rgba(255,255,255,.15);border-radius:16px;width:100%;max-width:380px;padding:24px;">
+      <div style="border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:12px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:start;">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.08em;">Lista VIP — Vacine seu combustível</p>
+          <p style="font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;">* Campos obrigatórios</p>
+        </div>
+        <span style="color:rgba(255,255,255,.4);font-size:16px;cursor:pointer;">✕</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div><label style="font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px;">Nome e sobrenome *</label><div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:11px 14px;font-size:12px;color:rgba(255,255,255,.25);">Seu nome completo</div></div>
+        <div><label style="font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px;">Cidade e estado *</label><div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:11px 14px;font-size:12px;color:rgba(255,255,255,.25);">Ex: São Paulo – SP</div></div>
+        <div><label style="font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px;">Celular *</label><div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:11px 14px;font-size:12px;color:rgba(255,255,255,.25);">(DDD) 99999-9999</div></div>
+        <div><label style="font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px;">Qual canal te trouxe? *</label><div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:11px 14px;font-size:12px;color:rgba(255,255,255,.25);display:flex;justify-content:space-between;">Escolher ▾</div><p style="font-size:10px;color:rgba(255,255,255,.3);margin-top:3px;">Ponto de venda · @tiagodionisio · @nenellucas · @rodrigotarjapreta</p></div>
+        <span class="btn btn-lime" style="display:block;text-align:center;border-radius:10px;padding:14px;">Quero entrar na Lista VIP →</span>
+        <p style="font-size:10px;color:rgba(255,255,255,.25);text-align:center;">Sem spam. Seus dados são usados apenas para o lançamento.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

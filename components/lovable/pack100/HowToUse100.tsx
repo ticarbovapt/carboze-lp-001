@@ -24,7 +24,7 @@ const steps = [
 export default function HowToUse100() {
   return (
     <section className="bg-verde-escuro py-16 md:py-28 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-5">
+      <div className="max-w-6xl mx-auto px-6 md:px-10">
         <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-16 max-w-xl">
           4 passos. Mais simples que trocar um filtro.
         </h2>

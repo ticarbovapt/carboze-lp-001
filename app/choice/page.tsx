@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 
 /* ─── SVG Icons ──────────────────────────────────────────── */
 function MotoIcon({ active }: { active: boolean }) {
@@ -45,10 +46,11 @@ const PRODUCTS = [
   {
     id: "moto",
     label: "Para motos",
-    title: "SACHÊ 10ML",
-    subtitle: "Proteção tanque a tanque",
-    price: "R$ 59,90",
-    priceNote: "Pack com 10 sachês · R$ 5,99/tanque",
+    title: "KIT 10 SACHÊS",
+    subtitle: "10 sachês de 10ml · 1 por abastecimento",
+    unitPrice: "R$ 5,99",
+    unitLabel: "por sachê",
+    kitInfo: "Kit Sachê 10ml com 10 unidades: R$ 59,90",
     benefits: ["Elimina umidade do combustível", "Melhora ignição a frio", "Limpa bicos injetores"],
     href: "/checkoutsache",
     cta: "Quero para minha moto",
@@ -57,10 +59,11 @@ const PRODUCTS = [
   {
     id: "carro",
     label: "Para carros e caminhonetes",
-    title: "FRASCO 100ML",
-    subtitle: "Proteção por 100 litros",
-    price: "R$ 149,90",
-    priceNote: "Frasco 100ml · R$ 1,49/litro protegido",
+    title: "KIT 5 FRASCOS",
+    subtitle: "5 frascos de 100ml · trata até 100L cada",
+    unitPrice: "R$ 29,90",
+    unitLabel: "por frasco 100ml",
+    kitInfo: "Kit Frasco 100ml com 5 unidades: R$ 149,50",
     benefits: ["Protege bicos injetores", "Reduz consumo de combustível", "Combate bactérias no diesel B15"],
     href: "/checkoutpack100",
     cta: "Quero para meu carro",
@@ -101,7 +104,7 @@ export default function ChoicePage() {
               <path d="M15 18l-6-6 6-6"/>
             </svg>
           </a>
-          <Image src="/logo-carboze-moto-white.svg" alt="CarboZé" width={140} height={32} priority className="h-7 w-auto"/>
+          <Image src="/logo-header.png" alt="CarboZé" width={1147} height={198} priority className="h-8 w-auto"/>
         </div>
         <div className="flex items-center gap-2 text-white/40 text-xs font-[family-name:var(--font-archivo)]">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-limao">
@@ -187,11 +190,14 @@ export default function ChoicePage() {
 
                 {/* Price */}
                 <div className={`pt-4 border-t transition-colors duration-300 ${isSelected ? "border-limao/30" : "border-white/20"}`}>
-                  <p className={`font-[family-name:var(--font-basement)] font-black text-3xl leading-none transition-colors duration-300 ${isSelected ? "text-limao" : "text-white"}`}>
-                    {product.price}
+                  <p className={`font-[family-name:var(--font-basement)] font-black text-4xl leading-none transition-colors duration-300 ${isSelected ? "text-limao" : "text-white"}`}>
+                    {product.unitPrice}
                   </p>
-                  <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[11px] mt-1">
-                    {product.priceNote}
+                  <p className="font-[family-name:var(--font-archivo)] text-white/60 text-xs mt-0.5">
+                    {product.unitLabel}
+                  </p>
+                  <p className="font-[family-name:var(--font-archivo)] text-white/35 text-[10px] mt-1.5">
+                    {product.kitInfo}
                   </p>
                 </div>
               </button>
@@ -213,6 +219,8 @@ export default function ChoicePage() {
         </div>
 
       </div>
+
+      <FloatingWhatsApp />
 
       {/* Trust footer */}
       <footer className="relative z-10 shrink-0 flex items-center justify-center flex-wrap gap-x-5 gap-y-1 px-5 py-3.5 border-t border-white/8">

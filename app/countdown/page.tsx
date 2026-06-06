@@ -10,6 +10,8 @@ const SUPABASE_ANON =
 
 const CANAIS = [
   "Ponto de venda CarboZé",
+  "@ocarboze",
+  "@tucanoronha",
   "Influenciador - @tiagodionisio",
   "Influenciador - @nenellucas",
   "Influenciador - @rodrigotarjapreta",
@@ -47,7 +49,7 @@ const ESTADOS: { sigla: string; nome: string }[] = [
 ];
 
 /* ─── Target date ────────────────────────────────────────── */
-const TARGET = new Date("2026-06-02T09:00:00-03:00");
+const TARGET = new Date("2026-06-05T11:30:00-03:00");
 
 function getTimeLeft() {
   const diff = Math.max(0, TARGET.getTime() - Date.now());
@@ -67,8 +69,8 @@ function pad(n: number) {
 function Unit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white/[0.05] ring-1 ring-white/10 flex items-center justify-center">
-        <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-4xl sm:text-5xl md:text-6xl tabular-nums leading-none">
+      <div className="w-[72px] h-[72px] sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white/[0.05] ring-1 ring-white/10 flex items-center justify-center">
+        <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-3xl sm:text-5xl md:text-6xl tabular-nums leading-none">
           {pad(value)}
         </span>
       </div>
@@ -404,30 +406,9 @@ export default function CountdownPage() {
     <>
       {modalOpen && <VIPModal onClose={() => setModalOpen(false)} />}
 
-      <main className="min-h-dvh bg-verde-escuro flex flex-col">
-
-        {/* ── Header ──────────────────────────────────────── */}
-        <header className="w-full px-5 py-4 flex items-center justify-between border-b border-white/10">
-          <a href="/">
-            <Image
-              src="/logo-carboze-1.png"
-              alt="CarboZé"
-              width={160}
-              height={36}
-              priority
-              className="h-8 w-auto"
-            />
-          </a>
-          <a
-            href="/"
-            className="font-[family-name:var(--font-archivo)] text-white/40 text-xs hover:text-limao transition-colors"
-          >
-            ← Voltar ao site
-          </a>
-        </header>
-
+      <div className="min-h-dvh bg-verde-escuro flex flex-col">
         {/* ── Hero ────────────────────────────────────────── */}
-        <section className="flex-1 flex flex-col items-center justify-center px-5 py-16 md:py-24 gap-10 text-center">
+        <main className="flex-1 flex flex-col items-center justify-center px-5 py-10 md:py-24 gap-8 sm:gap-10 text-center">
 
           {/* Badge */}
           <span className="inline-flex items-center gap-2 bg-limao/10 border border-limao/20 text-limao text-xs font-[family-name:var(--font-archivo)] tracking-[0.12em] uppercase px-4 py-1.5 rounded-full">
@@ -439,25 +420,20 @@ export default function CountdownPage() {
           </span>
 
           {/* Headline */}
-          <div className="max-w-2xl">
-            <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-4xl sm:text-5xl md:text-7xl leading-tight">
-              Vacine seu
-              <span className="text-limao block">combustível.</span>
-            </h1>
-            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-base sm:text-lg mt-6 max-w-lg mx-auto leading-relaxed">
-              Quer ser um dos primeiros a conhecer o CarboZé? Cadastre-se e
-              receba em primeira mão todas as novidades sobre o lançamento.
-            </p>
-          </div>
+          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl sm:text-4xl md:text-5xl leading-tight max-w-2xl">
+            Quer ser um dos primeiros{" "}
+            <br className="hidden sm:block" />
+            a conhecer o <span className="text-limao">CarboZé?</span>
+          </h1>
 
           {/* ── Countdown ───────────────────────────────── */}
-          <div className="flex items-start gap-3 sm:gap-5">
+          <div className="flex items-start gap-1.5 sm:gap-5">
             <Unit value={time.days}    label="dias"     />
-            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
+            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-2xl sm:text-6xl mt-[22px] sm:mt-5 select-none">:</span>
             <Unit value={time.hours}   label="horas"    />
-            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
+            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-2xl sm:text-6xl mt-[22px] sm:mt-5 select-none">:</span>
             <Unit value={time.minutes} label="minutos"  />
-            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-4xl sm:text-6xl mt-4 sm:mt-5 select-none">:</span>
+            <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao/50 text-2xl sm:text-6xl mt-[22px] sm:mt-5 select-none">:</span>
             <Unit value={time.seconds} label="segundos" />
           </div>
 
@@ -473,35 +449,49 @@ export default function CountdownPage() {
           </button>
 
           <p className="font-[family-name:var(--font-archivo)] text-white/30 text-sm">
-            02 de junho · 9h · Lançamento oficial
+            05 de junho · 11h30 · Lançamento oficial
           </p>
-        </section>
+
+        </main>
 
         {/* ── Footer ──────────────────────────────────────── */}
-        <footer className="px-5 py-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-[family-name:var(--font-archivo)] text-white/25 text-xs">
-            © 2025 Carbozé. Todos os direitos reservados.
-          </p>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://policies.google.com/privacy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-[family-name:var(--font-archivo)] text-white/25 text-xs hover:text-white/50 transition-colors"
-            >
-              Política de Privacidade
-            </a>
-            <a
-              href="https://policies.google.com/terms"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-[family-name:var(--font-archivo)] text-white/25 text-xs hover:text-white/50 transition-colors"
-            >
-              Termos de Uso
-            </a>
+        <footer className="border-t border-white/10 py-6">
+          <div className="max-w-6xl mx-auto px-6 md:px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Esquerda: logo + copyright */}
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo-header.png"
+                alt="CarboZé"
+                width={1147}
+                height={198}
+                className="h-6 w-auto opacity-60"
+              />
+              <p className="font-[family-name:var(--font-archivo)] text-white/25 text-xs">
+                © 2025 CarboZé. Todos os direitos reservados.
+              </p>
+            </div>
+            {/* Direita: links legais */}
+            <div className="flex items-center gap-4">
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-[family-name:var(--font-archivo)] text-white/25 text-xs hover:text-white/50 transition-colors"
+              >
+                Política de Privacidade
+              </a>
+              <a
+                href="https://policies.google.com/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-[family-name:var(--font-archivo)] text-white/25 text-xs hover:text-white/50 transition-colors"
+              >
+                Termos de Uso
+              </a>
+            </div>
           </div>
         </footer>
-      </main>
+      </div>
     </>
   );
 }

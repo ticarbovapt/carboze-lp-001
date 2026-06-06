@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wireframe — /loja (Onde Encontrar)</title>
+<link rel="stylesheet" href="_base.css">
+</head>
+<body>
+
+<div class="float-wa">WA</div>
+
+<div class="wf">
+  <div class="wf-title">
+    <span>WIREFRAME</span>
+    <span>/loja — Onde Encontrar · Single fold</span>
+  </div>
+
+  <!-- Toda a página cabe em 1 dobra: h-dvh flex flex-col -->
+  <div style="background:#093a30;min-height:600px;display:flex;flex-direction:column;">
+
+    <!-- HEADER (hideNav=true, só logo) -->
+    <div class="header" style="flex-shrink:0;">
+      <div class="logo"></div>
+      <!-- Sem nav items -->
+    </div>
+
+    <!-- CONTEÚDO CENTRALIZADO (flex-1) -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;gap:24px;">
+
+      <!-- Heading -->
+      <div style="text-align:center;">
+        <p style="font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;">Onde Encontrar</p>
+        <div class="h1 white" style="font-size:32px;">Disponível em <span class="lime">vários canais.</span></div>
+        <p style="font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;">Escolha a plataforma de sua preferência e garanta o seu pack.</p>
+      </div>
+
+      <!-- Grid 3×1 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;width:100%;max-width:560px;">
+
+        <!-- Loja Oficial (Featured) -->
+        <div style="border:1px solid #a9da00;border-radius:16px;padding:20px;background:rgba(169,218,0,.04);display:flex;flex-direction:column;align-items:center;gap:12px;">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(169,218,0,.1);border:1px solid rgba(169,218,0,.2);display:flex;align-items:center;justify-content:center;">
+            <span style="color:#a9da00;font-size:18px;">🏠</span>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-size:12px;font-weight:700;color:#f5f5f0;">Loja Online Oficial</p>
+            <span style="display:inline-block;margin-top:4px;background:#a9da00;color:#093a30;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;">Recomendado</span>
+          </div>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;line-height:1.4;">Melhor preço garantido · compra direta</p>
+          <div style="font-size:9px;color:#a9da00;font-weight:700;">→ /choice</div>
+        </div>
+
+        <!-- Mercado Livre -->
+        <div style="border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:20px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;align-items:center;gap:12px;">
+          <div style="width:48px;height:48px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+            <div style="width:36px;height:36px;background:#ffe600;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#003087;font-weight:900;">ML</div>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-size:12px;font-weight:700;color:#f5f5f0;">Mercado Livre</p>
+          </div>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;line-height:1.4;">Entrega rápida e proteção de compra</p>
+          <div style="font-size:9px;color:rgba(255,255,255,.3);font-weight:700;">→ mercadolivre.com.br</div>
+        </div>
+
+        <!-- Amazon -->
+        <div style="border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:20px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;align-items:center;gap:12px;">
+          <div style="width:48px;height:48px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+            <div style="font-size:22px;font-weight:900;color:#111;font-style:italic;">a</div>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-size:12px;font-weight:700;color:#f5f5f0;">Amazon</p>
+          </div>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;line-height:1.4;">Entrega rápida e devolução garantida</p>
+          <div style="font-size:9px;color:rgba(255,255,255,.3);font-weight:700;">→ amazon.com.br</div>
+        </div>
+      </div>
+
+      <!-- WhatsApp inline -->
+      <p style="font-size:12px;color:rgba(255,255,255,.3);">Dúvidas? <span style="color:#a9da00;">WhatsApp</span></p>
+    </div>
+
+    <!-- FOOTER mínimo -->
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding:16px 20px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div class="logo" style="opacity:.6;"></div>
+      <p style="font-size:11px;color:rgba(255,255,255,.2);">© 2025 CarboZé. Todos os direitos reservados.</p>
+    </div>
+  </div>
+
+  <!-- Annotation -->
+  <div style="padding:16px;background:#fffde7;border-left:3px solid #a9da00;">
+    <p style="font-size:12px;font-weight:700;color:#555;">📐 Layout Notes</p>
+    <ul style="font-size:11px;color:#777;margin-top:6px;padding-left:16px;line-height:2;">
+      <li>Página inteira cabe em <strong>1 dobra</strong> (h-dvh flex flex-col)</li>
+      <li>Header com logo only — <strong>hideNav=true</strong></li>
+      <li>Grid <strong>3×1 horizontal</strong> — cards lado a lado</li>
+      <li>Logos ML e Amazon em container <strong>bg-white rounded-xl</strong></li>
+      <li>FloatingWhatsApp fixo no canto direito</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

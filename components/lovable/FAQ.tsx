@@ -17,17 +17,20 @@ const faqs = [
   },
 ];
 
-export default function FAQ() {
+export default function FAQ({ dark = false }: { dark?: boolean }) {
   return (
-    <section id="faq" className="bg-off-white py-16 md:py-28">
+    <section
+      id="faq"
+      className={`${dark ? "bg-verde-escuro" : "bg-off-white"} py-16 md:py-28`}
+    >
       <div className="max-w-6xl mx-auto px-6 md:px-10">
 
         {/* Label */}
-        <p className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.18em] text-verde-escuro/40 mb-3">
+        <p className={`font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.18em] mb-3 ${dark ? "text-white/30" : "text-verde-escuro/40"}`}>
           Dúvidas frequentes
         </p>
 
-        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
+        <h2 className={`font-[family-name:var(--font-basement)] font-extrabold uppercase text-3xl sm:text-4xl md:text-5xl leading-tight mb-12 ${dark ? "text-white" : "text-verde-escuro"}`}>
           Perguntas e respostas
         </h2>
 
@@ -35,18 +38,18 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <details
               key={i}
-              className="group border-b border-verde-escuro/8 last:border-0"
+              className={`group border-b last:border-0 ${dark ? "border-white/8" : "border-verde-escuro/8"}`}
             >
-              <summary className="flex items-center justify-between gap-6 py-6 font-[family-name:var(--font-basement)] font-bold text-verde-escuro text-base md:text-lg select-none cursor-pointer list-none">
+              <summary className={`flex items-center justify-between gap-6 py-6 font-[family-name:var(--font-basement)] font-bold text-base md:text-lg select-none cursor-pointer list-none ${dark ? "text-white" : "text-verde-escuro"}`}>
                 {faq.q}
-                <span className="faq-icon shrink-0 w-6 h-6 rounded-full border border-verde-escuro/15 flex items-center justify-center text-verde-medio transition-transform duration-300">
+                <span className={`faq-icon shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-transform duration-300 ${dark ? "border-white/15 text-limao" : "border-verde-escuro/15 text-verde-medio"}`}>
                   <svg viewBox="0 0 12 12" fill="none" className="w-3 h-3">
                     <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                 </span>
               </summary>
               <div className="faq-content pb-6 -mt-1">
-                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm md:text-base leading-relaxed">
+                <p className={`font-[family-name:var(--font-archivo)] text-sm md:text-base leading-relaxed ${dark ? "text-white/55" : "text-verde-escuro/60"}`}>
                   {faq.a}
                 </p>
               </div>

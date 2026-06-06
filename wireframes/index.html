@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wireframes — CarboZé</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { background: #111; }
+  .index { max-width: 700px; margin: 40px auto; }
+  .index-title { color: #a9da00; font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .index-sub { color: #666; font-size: 13px; margin-bottom: 32px; }
+  .wf-card { display: flex; align-items: center; justify-content: space-between; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; text-decoration: none; transition: border-color .2s, background .2s; }
+  .wf-card:hover { border-color: #a9da00; background: #1e2a1a; }
+  .wf-card-left { display: flex; align-items: center; gap: 14px; }
+  .wf-card-route { font-size: 15px; font-weight: 700; color: #a9da00; font-family: monospace; }
+  .wf-card-desc { font-size: 12px; color: #666; margin-top: 2px; }
+  .wf-card-arrow { font-size: 18px; color: #444; }
+  .wf-card:hover .wf-card-arrow { color: #a9da00; }
+  .badge { font-size: 10px; background: #2a2a2a; color: #888; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: .08em; }
+  .badge-green { background: rgba(169,218,0,.15); color: #a9da00; }
+  .section-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: .12em; margin: 24px 0 8px; }
+</style>
+</head>
+<body>
+<div class="index">
+  <div class="index-title">CarboZé — Wireframes</div>
+  <p class="index-sub">Visualização de estrutura e conteúdo de todas as páginas · abra no browser</p>
+
+  <p class="section-label">LPs Principais</p>
+
+  <a href="wireframe-home.html" class="wf-card">
+    <div class="wf-card-left">
+      <div>
+        <div class="wf-card-route">/</div>
+        <div class="wf-card-desc">LP Institucional · 9 seções · HeroInstitucional → CTAFinalInstitucional</div>
+      </div>
+      <span class="badge badge-green">9 seções</span>
+    </div>
+    <div class="wf-card-arrow">→</div>
+  </a>
+
+  <a href="wireframe-sache.html" class="wf-card">
+    <div class="wf-card-left">
+      <div>
+        <div class="wf-card-route">/sache</div>
+        <div class="wf-card-desc">LP Sachê 10ml · Para motos · R$ 59,90 · Pack 10 sachês</div>
+      </div>
+      <span class="badge badge-green">9 seções</span>
+    </div>
+    <div class="wf-card-arrow">→</div>
+  </a>
+
+  <a href="wireframe-pack100.html" class="wf-card">
+    <div class="wf-card-left">
+      <div>
+        <div class="wf-card-route">/pack100</div>
+        <div class="wf-card-desc">LP Frasco 100ml · Para carros · R$ 149,50 · Gasolina, flex e diesel</div>
+      </div>
+      <span class="badge badge-green">8 seções</span>
+    </div>
+    <div class="wf-card-arrow">→</div>
+  </a>
+
+  <a href="wireframe-influencer.html" class="wf-card">
+    <div class="wf-card-left">
+      <div>
+        <div class="wf-card-route">/dionisio · /tarjapreta · /nenel</div>
+        <div class="wf-card-desc">Template Influencer · Logo no hero · ProductPicker dual · 7 seções</div>
+      </div>
+      <span class="badge badge-green">7 seções</span>
+    </div>
+    <div class="wf-card-arrow">→</div>
+  </a>
+
+  <p class="section-label">Páginas de Suporte</p>
+
+  <a href="wireframe-choice.html" class="wf-card">
+    <div class="wf-card-left">
+      <div>
+        <div class="wf-card-route">/choice</div>
+        <div class="wf-card-desc">Seleção de veículo · 2 cards interativos · CTA condicional · Single fold</div>
+      </div>
+      <span class="badge">single fold</span>
+    </div>
+    <div class="wf-card-arrow">→</div>
+  </a>
+
+  <a href="wireframe-loja.html" class="wf-card">
+    <div class="wf-card-left">
+      <div>
+        <div class="wf-card-route">/loja</div>
+        <div class="wf-card-desc">Onde encontrar · Grid 3×1 · Loja Oficial · Mercado Livre · Amazon</div>
+      </div>
+      <span class="badge">single fold</span>
+    </div>
+    <div class="wf-card-arrow">→</div>
+  </a>
+
+  <a href="wireframe-countdown.html" class="wf-card">
+    <div class="wf-card-left">
+      <div>
+        <div class="wf-card-route">/countdown</div>
+        <div class="wf-card-desc">Pré-lançamento · Timer ao vivo · Modal Lista VIP · Formulário Supabase</div>
+      </div>
+      <span class="badge">+ modal</span>
+    </div>
+    <div class="wf-card-arrow">→</div>
+  </a>
+
+  <p class="section-label" style="margin-top:32px;">Checkouts (redirecionam para Vindi)</p>
+  <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:14px 20px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutsache</span>
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutpack100</span>
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutsache-influencer</span>
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutpack100-influencer</span>
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutsache-tarjapreta</span>
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutpack100-tarjapreta</span>
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutsache-nenel</span>
+      <span style="font-size:12px;color:#555;font-family:monospace;">/checkoutpack100-nenel</span>
+    </div>
+    <p style="font-size:11px;color:#444;margin-top:8px;">→ Todas redirecionam para app.vindi.com.br — sem wireframe necessário</p>
+  </div>
+</div>
+</body>
+</html>

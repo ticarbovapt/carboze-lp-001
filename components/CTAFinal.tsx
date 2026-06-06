@@ -56,17 +56,10 @@ export default function CTAFinal() {
             </a>
             {" · "}
             <a
-              href={STORES.shopee}
+              href={STORES.amazon}
               className="text-white/70 hover:text-limao transition-colors"
             >
-              Shopee
-            </a>
-            {" · "}
-            <a
-              href={STORES.tiktokshop}
-              className="text-white/70 hover:text-limao transition-colors"
-            >
-              TikTok Shop
+              Amazon
             </a>
           </p>
         </div>
@@ -101,11 +94,11 @@ export default function CTAFinal() {
 
           <div className="flex flex-col items-start sm:items-end gap-2">
             <Image
-              src="/logo-carboze-moto-white.svg"
+              src="/logo-new.png"
               alt="CarboZé"
-              width={160}
-              height={32}
-              className="h-7 w-auto opacity-70"
+              width={813}
+              height={134}
+              className="h-14 w-auto opacity-80"
             />
             <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs">
               © 2025 Carbozé. Todos os direitos reservados.

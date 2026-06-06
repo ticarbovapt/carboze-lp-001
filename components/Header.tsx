@@ -17,38 +17,38 @@ export default function Header() {
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-off-white/95 backdrop-blur-md shadow-sm shadow-verde-escuro/5"
-          : "bg-off-white"
-      } border-b border-verde-escuro/10`}
+          ? "bg-verde-escuro/97 backdrop-blur-md shadow-md shadow-black/20 border-white/8"
+          : "bg-verde-escuro border-white/10"
+      } border-b`}
     >
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-3 flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center shrink-0">
           <Image
-            src="/logo-carboze-1.png"
+            src="/logo-new.png"
             alt="CarboZé"
-            width={220}
-            height={44}
+            width={813}
+            height={134}
             priority
-            className="h-9 w-auto"
+            className="h-8 w-auto"
           />
         </a>
 
         {/* Nav */}
         <nav className="flex items-center gap-4 text-sm font-[family-name:var(--font-archivo)]">
           {/* Preço mini */}
-          <span className="hidden md:inline text-verde-escuro/50 text-xs">
+          <span className="hidden md:inline text-white/40 text-xs">
             Pack 10 sachês —{" "}
-            <strong className="text-verde-escuro font-semibold">R$ 59,90</strong>
+            <strong className="text-white font-semibold">R$ 59,90</strong>
           </span>
 
           {/* Divisor */}
-          <span className="hidden md:inline text-verde-escuro/15 text-xs">|</span>
+          <span className="hidden md:inline text-white/15 text-xs">|</span>
 
           {/* Onde Encontrar */}
           <a
             href="/lojas"
-            className="hidden md:inline text-verde-escuro/60 hover:text-verde-escuro transition-colors text-xs tracking-wide"
+            className="hidden md:inline text-white/40 hover:text-white transition-colors text-xs tracking-wide"
           >
             Onde Encontrar
           </a>
@@ -56,7 +56,7 @@ export default function Header() {
           {/* Comprar online */}
           <a
             href="/choice"
-            className="hidden sm:inline text-verde-escuro/60 hover:text-verde-escuro transition-colors text-xs tracking-wide"
+            className="hidden sm:inline text-white/40 hover:text-white transition-colors text-xs tracking-wide"
           >
             Comprar online
           </a>

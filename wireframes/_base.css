@@ -1,0 +1,112 @@
+/* CarboZé Wireframe Base Styles */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #e5e5e5; color: #222; }
+
+/* ── Wrapper ── */
+.wf { max-width: 900px; margin: 24px auto; background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,.15); }
+
+/* ── Top label ── */
+.wf-title { background: #111; color: #fff; padding: 10px 20px; font-size: 13px; letter-spacing: .08em; display: flex; justify-content: space-between; align-items: center; }
+.wf-title span { color: #a9da00; }
+
+/* ── Section types ── */
+.sec { padding: 28px 32px; border-bottom: 2px dashed #ccc; position: relative; }
+.sec-dark  { background: #093a30; color: #f5f5f0; border-color: #155040; }
+.sec-light { background: #f5f5f0; }
+.sec-beige { background: #ede8e3; }
+.sec-white { background: #ffffff; }
+.sec-green { background: #1e5040; color: #f5f5f0; border-color: #2a6555; }
+
+/* ── Section badge ── */
+.sec-name { position: absolute; top: 8px; right: 12px; font-size: 10px; color: #888; background: rgba(255,255,255,.7); padding: 2px 8px; border-radius: 20px; letter-spacing: .05em; }
+.sec-dark .sec-name, .sec-green .sec-name { background: rgba(0,0,0,.3); color: #aaa; }
+
+/* ── Typography ── */
+.tag  { display: inline-block; font-size: 10px; text-transform: uppercase; letter-spacing: .14em; padding: 4px 12px; border: 1px solid; border-radius: 20px; margin-bottom: 12px; }
+.tag-lime { color: #a9da00; border-color: #a9da00; }
+.tag-gray { color: #888; border-color: #bbb; }
+
+.h1   { font-size: 28px; font-weight: 900; line-height: 1.1; margin-bottom: 10px; text-transform: uppercase; }
+.h2   { font-size: 20px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; text-transform: uppercase; }
+.h3   { font-size: 15px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+.h4   { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.body { font-size: 13px; line-height: 1.6; color: #555; margin-bottom: 10px; }
+.body-dark { color: #bbb; }
+.body-sm { font-size: 11px; color: #777; line-height: 1.5; }
+.lime { color: #a9da00; }
+.white { color: #fff; }
+.muted { color: #aaa; }
+
+/* ── Buttons ── */
+.btn { display: inline-block; padding: 12px 28px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; cursor: default; }
+.btn-lime { background: #a9da00; color: #093a30; }
+.btn-outline { background: transparent; color: #a9da00; border: 2px solid #a9da00; }
+.btn-white { background: #fff; color: #093a30; }
+.btn-sm { padding: 8px 18px; font-size: 11px; }
+
+/* ── Grid ── */
+.g2  { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.g4  { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.g2l { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: start; }
+.g2r { display: grid; grid-template-columns: 1fr 1.4fr; gap: 20px; align-items: start; }
+
+/* ── Placeholder boxes ── */
+.img-box { background: #d8d8d8; border: 1px dashed #aaa; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #888; text-align: center; padding: 8px; min-height: 80px; }
+.img-box.tall  { min-height: 200px; }
+.img-box.hero  { min-height: 120px; }
+.img-box.sq    { min-height: 80px; aspect-ratio: 1; }
+.img-box-dark  { background: #1d4f3e; border-color: #2d6050; color: #6a9a88; }
+
+/* ── Cards ── */
+.card { background: #f0f0f0; border: 1px solid #ddd; padding: 14px; }
+.card-dark { background: #1a4a38; border: 1px solid #2a5a48; color: #ddd; }
+.card-white { background: #fff; border: 1px solid #e0e0e0; padding: 14px; }
+.card-outline { background: transparent; border: 1px solid #aaa; padding: 14px; }
+.card-num { font-size: 28px; font-weight: 900; color: #a9da00; line-height: 1; margin-bottom: 8px; }
+
+/* ── Header ── */
+.header { background: #093a30; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e5040; }
+.logo   { background: #a9da00; width: 90px; height: 16px; }
+.nav    { display: flex; gap: 20px; align-items: center; }
+.nav a  { font-size: 11px; color: #aaa; text-decoration: none; }
+.nav .nav-cta { background: #a9da00; color: #093a30; padding: 6px 16px; font-size: 11px; font-weight: 700; }
+
+/* ── Footer ── */
+.footer { background: #093a30; padding: 18px 28px; border-top: 1px solid #1e5040; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+
+/* ── Divider ── */
+.divider { border: none; border-top: 1px solid #ddd; margin: 16px 0; }
+.divider-dark { border-color: rgba(255,255,255,.1); }
+
+/* ── Accordion ── */
+.faq-item { border: 1px solid #e0e0e0; padding: 12px 16px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.faq-item .faq-q { font-size: 13px; font-weight: 600; }
+.faq-item .faq-arrow { font-size: 16px; color: #aaa; }
+
+/* ── Float badge ── */
+.float-wa { position: fixed; bottom: 20vh; right: 24px; background: #25D366; color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; box-shadow: 0 4px 16px rgba(0,0,0,.2); z-index: 99; }
+
+/* ── Checklist ── */
+.check-list { list-style: none; }
+.check-list li { font-size: 12px; color: #ccc; margin-bottom: 6px; padding-left: 16px; position: relative; }
+.check-list li::before { content: '✓'; position: absolute; left: 0; color: #a9da00; }
+
+/* ── Price block ── */
+.price-block { background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.1); padding: 14px 18px; margin: 14px 0; }
+.price-main { font-size: 30px; font-weight: 900; color: #a9da00; }
+.price-note { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+/* ── Spacing ── */
+.mt4  { margin-top: 4px; }
+.mt8  { margin-top: 8px; }
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+.mt20 { margin-top: 20px; }
+.mb8  { margin-bottom: 8px; }
+.mb12 { margin-bottom: 12px; }
+.mb16 { margin-bottom: 16px; }
+.center { text-align: center; }
+.flex-c { display: flex; gap: 12px; align-items: center; }
+.flex-cc { display: flex; gap: 12px; align-items: center; justify-content: center; }
