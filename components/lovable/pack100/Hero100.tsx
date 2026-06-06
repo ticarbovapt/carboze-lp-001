@@ -2,7 +2,7 @@ import CTAButton from "../CTAButton";
 
 export default function Hero100() {
   return (
-    <section className="relative bg-verde-escuro overflow-hidden flex items-end sm:items-center min-h-screen sm:min-h-[580px] pb-10 sm:pb-0 sm:py-28">
+    <section className="relative bg-verde-escuro overflow-hidden flex items-end sm:items-center min-h-screen sm:min-h-[calc(100vh-56px)] pb-10 sm:pb-0 sm:py-8">
 
       {/* Background — mobile */}
       <div
@@ -34,16 +34,16 @@ export default function Hero100() {
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 w-full">
         <div className="max-w-xl">
 
-          <p className="font-[family-name:var(--font-archivo)] text-white/50 text-[11px] sm:text-xs tracking-[0.16em] uppercase mb-4">
+          <p className="font-[family-name:var(--font-archivo)] text-white/50 text-[11px] sm:text-xs tracking-[0.16em] uppercase mb-3">
             Proteção de combustível para carros e caminhonetes
           </p>
 
-          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-5xl md:text-[3.25rem] lg:text-[3.75rem] leading-[0.92] mb-5">
+          <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[0.95] mb-4">
             Combustível protegido,{" "}
             <span className="text-limao">motor saudável.</span>
           </h1>
 
-          <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm sm:text-base leading-relaxed mb-6 max-w-md hidden sm:block">
+          <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm sm:text-[15px] leading-snug mb-4 max-w-md hidden sm:block">
             O combustível brasileiro tem uma composição química que não existe em
             nenhum outro país. O CarboZé é o único estabilizador desenvolvido
             especificamente para ela. Trata gasolina, diesel e etanol{" "}
@@ -51,14 +51,14 @@ export default function Hero100() {
           </p>
 
           {/* Bloco de preço */}
-          <div id="hero-price-block" className="bg-white/[0.10] border border-white/20 rounded-2xl p-5 mb-6 max-w-sm">
-            <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-5xl sm:text-6xl md:text-7xl leading-none">
+          <div id="hero-price-block" className="bg-white/[0.10] border border-white/20 rounded-2xl px-4 py-3.5 mb-4 w-fit max-w-sm">
+            <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-4xl sm:text-5xl md:text-6xl leading-none whitespace-nowrap">
               R$ 29,90
             </p>
             <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm mt-1">
               por frasco 100ml
             </p>
-            <hr className="border-white/10 my-3" />
+            <hr className="border-white/10 my-2.5" />
             <p className="font-[family-name:var(--font-archivo)] text-white/35 text-xs">
               Kit Frasco 100ml com 5 unidades: R$ 149,50
             </p>
@@ -66,7 +66,7 @@ export default function Hero100() {
 
           <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutpack100" />
 
-          <p className="mt-4 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
+          <p className="mt-3 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
             Disponível no Mercado Livre e Amazon
           </p>
         </div>
