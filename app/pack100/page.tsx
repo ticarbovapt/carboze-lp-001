@@ -15,11 +15,35 @@ export const metadata: Metadata = {
   title: "CarboZé — Vacine seu combustível",
   description:
     "O frasco CarboZé 100ml elimina umidade, melhora a combustão e protege o motor a cada abastecimento. Feito para carros.",
+  alternates: { canonical: "/pack100" },
+};
+
+const productJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "CarboZé Kit 5 Frascos de 100ml",
+  image: "https://www.carboze.com.br/og-image.jpg",
+  description:
+    "Kit com 5 frascos de 100ml. Estabiliza o combustível, remove oxidação e protege o sistema de injeção. Feito para carros e caminhonetes.",
+  brand: { "@type": "Brand", name: "CarboZé" },
+  offers: {
+    "@type": "Offer",
+    price: "149.50",
+    priceCurrency: "BRL",
+    availability: "https://schema.org/InStock",
+    url: "https://www.carboze.com.br/pack100",
+  },
 };
 
 export default function Pack100Page() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <link rel="preload" as="image" href="/CARBOZE_PACK_MOBILE.webp" media="(max-width: 639px)" />
+      <link rel="preload" as="image" href="/cz-pack100-hero-bg.webp" media="(min-width: 640px)" />
       <LovableHeader checkoutHref="/checkoutpack100" />
       <Hero100 />
       <Problem100 />

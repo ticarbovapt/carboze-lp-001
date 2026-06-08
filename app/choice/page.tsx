@@ -86,7 +86,7 @@ export default function ChoicePage() {
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 pointer-events-none select-none"
-        style={{ backgroundImage: "url('/cz-choice-bg.jpg')" }}
+        style={{ backgroundImage: "url('/cz-choice-bg.webp')" }}
         aria-hidden="true"
       />
       <div

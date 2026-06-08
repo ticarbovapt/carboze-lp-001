@@ -26,7 +26,7 @@ export default function CTAFinal100() {
             <div className="w-full rounded-2xl overflow-hidden bg-verde-escuro border border-verde-escuro/20">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/cz-pack100-cta.png"
+                src="/cz-pack100-cta.webp"
                 alt="CarboZé — Pack 100ml"
                 className="w-full object-contain"
               />
@@ -52,7 +52,7 @@ export default function CTAFinal100() {
                 WhatsApp 11 4000-2112
               </a>
             </p>
-            <p className="text-white/35 text-sm">
+            <p className="text-white/55 text-sm">
               Disponível também no{" "}
               <a href="#" className="text-white/55 hover:text-limao transition-colors">
                 Mercado Livre
@@ -63,13 +63,13 @@ export default function CTAFinal100() {
               </a>
             </p>
             <div className="flex gap-5 text-sm">
-              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-white/35 hover:text-limao transition-colors">
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-white/55 hover:text-limao transition-colors">
                 @ocarboze
               </a>
-              <a href={SOCIAL_LINKS.website} target="_blank" rel="noopener noreferrer" className="text-white/35 hover:text-limao transition-colors">
+              <a href={SOCIAL_LINKS.website} target="_blank" rel="noopener noreferrer" className="text-white/55 hover:text-limao transition-colors">
                 carboze.com.br
               </a>
-              <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="text-white/35 hover:text-limao transition-colors">
+              <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="text-white/55 hover:text-limao transition-colors">
                 YT: @carboze
               </a>
             </div>

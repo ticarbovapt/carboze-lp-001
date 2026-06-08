@@ -51,8 +51,8 @@ export default function CTAFinalInfluencer({
               </a>
             </p>
             <div className="flex gap-5 text-sm">
-              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-white/35 hover:text-limao transition-colors">@ocarboze</a>
-              <a href={SOCIAL_LINKS.website} target="_blank" rel="noopener noreferrer" className="text-white/35 hover:text-limao transition-colors">carboze.com.br</a>
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-white/55 hover:text-limao transition-colors">@ocarboze</a>
+              <a href={SOCIAL_LINKS.website} target="_blank" rel="noopener noreferrer" className="text-white/55 hover:text-limao transition-colors">carboze.com.br</a>
             </div>
           </div>
           <div className="flex flex-col items-start sm:items-end gap-2">

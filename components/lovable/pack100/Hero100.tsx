@@ -7,13 +7,13 @@ export default function Hero100() {
       {/* Background — mobile */}
       <div
         className="absolute inset-0 bg-cover bg-top bg-no-repeat block sm:hidden"
-        style={{ backgroundImage: "url('/CARBOZE_PACK_MOBILE.png')" }}
+        style={{ backgroundImage: "url('/CARBOZE_PACK_MOBILE.webp')" }}
         aria-hidden="true"
       />
       {/* Background — desktop */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 hidden sm:block"
-        style={{ backgroundImage: "url('/cz-pack100-hero-bg.jpg')" }}
+        style={{ backgroundImage: "url('/cz-pack100-hero-bg.webp')" }}
         aria-hidden="true"
       />
 
@@ -59,14 +59,14 @@ export default function Hero100() {
               por frasco 100ml
             </p>
             <hr className="border-white/10 my-2.5" />
-            <p className="font-[family-name:var(--font-archivo)] text-white/35 text-xs">
+            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-xs">
               Kit Frasco 100ml com 5 unidades: R$ 149,50
             </p>
           </div>
 
           <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutpack100" />
 
-          <p className="mt-3 text-xs text-white/25 font-[family-name:var(--font-archivo)]">
+          <p className="mt-3 text-xs text-white/60 font-[family-name:var(--font-archivo)]">
             Disponível no Mercado Livre e Amazon
           </p>
         </div>

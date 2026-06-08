@@ -25,7 +25,7 @@ export default function CTAFinalInstitucional() {
             <p className="font-[family-name:var(--font-basement)] font-bold text-white/60 text-sm mb-2">
               Combustível protegido, motor saudável.
             </p>
-            <div className="flex flex-wrap gap-4 text-sm text-white/35 font-[family-name:var(--font-archivo)]">
+            <div className="flex flex-wrap gap-4 text-sm text-white/55 font-[family-name:var(--font-archivo)]">
               <a href={SOCIAL_LINKS.instagram} className="hover:text-white/60 transition-colors">@ocarboze</a>
               <a href={SOCIAL_LINKS.website} className="hover:text-white/60 transition-colors">carboze.com.br</a>
               <a href={SOCIAL_LINKS.youtube} className="hover:text-white/60 transition-colors">YouTube @carboze</a>

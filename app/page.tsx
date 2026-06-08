@@ -16,11 +16,14 @@ export const metadata: Metadata = {
   title: "CarboZé — O único otimizador molecular para o combustível brasileiro",
   description:
     "A gasolina da bomba tem etanol. O diesel tem biodiesel. O CarboZé age na estrutura molecular do combustível, a cada abastecimento, antes do dano acontecer.",
+  alternates: { canonical: "/" },
 };
 
 export default function HomePage() {
   return (
     <main>
+      {/* Preload do hero (LCP) desta rota */}
+      <link rel="preload" as="image" href="/design-builder-46bfb20e.webp" fetchPriority="high" />
       <LovableHeader checkoutHref="/choice" suporteHref={WHATSAPP_URL} ctaLabel="Escolher Produto" />
       <HeroInstitucional />
       <ProblemSection />

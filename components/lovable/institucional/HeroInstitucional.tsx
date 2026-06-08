@@ -4,7 +4,7 @@ export default function HeroInstitucional() {
   return (
     <section
       className="relative min-h-screen flex items-end pb-20"
-      style={{ backgroundImage: "url('/design-builder-46bfb20e.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+      style={{ backgroundImage: "url('/design-builder-46bfb20e.webp')", backgroundSize: "cover", backgroundPosition: "center" }}
     >
       {/* Gradient overlay — heavy at bottom */}
       <div className="absolute inset-0 bg-gradient-to-t from-verde-escuro/90 via-verde-escuro/40 to-transparent pointer-events-none" />

@@ -75,7 +75,7 @@ export default function StickyPriceBar({
                     /sachê
                   </span>
                 </div>
-                <p className="font-[family-name:var(--font-archivo)] text-white/30 text-[10px] mt-0.5">
+                <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[10px] mt-0.5">
                   Kit 10 un. = R$ 59,90
                 </p>
               </div>
@@ -100,7 +100,7 @@ export default function StickyPriceBar({
                     /frasco
                   </span>
                 </div>
-                <p className="font-[family-name:var(--font-archivo)] text-white/30 text-[10px] mt-0.5">
+                <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[10px] mt-0.5">
                   Kit 5 un. = R$ 149,50
                 </p>
               </div>
