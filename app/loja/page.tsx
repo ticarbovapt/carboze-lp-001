@@ -28,7 +28,7 @@ const stores = [
     id: "ml",
     name: "Mercado Livre",
     desc: "Entrega rápida e proteção de compra",
-    href: "https://www.mercadolivre.com.br/",
+    href: "https://lista.mercadolivre.com.br/pagina/carbosolucoes/?draft_version=d24e3cda-0cd6-419e-aceb-573c888972a7#label=Productos+recomendados&component=tab-0&tracking_id=9ae52c824eddede5144d97e8cadf38bb&global_position=8",
     featured: false,
     icon: (
       <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-1 shadow-sm">
@@ -47,7 +47,7 @@ const stores = [
     id: "amazon",
     name: "Amazon",
     desc: "Entrega rápida e devolução garantida",
-    href: "https://www.amazon.com.br/",
+    href: "https://www.amazon.com.br/s?me=A28XZOISITX3M0&marketplaceID=A2Q3Y263D00KWC",
     featured: false,
     icon: (
       <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-1 shadow-sm">
