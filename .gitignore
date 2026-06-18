@@ -44,3 +44,7 @@ next-env.d.ts
 
 # arquivos de midia pesados (>100MB) - nao versionar
 public/*.gif
+
+# backups com dados pessoais (PII) - NAO versionar
+/backups
+
