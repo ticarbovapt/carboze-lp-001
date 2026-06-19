@@ -151,15 +151,15 @@ export default function NpsForm() {
               <Label required>
                 De 0 a 10, o quanto você recomendaria o CarboZé a um amigo?
               </Label>
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-11 gap-1 sm:gap-1.5">
                 {Array.from({ length: 11 }, (_, i) => i).map((n) => (
                   <button
                     key={n}
                     type="button"
                     onClick={() => setScore(n)}
-                    className={`aspect-square rounded-xl font-[family-name:var(--font-basement)] font-bold text-sm transition-all ${
+                    className={`h-11 sm:h-12 rounded-lg font-[family-name:var(--font-basement)] font-bold text-[13px] sm:text-sm transition-colors ${
                       score === n
-                        ? "bg-limao text-verde-escuro scale-105"
+                        ? "bg-limao text-verde-escuro"
                         : "bg-white/5 border border-white/15 text-white/70 hover:border-white/35"
                     }`}
                   >
@@ -167,7 +167,7 @@ export default function NpsForm() {
                   </button>
                 ))}
               </div>
-              <div className="flex justify-between font-[family-name:var(--font-archivo)] text-white/30 text-[10px] px-1">
+              <div className="flex justify-between font-[family-name:var(--font-archivo)] text-white/35 text-[10px] mt-0.5">
                 <span>Não recomendaria</span>
                 <span>Recomendaria com certeza</span>
               </div>
