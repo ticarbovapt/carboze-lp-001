@@ -6,6 +6,7 @@ import { insertRow } from "@/lib/supabase";
 import LovableHeader from "@/components/LovableHeader";
 import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 import { WHATSAPP_URL } from "@/lib/constants";
+import OfferPopup from "./OfferPopup";
 
 /* ─── helpers de estilo (mesmos padrões do /countdown) ───── */
 function Label({
@@ -70,6 +71,7 @@ export default function NpsForm() {
   const [celular, setCelular] = useState("");
   const [autoriza, setAutoriza] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [showOffer, setShowOffer] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -96,6 +98,7 @@ export default function NpsForm() {
         origem,
       });
       setStatus("success");
+      setShowOffer(true);
     } catch {
       setStatus("error");
     }
@@ -120,6 +123,12 @@ export default function NpsForm() {
                 Sua opinião ajuda a melhorar o CarboZé a cada tanque. 💚
               </p>
             </div>
+            <button
+              onClick={() => setShowOffer(true)}
+              className="bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-extrabold uppercase text-sm px-6 py-3 rounded-xl hover:brightness-110 active:scale-95 transition-all"
+            >
+              🎁 Ver minha surpresa
+            </button>
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -290,12 +299,15 @@ export default function NpsForm() {
                   Enviando…
                 </span>
               ) : (
-                "Enviar avaliação →"
+                "Concluir e ver minha surpresa 🎁"
               )}
             </button>
           </form>
         )}
       </div>
+
+      {/* Popup de oferta + comemoração */}
+      {showOffer && <OfferPopup onClose={() => setShowOffer(false)} />}
 
       {/* Footer mínimo */}
       <footer className="shrink-0 border-t border-white/10 py-4">

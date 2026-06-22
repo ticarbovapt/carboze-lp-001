@@ -7,6 +7,11 @@ export const CHECKOUT_MOTOS  = NS_MOTOS;
 export const CHECKOUT_CARROS = NS_CARROS;
 export const CHECKOUT_URL    = NS_MOTOS;
 
+// ─── Kit 6 meses (oferta pós-NPS) ─────────────────────────────────────────────
+// PROVISÓRIO: aponta p/ o kit de carros até existir o produto "6 meses".
+// Trocar a URL abaixo quando o produto real for criado na loja.
+export const CHECKOUT_KIT6M = NS_CARROS + "?utm_source=nps";
+
 // ─── Influencer (genérico) ───────────────────────────────────────────────────
 export const CHECKOUT_INFLUENCER_MOTOS  = NS_MOTOS  + "?utm_source=influencer";
 export const CHECKOUT_INFLUENCER_CARROS = NS_CARROS + "?utm_source=influencer";

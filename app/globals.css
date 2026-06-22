@@ -84,6 +84,37 @@ details[open] .faq-content {
   max-height: 500px;
 }
 
+/* Popup de oferta — entrada */
+@keyframes popup-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.popup-in {
+  animation: popup-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* CTA com brilho percorrendo */
+.cta-shine {
+  position: relative;
+  overflow: hidden;
+}
+.cta-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  animation: cta-shine 2.6s ease-in-out infinite;
+}
+@keyframes cta-shine {
+  0%   { left: -60%; }
+  55%  { left: 130%; }
+  100% { left: 130%; }
+}
+
 /* Acessibilidade — respeita usuários que pedem menos movimento */
 @media (prefers-reduced-motion: reduce) {
   html {
