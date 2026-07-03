@@ -2,10 +2,12 @@ import HeroInfluencer from "@/components/lovable/influencer/HeroInfluencer";
 import MoneyBurn from "@/components/lovable/influencer/MoneyBurn";
 import FAQInfluencer from "@/components/lovable/influencer/FAQInfluencer";
 import CTAFinalInfluencer from "@/components/lovable/influencer/CTAFinalInfluencer";
-import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 import ProductPickerJean from "./ProductPickerJean";
 import ScienceSectionJean from "./ScienceSectionJean";
 import HowToUseJean from "./HowToUseJean";
+import UnboxingJean from "./UnboxingJean";
+import DepoimentosJean from "./DepoimentosJean";
+import ClientesB2BJean from "./ClientesB2BJean";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 
 interface JeanLPTemplateProps {
@@ -15,6 +17,13 @@ interface JeanLPTemplateProps {
   checkoutCarroHref?: string;
 }
 
+// Carrossel do hero: Sachê → Frascos → Influencer (foto atual = último quadro)
+const HERO_CAROUSEL = [
+  { desktop: "/hero-bg.webp", mobile: "/LP_SACHE_MOBILE.webp" },
+  { desktop: "/cz-pack100-hero-bg.webp", mobile: "/CARBOZE_PACK_MOBILE.webp" },
+  { desktop: "/LP_INFLUENCERS_3.webp", mobile: "/LP_INFLUENCERS_MOBILE.webp" },
+];
+
 export default function JeanLPTemplate({
   bgImage,
   mobileBgImage,
@@ -23,42 +32,58 @@ export default function JeanLPTemplate({
 }: JeanLPTemplateProps) {
   return (
     <main>
-      {/* Hero — com copy mobile melhorado (Ajuste 5) */}
+      {/* Hero — gancho curto + carrossel de produto (sachê → frascos → influencer) */}
       <HeroInfluencer
         bgImage={bgImage}
         mobileBgImage={mobileBgImage}
-        checkoutMotoHref={checkoutMotoHref}
+        carousel={HERO_CAROUSEL}
+        headline={
+          <>
+            O produto que faz você{" "}
+            <span className="text-limao">gastar menos.</span>
+          </>
+        }
+        subtitle="Trata o combustível a cada abastecimento — mais economia, menos manutenção."
+        ctaLabel="QUERO GASTAR MENOS"
+        ctaHref="#escolha-produto"
         mobileSubtitle="R$ 5,99 por sachê · entrega em todo Brasil"
       />
 
-      {/* Produto — card sachê com badge de preço (Ajuste 3) */}
+      {/* Produto + dosagem (ideal p/ motos) */}
       <ProductPickerJean motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
 
       <div className="bg-verde-escuro">
         <hr className="border-white/8 max-w-6xl mx-auto" />
       </div>
 
-      {/* Ciência — 3 bullets visuais (Ajuste 2) */}
+      {/* Ciência (método) */}
       <ScienceSectionJean />
 
       {/* Benefícios */}
       <MoneyBurn />
 
-      {/* Modo de uso — com placeholders de GIF (Ajuste 4) */}
+      {/* Modo de uso */}
       <HowToUseJean />
+
+      {/* Unboxing (transformação / prova na prática) */}
+      <UnboxingJean />
+
+      {/* Depoimentos (prova social) — placeholders até os criativos ficarem prontos */}
+      <DepoimentosJean />
+
+      {/* Clientes B2B (autoridade) — placeholders até termos as logos */}
+      <ClientesB2BJean />
 
       {/* FAQ */}
       <FAQInfluencer />
 
-      {/* CTA Final — marcado com id para o sticky saber onde parar */}
+      {/* CTA Final — id p/ o sticky saber onde parar */}
       <div id="cta-final-section">
         <CTAFinalInfluencer motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
       </div>
 
-      {/* Sticky price bar mobile */}
+      {/* Botão flutuante = CTA de compra (aparece no scroll, some na CTA final) */}
       <StickyPriceBar variant="ambos" motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
-
-      <FloatingWhatsApp />
     </main>
   );
 }

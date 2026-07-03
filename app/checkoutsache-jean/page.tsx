@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { CHECKOUT_MOTOS } from "@/lib/constants";
+import { CHECKOUT_JEAN_MOTOS } from "@/lib/constants";
 
 export default function CheckoutSacheJeanPage() {
-  redirect(CHECKOUT_MOTOS + "?utm_source=jean");
+  redirect(CHECKOUT_JEAN_MOTOS);
 }

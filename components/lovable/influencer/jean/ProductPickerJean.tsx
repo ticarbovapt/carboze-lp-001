@@ -16,10 +16,28 @@ export default function ProductPickerJean({
         <p className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.18em] text-verde-escuro/40 mb-3">
           Escolha seu produto
         </p>
-        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-12">
+        <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-6">
           Para cada veículo,{" "}
           <span className="text-verde-medio">uma fórmula calibrada.</span>
         </h2>
+
+        {/* Faixa de dosagem — ideal para motos / pequenos abastecimentos */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-12">
+          <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/10 bg-verde-escuro/[0.03] px-4 py-3">
+            <span className="text-2xl shrink-0" aria-hidden="true">💧</span>
+            <p className="font-[family-name:var(--font-archivo)] text-sm text-zinc-700">
+              <strong className="font-bold text-verde-escuro">1 sachê de 10ml</strong> trata até{" "}
+              <strong className="font-bold text-verde-escuro">10 litros</strong> — ideal para motos e pequenos abastecimentos.
+            </p>
+          </div>
+          <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/10 bg-verde-escuro/[0.03] px-4 py-3">
+            <span className="text-2xl shrink-0" aria-hidden="true">🛢️</span>
+            <p className="font-[family-name:var(--font-archivo)] text-sm text-zinc-700">
+              <strong className="font-bold text-verde-escuro">1 frasco de 100ml</strong> trata até{" "}
+              <strong className="font-bold text-verde-escuro">100 litros</strong> — para carros e caminhonetes.
+            </p>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -40,7 +58,7 @@ export default function ProductPickerJean({
               <h3 className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-2xl mb-3">
                 Kit 10 Sachês de 10ml
               </h3>
-              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm leading-relaxed mb-5">
+              <p className="font-[family-name:var(--font-archivo)] text-zinc-700 text-sm leading-relaxed mb-5">
                 O etanol presente na gasolina absorve umidade e cria condições que corroem o sistema
                 de injeção. O CarboZé elimina essa umidade, estabiliza o combustível e limpa os bicos
                 injetores a cada abastecimento.
@@ -55,7 +73,7 @@ export default function ProductPickerJean({
                   por sachê
                 </p>
                 <hr className="border-verde-escuro/10 my-2" />
-                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/40 text-xs">
+                <p className="font-[family-name:var(--font-archivo)] text-zinc-500 text-xs">
                   Kit Sachê 10ml com 10 unidades: R$ 59,90
                 </p>
               </div>
@@ -79,7 +97,7 @@ export default function ProductPickerJean({
               <h3 className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-2xl mb-3">
                 Kit 5 Frascos de 100ml
               </h3>
-              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm leading-relaxed mb-5">
+              <p className="font-[family-name:var(--font-archivo)] text-zinc-700 text-sm leading-relaxed mb-5">
                 O biodiesel no diesel oxida rapidamente e forma depósitos nos injetores. O CarboZé
                 estabiliza o combustível, remove a oxidação acumulada e protege o sistema de injeção
                 — seja gasolina, diesel ou etanol.
@@ -92,7 +110,7 @@ export default function ProductPickerJean({
                   por frasco 100ml
                 </p>
                 <hr className="border-verde-escuro/10 my-2" />
-                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/40 text-xs">
+                <p className="font-[family-name:var(--font-archivo)] text-zinc-500 text-xs">
                   Kit Frasco 100ml com 5 unidades: R$ 149,50
                 </p>
               </div>

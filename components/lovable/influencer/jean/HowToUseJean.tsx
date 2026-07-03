@@ -88,7 +88,7 @@ export default function HowToUseJean() {
               <h3 className="font-[family-name:var(--font-basement)] font-bold uppercase text-verde-escuro text-base leading-snug">
                 {step.title}
               </h3>
-              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/55 text-sm leading-relaxed">
+              <p className="font-[family-name:var(--font-archivo)] text-zinc-600 text-sm leading-relaxed">
                 {step.body}
               </p>
             </div>
