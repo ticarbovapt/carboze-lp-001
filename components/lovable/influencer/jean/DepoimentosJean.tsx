@@ -1,4 +1,6 @@
 // Placeholder — os criativos de depoimento (GIF/vídeo + texto) entram aqui quando prontos.
+import SlideCarousel from "@/components/lovable/SlideCarousel";
+
 const depoimentos = [
   { nome: "Cliente CarboZé", contexto: "Motociclista · SP", texto: "Depoimento em breve." },
   { nome: "Cliente CarboZé", contexto: "Motorista de app · RJ", texto: "Depoimento em breve." },
@@ -29,11 +31,12 @@ export default function DepoimentosJean() {
           <span className="text-limao">recomenda.</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {depoimentos.map((d, i) => (
+        <SlideCarousel
+          theme="light"
+          slides={depoimentos.map((d, i) => (
             <div
               key={i}
-              className="bg-white/[0.04] border border-white/10 rounded-2xl p-6 flex flex-col gap-4"
+              className="bg-white/[0.04] border border-white/10 rounded-2xl p-6 flex flex-col gap-4 max-w-md mx-auto"
             >
               {/* Espaço reservado p/ GIF/vídeo do depoimento */}
               <div className="w-full aspect-video rounded-xl bg-white/[0.03] border border-dashed border-white/15 flex items-center justify-center">
@@ -60,7 +63,7 @@ export default function DepoimentosJean() {
               </div>
             </div>
           ))}
-        </div>
+        />
       </div>
     </section>
   );

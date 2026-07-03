@@ -79,7 +79,12 @@ export default function JeanLPTemplate({
 
       {/* CTA Final — id p/ o sticky saber onde parar */}
       <div id="cta-final-section">
-        <CTAFinalInfluencer motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
+        <CTAFinalInfluencer
+          motoHref={checkoutMotoHref}
+          carroHref={checkoutCarroHref}
+          motoLabel="Quero meu sachê"
+          carroLabel="Quero meu frasco"
+        />
       </div>
 
       {/* Botão flutuante = CTA de compra (aparece no scroll, some na CTA final) */}

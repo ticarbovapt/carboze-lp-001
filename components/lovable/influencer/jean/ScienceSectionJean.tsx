@@ -19,26 +19,34 @@ export default function ScienceSectionJean() {
             {/* 3 bullets visuais */}
             <ul className="flex flex-col gap-4 mt-2 mb-8">
               <li className="flex items-start gap-3">
-                <span className="text-limao text-xl mt-0.5 shrink-0">⚡</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-limao mt-0.5 shrink-0" aria-hidden="true">
+                  <path d="M12 2.7c3.4 4 6 7 6 10.1a6 6 0 11-12 0c0-3.1 2.6-6.1 6-10.1z" />
+                  <path d="M4 4l16 16" />
+                </svg>
                 <p className="text-white/80 text-sm font-[family-name:var(--font-archivo)] leading-snug">
                   <strong className="text-white font-bold">Elimina a umidade</strong> — o etanol da gasolina absorve água. O CarboZé age antes que isso roube força do motor.
                 </p>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-limao text-xl mt-0.5 shrink-0">🔥</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-limao mt-0.5 shrink-0" aria-hidden="true">
+                  <path d="M12 3c2 3 4.5 4.5 4.5 8a4.5 4.5 0 11-9 0c0-1.5.6-2.6 1.4-3.6C9.6 8.5 11 7 12 3z" />
+                </svg>
                 <p className="text-white/80 text-sm font-[family-name:var(--font-archivo)] leading-snug">
                   <strong className="text-white font-bold">Queima mais completa</strong> — estabiliza os compostos voláteis e maximiza cada litro abastecido.
                 </p>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-limao text-xl mt-0.5 shrink-0">🛡️</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-limao mt-0.5 shrink-0" aria-hidden="true">
+                  <path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+                  <path d="M9.5 12l1.8 1.8 3.2-3.4" />
+                </svg>
                 <p className="text-white/80 text-sm font-[family-name:var(--font-archivo)] leading-snug">
                   <strong className="text-white font-bold">Protege o sistema de injeção</strong> — forma película protetora nas superfícies metálicas a cada abastecimento.
                 </p>
               </li>
             </ul>
 
-            <CTAButton label="CONHECER O CARBOZÉ" href="/sache" />
+            <CTAButton label="QUERO MEU CARBOZÉ" href="#escolha-produto" />
           </div>
 
           {/* Coluna direita: vídeo */}

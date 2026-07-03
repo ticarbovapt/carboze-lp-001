@@ -1,5 +1,7 @@
 "use client";
 
+import SlideCarousel from "@/components/lovable/SlideCarousel";
+
 const steps = [
   {
     num: "01",
@@ -54,20 +56,19 @@ export default function HowToUseJean() {
           <span className="text-limao">Nenhum mecânico envolvido.</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {steps.map((step) => (
-            <div key={step.num} className="bg-white rounded-2xl p-7 flex flex-col gap-4">
+        <SlideCarousel
+          theme="light"
+          slides={steps.map((step) => (
+            <div key={step.num} className="bg-white rounded-2xl p-7 flex flex-col gap-4 max-w-md mx-auto">
 
               {/* GIF / Placeholder */}
               <div className="w-full rounded-xl overflow-hidden bg-verde-escuro/5 aspect-video flex items-center justify-center mb-2">
-                {/* Quando os GIFs estiverem prontos, a tag <img> abaixo será ativada automaticamente */}
                 <img
                   src={step.gif}
                   alt={step.gifAlt}
                   className="w-full h-full object-cover rounded-xl"
                   loading="lazy"
                   onError={(e) => {
-                    // Fallback visual enquanto GIFs não existem
                     (e.currentTarget as HTMLImageElement).style.display = "none";
                     (e.currentTarget.parentElement as HTMLElement).innerHTML =
                       `<div class="flex flex-col items-center gap-2 text-verde-escuro/20"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1' class='w-10 h-10'><rect x='3' y='3' width='18' height='18' rx='2'/><circle cx='8.5' cy='8.5' r='1.5'/><path d='M21 15l-5-5L5 21'/></svg><span class='text-xs font-archivo'>GIF em produção</span></div>`;
@@ -93,7 +94,7 @@ export default function HowToUseJean() {
               </p>
             </div>
           ))}
-        </div>
+        />
 
       </div>
     </section>

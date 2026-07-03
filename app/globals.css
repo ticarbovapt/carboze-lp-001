@@ -115,6 +115,19 @@ details[open] .faq-content {
   100% { left: 130%; }
 }
 
+/* Marquee — carrossel contínuo de logos */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 22s linear infinite;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
 /* Acessibilidade — respeita usuários que pedem menos movimento */
 @media (prefers-reduced-motion: reduce) {
   html {

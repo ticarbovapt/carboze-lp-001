@@ -5,6 +5,23 @@ interface ProductPickerJeanProps {
   carroHref?: string;
 }
 
+/* Ícones de produto (sem emoji) */
+function DropletIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-verde-escuro" aria-hidden="true">
+      <path d="M12 2.7c3.4 4 6 7 6 10.1a6 6 0 11-12 0c0-3.1 2.6-6.1 6-10.1z" />
+    </svg>
+  );
+}
+function BottleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-verde-escuro" aria-hidden="true">
+      <path d="M10 2h4M11 2v3.2c0 .5-.2 1-.6 1.4L9 8.2A2 2 0 008.3 9.6V20a2 2 0 002 2h3.4a2 2 0 002-2V9.6a2 2 0 00-.7-1.4l-1.4-1.6a2 2 0 01-.6-1.4V2" />
+      <path d="M8.5 13h7" />
+    </svg>
+  );
+}
+
 export default function ProductPickerJean({
   motoHref = "/checkoutsache-jean",
   carroHref = "/checkoutpack100-jean",
@@ -17,43 +34,43 @@ export default function ProductPickerJean({
           Escolha seu produto
         </p>
         <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-6">
-          Para cada veículo,{" "}
-          <span className="text-verde-medio">uma fórmula calibrada.</span>
+          Para cada abastecimento,{" "}
+          <span className="text-verde-medio">a dose certa.</span>
         </h2>
 
-        {/* Faixa de dosagem — ideal para motos / pequenos abastecimentos */}
+        {/* Faixa de dosagem */}
         <div className="flex flex-col sm:flex-row gap-3 mb-12">
           <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/10 bg-verde-escuro/[0.03] px-4 py-3">
-            <span className="text-2xl shrink-0" aria-hidden="true">💧</span>
+            <span className="shrink-0 w-9 h-9 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
+              <DropletIcon />
+            </span>
             <p className="font-[family-name:var(--font-archivo)] text-sm text-zinc-700">
               <strong className="font-bold text-verde-escuro">1 sachê de 10ml</strong> trata até{" "}
-              <strong className="font-bold text-verde-escuro">10 litros</strong> — ideal para motos e pequenos abastecimentos.
+              <strong className="font-bold text-verde-escuro">10 litros</strong> — ideal para pequenos abastecimentos.
             </p>
           </div>
           <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/10 bg-verde-escuro/[0.03] px-4 py-3">
-            <span className="text-2xl shrink-0" aria-hidden="true">🛢️</span>
+            <span className="shrink-0 w-9 h-9 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
+              <BottleIcon />
+            </span>
             <p className="font-[family-name:var(--font-archivo)] text-sm text-zinc-700">
               <strong className="font-bold text-verde-escuro">1 frasco de 100ml</strong> trata até{" "}
-              <strong className="font-bold text-verde-escuro">100 litros</strong> — para carros e caminhonetes.
+              <strong className="font-bold text-verde-escuro">100 litros</strong> — rende até 2 tanques por frasco.
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          {/* Card MOTO */}
+          {/* Card SACHÊ */}
           <div className="border-2 border-limao/40 rounded-2xl p-8 flex flex-col gap-5 bg-limao/[0.02]">
             <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-verde-escuro">
-                <path d="M5 17H3a2 2 0 01-2-2v-4a2 2 0 012-2h2l4-4h4l3 3 2-1 2 2-1 2 1 1-2 3h-3l-2-2H9l-4 4z" />
-                <circle cx="7.5" cy="17.5" r="1.5" />
-                <circle cx="17.5" cy="17.5" r="1.5" />
-              </svg>
+              <DropletIcon />
             </div>
 
             <div>
               <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-[11px] tracking-widest mb-1">
-                Para motos
+                Pequenos abastecimentos
               </p>
               <h3 className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-2xl mb-3">
                 Kit 10 Sachês de 10ml
@@ -64,7 +81,6 @@ export default function ProductPickerJean({
                 injetores a cada abastecimento.
               </p>
 
-              {/* Price block */}
               <div className="bg-verde-escuro/[0.04] rounded-xl p-4 mb-5">
                 <p className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-4xl leading-none">
                   R$ 5,99
@@ -79,20 +95,18 @@ export default function ProductPickerJean({
               </div>
             </div>
 
-            <CTAButton label="Comprar para minha Moto" href={motoHref} />
+            <CTAButton label="Quero meu sachê" href={motoHref} />
           </div>
 
-          {/* Card CARRO */}
+          {/* Card FRASCO */}
           <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
             <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-verde-escuro">
-                <path d="M5 17H3a2 2 0 01-2-2v-3a2 2 0 012-2h14a2 2 0 012 2v3a2 2 0 01-2 2h-2M5 17a2 2 0 104 0M15 17a2 2 0 104 0M7 10l2-5h6l2 5" />
-              </svg>
+              <BottleIcon />
             </div>
 
             <div>
               <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-[11px] tracking-widest mb-1">
-                Para carros
+                Rende até 2 tanques
               </p>
               <h3 className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-2xl mb-3">
                 Kit 5 Frascos de 100ml
@@ -116,7 +130,7 @@ export default function ProductPickerJean({
               </div>
             </div>
 
-            <CTAButton label="Comprar para meu Carro" href={carroHref} />
+            <CTAButton label="Quero meu frasco" href={carroHref} />
           </div>
 
         </div>

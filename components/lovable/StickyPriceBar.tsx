@@ -15,24 +15,23 @@ export default function StickyPriceBar({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    let heroPassed = false;
+    let scrolled = false;
     let ctaVisible = false;
 
     function update() {
-      setVisible(heroPassed && !ctaVisible);
+      setVisible(scrolled && !ctaVisible);
     }
 
-    const heroBlock = document.getElementById("hero-price-block");
+    // Aparece após rolar além da primeira dobra (robusto p/ heroes sem âncora de preço)
+    const onScroll = () => {
+      scrolled = window.scrollY > 500;
+      update();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // Some ao chegar na CTA final
     const ctaSection = document.getElementById("cta-final-section");
-
-    const heroObs = new IntersectionObserver(
-      ([entry]) => {
-        heroPassed = !entry.isIntersecting;
-        update();
-      },
-      { threshold: 0 }
-    );
-
     const ctaObs = new IntersectionObserver(
       ([entry]) => {
         ctaVisible = entry.isIntersecting;
@@ -40,12 +39,10 @@ export default function StickyPriceBar({
       },
       { threshold: 0 }
     );
-
-    if (heroBlock) heroObs.observe(heroBlock);
     if (ctaSection) ctaObs.observe(ctaSection);
 
     return () => {
-      heroObs.disconnect();
+      window.removeEventListener("scroll", onScroll);
       ctaObs.disconnect();
     };
   }, []);
@@ -121,7 +118,7 @@ export default function StickyPriceBar({
                 className="flex-1 flex flex-col items-center justify-center bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-black rounded-xl py-2.5 px-2 hover:brightness-110 active:scale-95 transition-all"
               >
                 <span className="font-[family-name:var(--font-archivo)] text-[10px] uppercase tracking-wider opacity-70 leading-none mb-0.5">
-                  Moto · por sachê
+                  Quero meu sachê
                 </span>
                 <span className="text-xl leading-none">R$ 5,99</span>
               </a>
@@ -130,7 +127,7 @@ export default function StickyPriceBar({
                 className="flex-1 flex flex-col items-center justify-center border-2 border-limao text-limao font-[family-name:var(--font-basement)] font-black rounded-xl py-2.5 px-2 hover:bg-limao/10 active:scale-95 transition-all"
               >
                 <span className="font-[family-name:var(--font-archivo)] text-[10px] uppercase tracking-wider opacity-70 leading-none mb-0.5">
-                  Carro · por frasco
+                  Quero meu frasco
                 </span>
                 <span className="text-xl leading-none">R$ 29,90</span>
               </a>

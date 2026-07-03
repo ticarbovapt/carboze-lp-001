@@ -5,11 +5,15 @@ import { WHATSAPP_URL, SOCIAL_LINKS } from "@/lib/constants";
 interface CTAFinalInfluencerProps {
   motoHref?: string;
   carroHref?: string;
+  motoLabel?: string;
+  carroLabel?: string;
 }
 
 export default function CTAFinalInfluencer({
   motoHref = "/checkoutsache-influencer",
   carroHref = "/checkoutpack100-influencer",
+  motoLabel = "Comprar para minha Moto",
+  carroLabel = "Comprar para meu Carro",
 }: CTAFinalInfluencerProps) {
   return (
     <section className="bg-verde-escuro pt-16 md:pt-24 pb-16 md:pb-20">
@@ -30,13 +34,13 @@ export default function CTAFinalInfluencer({
               href={motoHref}
               className="w-full sm:w-auto text-center font-[family-name:var(--font-basement)] font-bold uppercase tracking-wide rounded-full bg-limao text-verde-escuro px-10 py-4 text-base transition-all hover:brightness-110 active:scale-95"
             >
-              Comprar para minha Moto
+              {motoLabel}
             </a>
             <a
               href={carroHref}
               className="w-full sm:w-auto text-center font-[family-name:var(--font-basement)] font-bold uppercase tracking-wide rounded-full border-2 border-limao text-limao px-10 py-4 text-base transition-all hover:bg-limao hover:text-verde-escuro active:scale-95"
             >
-              Comprar para meu Carro
+              {carroLabel}
             </a>
           </div>
         </div>
