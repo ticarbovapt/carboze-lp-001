@@ -9,6 +9,7 @@ import CostValue100 from "@/components/lovable/pack100/CostValue100";
 import MetadeAgora100 from "@/components/lovable/pack100/MetadeAgora100";
 import FAQ from "@/components/lovable/FAQ";
 import CTAFinal100 from "@/components/lovable/pack100/CTAFinal100";
+import Depoimentos from "@/components/lovable/Depoimentos";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 
 export const metadata: Metadata = {
@@ -55,6 +56,7 @@ export default function Pack100Page() {
       <div className="bg-verde-escuro"><hr className="border-white/8 max-w-6xl mx-auto" /></div>
       <MetadeAgora100 />
       <FAQ dark />
+      <Depoimentos dark />
       <div id="cta-final-section">
         <CTAFinal100 />
       </div>

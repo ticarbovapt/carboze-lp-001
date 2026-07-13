@@ -10,6 +10,7 @@ import CostValue from "@/components/lovable/CostValue";
 import HowToUse from "@/components/lovable/HowToUse";
 import FAQ from "@/components/lovable/FAQ";
 import CTAFinal from "@/components/lovable/CTAFinal";
+import Depoimentos from "@/components/lovable/Depoimentos";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 
 export const metadata: Metadata = {
@@ -54,6 +55,7 @@ export default function SachePage() {
       <CostValue />
       <HowToUse />
       <FAQ />
+      <Depoimentos />
       <div id="cta-final-section">
         <CTAFinal />
       </div>
