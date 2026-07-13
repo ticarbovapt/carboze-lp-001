@@ -62,6 +62,9 @@ export default function Hero100() {
             <p className="font-[family-name:var(--font-archivo)] text-white/60 text-xs">
               Kit Frasco 100ml com 5 unidades: R$ 149,50
             </p>
+            <p className="font-[family-name:var(--font-basement)] font-bold text-limao text-xs mt-2">
+              🚚 Frete grátis · trata até 500 litros
+            </p>
           </div>
 
           <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutpack100" />

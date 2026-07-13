@@ -60,6 +60,9 @@ export default function ProductPicker({
                 <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/40 text-xs">
                   Kit Sachê 10ml com 10 unidades: R$ 59,90
                 </p>
+                <p className="font-[family-name:var(--font-basement)] font-bold text-verde-medio text-xs mt-2">
+                  🚚 Frete grátis · trata até 100 litros
+                </p>
               </div>
             </div>
 
@@ -98,6 +101,9 @@ export default function ProductPicker({
                 <hr className="border-verde-escuro/10 my-2" />
                 <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/40 text-xs">
                   Kit Frasco 100ml com 5 unidades: R$ 149,50
+                </p>
+                <p className="font-[family-name:var(--font-basement)] font-bold text-verde-medio text-xs mt-2">
+                  🚚 Frete grátis · trata até 500 litros
                 </p>
               </div>
             </div>

@@ -63,6 +63,9 @@ export default function Hero() {
             <p className="font-[family-name:var(--font-archivo)] text-white/60 text-xs">
               Kit Sachê 10ml com 10 unidades: R$ 59,90
             </p>
+            <p className="font-[family-name:var(--font-basement)] font-bold text-limao text-xs mt-2">
+              🚚 Frete grátis · trata até 100 litros
+            </p>
           </div>
 
           <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutsache" />
