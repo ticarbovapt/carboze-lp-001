@@ -7,7 +7,6 @@ import ScienceSectionJean from "./ScienceSectionJean";
 import HowToUseJean from "./HowToUseJean";
 import UnboxingJean from "./UnboxingJean";
 import DepoimentosJean from "./DepoimentosJean";
-import ClientesB2BJean from "./ClientesB2BJean";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 
 interface JeanLPTemplateProps {
@@ -68,11 +67,8 @@ export default function JeanLPTemplate({
       {/* Unboxing (transformação / prova na prática) */}
       <UnboxingJean />
 
-      {/* Depoimentos (prova social) — placeholders até os criativos ficarem prontos */}
+      {/* Depoimentos (prova social) — prints reais de clientes */}
       <DepoimentosJean />
-
-      {/* Clientes B2B (autoridade) — placeholders até termos as logos */}
-      <ClientesB2BJean />
 
       {/* FAQ */}
       <FAQInfluencer />
