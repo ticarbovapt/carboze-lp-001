@@ -11,7 +11,6 @@ import SustentabilidadeSection from "@/components/lovable/institucional/Sustenta
 import FAQInstitucional from "@/components/lovable/institucional/FAQInstitucional";
 import CTAFinalInstitucional from "@/components/lovable/institucional/CTAFinalInstitucional";
 import Depoimentos from "@/components/lovable/Depoimentos";
-import ProvaSocial from "@/components/lovable/ProvaSocial";
 import { WHATSAPP_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -35,7 +34,6 @@ export default function HomePage() {
       <CompatibilidadeSection />
       <SustentabilidadeSection />
       <Depoimentos />
-      <ProvaSocial />
       <FAQInstitucional />
       <CTAFinalInstitucional />
       <FloatingWhatsApp />
