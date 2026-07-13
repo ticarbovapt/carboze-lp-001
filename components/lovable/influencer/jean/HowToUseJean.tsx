@@ -70,7 +70,7 @@ export default function HowToUseJean() {
         <SlideCarousel
           theme="light"
           slides={steps.map((step) => (
-            <div key={step.num} className="bg-white rounded-2xl p-7 flex flex-col gap-3 max-w-md mx-auto">
+            <div key={step.num} className="bg-white rounded-2xl p-7 flex flex-col gap-3 max-w-md mx-auto h-full">
               <div className="flex items-center justify-between">
                 <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/15 text-5xl leading-none">
                   {step.num}
