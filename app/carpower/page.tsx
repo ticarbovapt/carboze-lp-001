@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function CarPowerPage() {
   return (
     <JeanLPTemplate
-      bgImage="/LP_INFLUENCERS_3.webp"
-      mobileBgImage="/LP_INFLUENCERS_MOBILE.webp"
+      bgImage="/LP_CARPOWER.webp"
+      mobileBgImage="/LP_CARPOWER_MOBILE.webp"
       checkoutMotoHref="/checkoutsache-carpower"
       checkoutCarroHref="/checkoutpack100-carpower"
     />

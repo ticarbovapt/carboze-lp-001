@@ -16,26 +16,26 @@ interface JeanLPTemplateProps {
   checkoutCarroHref?: string;
 }
 
-// Carrossel do hero: Sachê → Frascos → Influencer (foto atual = último quadro)
-const HERO_CAROUSEL = [
-  { desktop: "/hero-bg.webp", mobile: "/LP_SACHE_MOBILE.webp" },
-  { desktop: "/cz-pack100-hero-bg.webp", mobile: "/CARBOZE_PACK_MOBILE.webp" },
-  { desktop: "/LP_INFLUENCERS_3.webp", mobile: "/LP_INFLUENCERS_MOBILE.webp" },
-];
-
 export default function JeanLPTemplate({
   bgImage,
   mobileBgImage,
   checkoutMotoHref = "/checkoutsache-jean",
   checkoutCarroHref = "/checkoutpack100-jean",
 }: JeanLPTemplateProps) {
+  // Carrossel do hero: Sachê → Frascos → foto da campanha (bgImage por página)
+  const heroCarousel = [
+    { desktop: "/hero-bg.webp", mobile: "/LP_SACHE_MOBILE.webp" },
+    { desktop: "/cz-pack100-hero-bg.webp", mobile: "/CARBOZE_PACK_MOBILE.webp" },
+    { desktop: bgImage, mobile: mobileBgImage ?? bgImage },
+  ];
+
   return (
     <main>
       {/* Hero — gancho curto + carrossel de produto (sachê → frascos → influencer) */}
       <HeroInfluencer
         bgImage={bgImage}
         mobileBgImage={mobileBgImage}
-        carousel={HERO_CAROUSEL}
+        carousel={heroCarousel}
         headline={
           <>
             O produto que faz você{" "}
