@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 const SITE_URL = "https://www.carboze.com.br";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/sache", "/pack100", "/choice", "/loja", "/dionisio", "/jean", "/countdown"];
+  const routes = ["", "/sache", "/pack100", "/choice", "/loja", "/dionisio", "/jean", "/carpower", "/countdown"];
   return routes.map((route) => ({
     url: `${SITE_URL}${route}`,
     changeFrequency: "weekly",

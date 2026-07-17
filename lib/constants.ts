@@ -22,6 +22,10 @@ const NS_JEAN_CARROS = "https://store.carboze.com.br/produtos/carboze-kit-5-fras
 export const CHECKOUT_JEAN_MOTOS  = NS_JEAN_MOTOS  + "?utm_source=jean";
 export const CHECKOUT_JEAN_CARROS = NS_JEAN_CARROS + "?utm_source=jean";
 
+// ─── CarPower (LP espelhada da /jean, com UTM próprio) ───────────────────────
+export const CHECKOUT_CARPOWER_MOTOS  = NS_JEAN_MOTOS  + "?utm_source=carpower";
+export const CHECKOUT_CARPOWER_CARROS = NS_JEAN_CARROS + "?utm_source=carpower";
+
 // ─── TarjaPreta ──────────────────────────────────────────────────────────────
 export const CHECKOUT_TARJAPRETA_MOTOS  = NS_MOTOS  + "?utm_source=tarjapreta";
 export const CHECKOUT_TARJAPRETA_CARROS = NS_CARROS + "?utm_source=tarjapreta";
