@@ -5,11 +5,14 @@ interface ScienceSectionJeanProps {
   /** Vídeo da coluna direita — permite vídeo próprio por campanha. */
   videoSrc?: string;
   videoPoster?: string;
+  /** Proporção do container (ex.: "9 / 16" p/ vídeo vertical). Sem valor = caixa larga padrão. */
+  videoAspect?: string;
 }
 
 export default function ScienceSectionJean({
   videoSrc = "/sache-video.mp4",
   videoPoster = "/sache-moto.jpg",
+  videoAspect,
 }: ScienceSectionJeanProps = {}) {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
@@ -60,7 +63,14 @@ export default function ScienceSectionJean({
           </div>
 
           {/* Coluna direita: vídeo */}
-          <div className="relative w-full rounded-2xl overflow-hidden bg-white/5 min-h-[320px] md:min-h-[400px]">
+          <div
+            className={
+              videoAspect
+                ? "relative w-full max-w-[300px] sm:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-white/5"
+                : "relative w-full rounded-2xl overflow-hidden bg-white/5 min-h-[320px] md:min-h-[400px]"
+            }
+            style={videoAspect ? { aspectRatio: videoAspect } : undefined}
+          >
             <InViewVideo
               src={videoSrc}
               poster={videoPoster}

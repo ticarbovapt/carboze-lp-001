@@ -17,6 +17,8 @@ interface JeanLPTemplateProps {
   /** Vídeo da seção "A ciência" — permite vídeo próprio por campanha. */
   scienceVideoSrc?: string;
   scienceVideoPoster?: string;
+  /** Proporção do vídeo da ciência (ex.: "9 / 16" p/ vertical). */
+  scienceVideoAspect?: string;
 }
 
 export default function JeanLPTemplate({
@@ -26,6 +28,7 @@ export default function JeanLPTemplate({
   checkoutCarroHref = "/checkoutpack100-jean",
   scienceVideoSrc,
   scienceVideoPoster,
+  scienceVideoAspect,
 }: JeanLPTemplateProps) {
   // Carrossel do hero: Sachê → Frascos → foto da campanha (bgImage por página)
   const heroCarousel = [
@@ -61,7 +64,11 @@ export default function JeanLPTemplate({
       </div>
 
       {/* Ciência (método) */}
-      <ScienceSectionJean videoSrc={scienceVideoSrc} videoPoster={scienceVideoPoster} />
+      <ScienceSectionJean
+        videoSrc={scienceVideoSrc}
+        videoPoster={scienceVideoPoster}
+        videoAspect={scienceVideoAspect}
+      />
 
       {/* Benefícios */}
       <MoneyBurn />

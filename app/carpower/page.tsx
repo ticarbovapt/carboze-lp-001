@@ -17,6 +17,7 @@ export default function CarPowerPage() {
       checkoutCarroHref="/checkoutpack100-carpower"
       scienceVideoSrc="/ciencia-carpower.mp4"
       scienceVideoPoster="/ciencia-carpower-poster.webp"
+      scienceVideoAspect="9 / 16"
     />
   );
 }
