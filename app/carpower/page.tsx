@@ -15,6 +15,8 @@ export default function CarPowerPage() {
       mobileBgImage="/LP_CARPOWER_MOBILE.webp"
       checkoutMotoHref="/checkoutsache-carpower"
       checkoutCarroHref="/checkoutpack100-carpower"
+      scienceVideoSrc="/ciencia-carpower.mp4"
+      scienceVideoPoster="/ciencia-carpower-poster.webp"
     />
   );
 }

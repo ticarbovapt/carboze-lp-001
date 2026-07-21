@@ -66,14 +66,14 @@ export default function StickyPriceBar({
               <div>
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-2xl leading-none">
-                    R$ 5,99
+                    R$ 59,90
                   </span>
                   <span className="font-[family-name:var(--font-archivo)] text-white/50 text-xs">
-                    /sachê
+                    /kit 10 un.
                   </span>
                 </div>
                 <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[10px] mt-0.5">
-                  Kit 10 un. = R$ 59,90
+                  R$ 5,99 por sachê
                 </p>
               </div>
               <a
@@ -91,14 +91,14 @@ export default function StickyPriceBar({
               <div>
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-2xl leading-none">
-                    R$ 29,90
+                    R$ 149,50
                   </span>
                   <span className="font-[family-name:var(--font-archivo)] text-white/50 text-xs">
-                    /frasco
+                    /kit 5 un.
                   </span>
                 </div>
                 <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[10px] mt-0.5">
-                  Kit 5 un. = R$ 149,50
+                  R$ 29,90 por frasco
                 </p>
               </div>
               <a
@@ -120,7 +120,10 @@ export default function StickyPriceBar({
                 <span className="font-[family-name:var(--font-archivo)] text-[10px] uppercase tracking-wider opacity-70 leading-none mb-0.5">
                   Quero meu sachê
                 </span>
-                <span className="text-xl leading-none">R$ 5,99</span>
+                <span className="text-xl leading-none">R$ 59,90</span>
+                <span className="font-[family-name:var(--font-archivo)] font-semibold text-[9px] opacity-70 leading-none mt-0.5">
+                  R$ 5,99 por sachê
+                </span>
               </a>
               <a
                 href={carroHref}
@@ -129,7 +132,10 @@ export default function StickyPriceBar({
                 <span className="font-[family-name:var(--font-archivo)] text-[10px] uppercase tracking-wider opacity-70 leading-none mb-0.5">
                   Quero meu frasco
                 </span>
-                <span className="text-xl leading-none">R$ 29,90</span>
+                <span className="text-xl leading-none">R$ 149,50</span>
+                <span className="font-[family-name:var(--font-archivo)] font-semibold text-[9px] opacity-70 leading-none mt-0.5">
+                  R$ 29,90 por frasco
+                </span>
               </a>
             </div>
           )}

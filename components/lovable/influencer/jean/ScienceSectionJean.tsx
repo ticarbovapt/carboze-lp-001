@@ -1,6 +1,16 @@
 import CTAButton from "@/components/lovable/CTAButton";
+import InViewVideo from "@/components/lovable/InViewVideo";
 
-export default function ScienceSectionJean() {
+interface ScienceSectionJeanProps {
+  /** Vídeo da coluna direita — permite vídeo próprio por campanha. */
+  videoSrc?: string;
+  videoPoster?: string;
+}
+
+export default function ScienceSectionJean({
+  videoSrc = "/sache-video.mp4",
+  videoPoster = "/sache-moto.jpg",
+}: ScienceSectionJeanProps = {}) {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
@@ -51,16 +61,11 @@ export default function ScienceSectionJean() {
 
           {/* Coluna direita: vídeo */}
           <div className="relative w-full rounded-2xl overflow-hidden bg-white/5 min-h-[320px] md:min-h-[400px]">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
+            <InViewVideo
+              src={videoSrc}
+              poster={videoPoster}
               className="absolute inset-0 w-full h-full object-cover"
-              poster="/sache-moto.jpg"
-            >
-              <source src="/sache-video.mp4" type="video/mp4" />
-            </video>
+            />
           </div>
 
         </div>

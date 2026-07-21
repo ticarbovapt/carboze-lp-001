@@ -1,4 +1,5 @@
 import SlideCarousel from "@/components/lovable/SlideCarousel";
+import InViewVideo from "@/components/lovable/InViewVideo";
 
 const steps = [
   {
@@ -51,18 +52,12 @@ export default function HowToUseJean() {
         {/* Vídeo dos takes */}
         <div className="mx-auto w-full max-w-[360px] sm:max-w-[420px] mb-10">
           <div className="relative rounded-3xl overflow-hidden bg-black aspect-[4/5] shadow-xl shadow-black/30 border border-white/10">
-            <video
-              className="absolute inset-0 w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls
-              preload="metadata"
+            <InViewVideo
+              src="/takes-jean.mp4"
               poster="/takes-jean-poster.webp"
-            >
-              <source src="/takes-jean.mp4" type="video/mp4" />
-            </video>
+              controls
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </div>
         </div>
 

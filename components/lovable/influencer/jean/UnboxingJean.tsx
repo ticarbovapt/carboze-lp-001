@@ -1,3 +1,5 @@
+import InViewVideo from "@/components/lovable/InViewVideo";
+
 export default function UnboxingJean() {
   return (
     <section className="bg-white py-16 md:py-24">
@@ -18,18 +20,12 @@ export default function UnboxingJean() {
           {/* Vídeo vertical (unboxing real) */}
           <div className="mx-auto w-full max-w-[300px] sm:max-w-[320px]">
             <div className="relative rounded-3xl overflow-hidden bg-verde-escuro aspect-[9/16] shadow-xl shadow-verde-escuro/20 border border-verde-escuro/10">
-              <video
-                className="absolute inset-0 w-full h-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                controls
-                preload="metadata"
+              <InViewVideo
+                src="/unboxing-jean.mp4"
                 poster="/unboxing-jean-poster.webp"
-              >
-                <source src="/unboxing-jean.mp4" type="video/mp4" />
-              </video>
+                controls
+                className="absolute inset-0 w-full h-full object-cover"
+              />
             </div>
           </div>
 

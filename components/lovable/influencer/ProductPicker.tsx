@@ -51,14 +51,14 @@ export default function ProductPicker({
               </p>
               <div className="bg-verde-escuro/[0.04] rounded-xl p-4 mb-5">
                 <p className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-4xl leading-none">
-                  R$ 5,99
+                  R$ 59,90
                 </p>
                 <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm mt-1">
-                  por sachê
+                  Kit com 10 sachês de 10ml
                 </p>
                 <hr className="border-verde-escuro/10 my-2" />
-                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/40 text-xs">
-                  Kit Sachê 10ml com 10 unidades: R$ 59,90
+                <p className="font-[family-name:var(--font-archivo)] font-semibold text-verde-escuro/70 text-xs">
+                  R$ 5,99 por sachê
                 </p>
                 <p className="font-[family-name:var(--font-basement)] font-bold text-verde-medio text-xs mt-2">
                   🚚 Frete grátis · trata até 100 litros
@@ -93,14 +93,14 @@ export default function ProductPicker({
               </p>
               <div className="bg-verde-escuro/[0.04] rounded-xl p-4 mb-5">
                 <p className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro text-4xl leading-none">
-                  R$ 29,90
+                  R$ 149,50
                 </p>
                 <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm mt-1">
-                  por frasco 100ml
+                  Kit com 5 frascos de 100ml
                 </p>
                 <hr className="border-verde-escuro/10 my-2" />
-                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/40 text-xs">
-                  Kit Frasco 100ml com 5 unidades: R$ 149,50
+                <p className="font-[family-name:var(--font-archivo)] font-semibold text-verde-escuro/70 text-xs">
+                  R$ 29,90 por frasco 100ml
                 </p>
                 <p className="font-[family-name:var(--font-basement)] font-bold text-verde-medio text-xs mt-2">
                   🚚 Frete grátis · trata até 500 litros

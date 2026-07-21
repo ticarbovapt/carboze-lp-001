@@ -14,6 +14,9 @@ interface JeanLPTemplateProps {
   mobileBgImage?: string;
   checkoutMotoHref?: string;
   checkoutCarroHref?: string;
+  /** Vídeo da seção "A ciência" — permite vídeo próprio por campanha. */
+  scienceVideoSrc?: string;
+  scienceVideoPoster?: string;
 }
 
 export default function JeanLPTemplate({
@@ -21,6 +24,8 @@ export default function JeanLPTemplate({
   mobileBgImage,
   checkoutMotoHref = "/checkoutsache-jean",
   checkoutCarroHref = "/checkoutpack100-jean",
+  scienceVideoSrc,
+  scienceVideoPoster,
 }: JeanLPTemplateProps) {
   // Carrossel do hero: Sachê → Frascos → foto da campanha (bgImage por página)
   const heroCarousel = [
@@ -45,7 +50,7 @@ export default function JeanLPTemplate({
         subtitle="Trata o combustível a cada abastecimento — mais economia, menos manutenção."
         ctaLabel="QUERO GASTAR MENOS"
         ctaHref="#escolha-produto"
-        mobileSubtitle="R$ 5,99 por sachê · entrega em todo Brasil"
+        mobileSubtitle="Kit 10 sachês por R$ 59,90 · entrega em todo Brasil"
       />
 
       {/* Produto + dosagem (ideal p/ motos) */}
@@ -56,7 +61,7 @@ export default function JeanLPTemplate({
       </div>
 
       {/* Ciência (método) */}
-      <ScienceSectionJean />
+      <ScienceSectionJean videoSrc={scienceVideoSrc} videoPoster={scienceVideoPoster} />
 
       {/* Benefícios */}
       <MoneyBurn />

@@ -12,7 +12,7 @@ const archivo = Archivo({
 
 const SITE_URL = "https://www.carboze.com.br";
 const DESCRIPTION =
-  "Kit com 10 sachês de 10ml. Elimina umidade, melhora a combustão e limpa o motor a cada abastecimento. R$ 5,99 por sachê.";
+  "Kit com 10 sachês de 10ml por R$ 59,90. Elimina umidade, melhora a combustão e limpa o motor a cada abastecimento.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

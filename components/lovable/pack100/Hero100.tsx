@@ -53,14 +53,14 @@ export default function Hero100() {
           {/* Bloco de preço */}
           <div id="hero-price-block" className="bg-white/[0.10] border border-white/20 rounded-2xl px-4 py-3.5 mb-4 w-fit max-w-sm">
             <p className="font-[family-name:var(--font-basement)] font-extrabold text-limao text-4xl sm:text-5xl md:text-6xl leading-none whitespace-nowrap">
-              R$ 29,90
+              R$ 149,50
             </p>
             <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm mt-1">
-              por frasco 100ml
+              Kit com 5 frascos de 100ml
             </p>
             <hr className="border-white/10 my-2.5" />
-            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-xs">
-              Kit Frasco 100ml com 5 unidades: R$ 149,50
+            <p className="font-[family-name:var(--font-archivo)] font-semibold text-white/75 text-xs">
+              R$ 29,90 por frasco 100ml
             </p>
             <p className="font-[family-name:var(--font-basement)] font-bold text-limao text-xs mt-2">
               🚚 Frete grátis · trata até 500 litros
