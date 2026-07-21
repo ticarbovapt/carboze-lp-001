@@ -7,6 +7,7 @@ import ScienceSectionJean from "./ScienceSectionJean";
 import HowToUseJean from "./HowToUseJean";
 import UnboxingJean from "./UnboxingJean";
 import DepoimentosJean from "./DepoimentosJean";
+import ParceriaCarPower from "./ParceriaCarPower";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 
 interface JeanLPTemplateProps {
@@ -19,6 +20,10 @@ interface JeanLPTemplateProps {
   scienceVideoPoster?: string;
   /** Proporção do vídeo da ciência (ex.: "9 / 16" p/ vertical). */
   scienceVideoAspect?: string;
+  /** Inclui a foto da campanha (bgImage) como 3º quadro do carrossel do hero. */
+  heroCampaignSlide?: boolean;
+  /** Exibe a seção de parceria CarPower logo abaixo do hero. */
+  showParceriaCarPower?: boolean;
 }
 
 export default function JeanLPTemplate({
@@ -29,12 +34,14 @@ export default function JeanLPTemplate({
   scienceVideoSrc,
   scienceVideoPoster,
   scienceVideoAspect,
+  heroCampaignSlide = true,
+  showParceriaCarPower = false,
 }: JeanLPTemplateProps) {
-  // Carrossel do hero: Sachê → Frascos → foto da campanha (bgImage por página)
+  // Carrossel do hero: Sachê → Frascos → (opcional) foto da campanha
   const heroCarousel = [
     { desktop: "/hero-bg.webp", mobile: "/LP_SACHE_MOBILE.webp" },
     { desktop: "/cz-pack100-hero-bg.webp", mobile: "/CARBOZE_PACK_MOBILE.webp" },
-    { desktop: bgImage, mobile: mobileBgImage ?? bgImage },
+    ...(heroCampaignSlide ? [{ desktop: bgImage, mobile: mobileBgImage ?? bgImage }] : []),
   ];
 
   return (
@@ -55,6 +62,9 @@ export default function JeanLPTemplate({
         ctaHref="#escolha-produto"
         mobileSubtitle="Kit 10 sachês por R$ 59,90 · entrega em todo Brasil"
       />
+
+      {/* Parceria CarPower (só nas campanhas que ativam) */}
+      {showParceriaCarPower && <ParceriaCarPower />}
 
       {/* Produto + dosagem (ideal p/ motos) */}
       <ProductPickerJean motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />

@@ -18,6 +18,8 @@ export default function CarPowerPage() {
       scienceVideoSrc="/ciencia-carpower.mp4"
       scienceVideoPoster="/ciencia-carpower-poster.webp"
       scienceVideoAspect="9 / 16"
+      heroCampaignSlide={false}
+      showParceriaCarPower
     />
   );
 }
