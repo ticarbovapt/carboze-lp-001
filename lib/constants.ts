@@ -1,6 +1,6 @@
-// ─── URLs base Nuvemshop ──────────────────────────────────────────────────────
-const NS_MOTOS  = "https://carboze.lojavirtualnuvem.com.br/produtos/kit-10-saches-carboze-moto-10ml-tratamento-de-combustivel-e-protecao-do-motor/";
-const NS_CARROS = "https://carboze.lojavirtualnuvem.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor/";
+// ─── URLs base da loja (domínio oficial: loja.carboze.com.br) ─────────────────
+const NS_MOTOS  = "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-moto-10ml-tratamento-de-combustivel-e-protecao-do-motor/";
+const NS_CARROS = "https://loja.carboze.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor/";
 
 // ─── Checkout padrão ─────────────────────────────────────────────────────────
 export const CHECKOUT_MOTOS  = NS_MOTOS;
@@ -16,15 +16,13 @@ export const CHECKOUT_KIT6M = NS_CARROS + "?utm_source=nps";
 export const CHECKOUT_INFLUENCER_MOTOS  = NS_MOTOS  + "?utm_source=influencer";
 export const CHECKOUT_INFLUENCER_CARROS = NS_CARROS + "?utm_source=influencer";
 
-// ─── Jean (novo domínio store.carboze.com.br — exclusivo desta campanha) ───────
-const NS_JEAN_MOTOS  = "https://store.carboze.com.br/produtos/kit-10-saches-carboze-moto-10ml-tratamento-de-combustivel-e-protecao-do-motor/";
-const NS_JEAN_CARROS = "https://store.carboze.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor/";
-export const CHECKOUT_JEAN_MOTOS  = NS_JEAN_MOTOS  + "?utm_source=jean";
-export const CHECKOUT_JEAN_CARROS = NS_JEAN_CARROS + "?utm_source=jean";
+// ─── Jean ────────────────────────────────────────────────────────────────────
+export const CHECKOUT_JEAN_MOTOS  = NS_MOTOS  + "?utm_source=jean";
+export const CHECKOUT_JEAN_CARROS = NS_CARROS + "?utm_source=jean";
 
 // ─── CarPower (LP espelhada da /jean, com UTM próprio) ───────────────────────
-export const CHECKOUT_CARPOWER_MOTOS  = NS_JEAN_MOTOS  + "?utm_source=carpower";
-export const CHECKOUT_CARPOWER_CARROS = NS_JEAN_CARROS + "?utm_source=carpower";
+export const CHECKOUT_CARPOWER_MOTOS  = NS_MOTOS  + "?utm_source=carpower";
+export const CHECKOUT_CARPOWER_CARROS = NS_CARROS + "?utm_source=carpower";
 
 // ─── TarjaPreta ──────────────────────────────────────────────────────────────
 export const CHECKOUT_TARJAPRETA_MOTOS  = NS_MOTOS  + "?utm_source=tarjapreta";
