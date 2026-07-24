@@ -4,7 +4,7 @@ interface CTAButtonProps {
   label?: string;
   href?: string;
   className?: string;
-  size?: "default" | "large";
+  size?: "default" | "large" | "card";
 }
 
 export default function CTAButton({
@@ -18,6 +18,8 @@ export default function CTAButton({
   const sizes =
     size === "large"
       ? "px-10 py-5 text-xl"
+      : size === "card"
+      ? "px-6 py-4 text-sm sm:text-base text-center"
       : "px-8 py-4 text-base md:text-lg";
 
   return (

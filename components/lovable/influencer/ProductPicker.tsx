@@ -67,7 +67,7 @@ export default function ProductPicker({
               </div>
             </div>
 
-            <CTAButton label="Quero economizar na moto" href={motoHref} />
+            <CTAButton label="Quero economizar na moto" href={motoHref} size="card" className="w-full" />
           </div>
 
           {/* Card CARRO */}
@@ -109,7 +109,7 @@ export default function ProductPicker({
               </div>
             </div>
 
-            <CTAButton label="Quero economizar no carro" href={carroHref} />
+            <CTAButton label="Quero economizar no carro" href={carroHref} size="card" className="w-full" />
           </div>
 
         </div>
