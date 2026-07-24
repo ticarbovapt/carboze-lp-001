@@ -34,7 +34,7 @@ export default function CostValue() {
                 investimento mais barato da manutenção da moto.
               </p>
             </div>
-            <CTAButton label="QUERO O KIT DE 10 SACHÊS" size="large" href="/checkoutsache" />
+            <CTAButton label="Quero economizar na moto" size="large" href="/checkoutsache" />
           </div>
 
           {/* Coluna direita — foto produto + overlay RESUMINDO */}

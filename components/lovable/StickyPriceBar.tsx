@@ -80,7 +80,7 @@ export default function StickyPriceBar({
                 href={motoHref}
                 className="shrink-0 bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-black uppercase text-sm px-5 py-2.5 rounded-xl hover:brightness-110 active:scale-95 transition-all"
               >
-                Comprar
+                Economizar
               </a>
             </div>
           )}
@@ -105,7 +105,7 @@ export default function StickyPriceBar({
                 href={carroHref}
                 className="shrink-0 bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-black uppercase text-sm px-5 py-2.5 rounded-xl hover:brightness-110 active:scale-95 transition-all"
               >
-                Comprar
+                Economizar
               </a>
             </div>
           )}
@@ -118,7 +118,7 @@ export default function StickyPriceBar({
                 className="flex-1 flex flex-col items-center justify-center bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-black rounded-xl py-2.5 px-2 hover:brightness-110 active:scale-95 transition-all"
               >
                 <span className="font-[family-name:var(--font-archivo)] text-[10px] uppercase tracking-wider opacity-70 leading-none mb-0.5">
-                  Quero meu sachê
+                  Economizar na moto
                 </span>
                 <span className="text-xl leading-none">R$ 59,90</span>
                 <span className="font-[family-name:var(--font-archivo)] font-semibold text-[9px] opacity-70 leading-none mt-0.5">
@@ -130,7 +130,7 @@ export default function StickyPriceBar({
                 className="flex-1 flex flex-col items-center justify-center border-2 border-limao text-limao font-[family-name:var(--font-basement)] font-black rounded-xl py-2.5 px-2 hover:bg-limao/10 active:scale-95 transition-all"
               >
                 <span className="font-[family-name:var(--font-archivo)] text-[10px] uppercase tracking-wider opacity-70 leading-none mb-0.5">
-                  Quero meu frasco
+                  Economizar no carro
                 </span>
                 <span className="text-xl leading-none">R$ 149,50</span>
                 <span className="font-[family-name:var(--font-archivo)] font-semibold text-[9px] opacity-70 leading-none mt-0.5">

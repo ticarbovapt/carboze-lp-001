@@ -12,8 +12,8 @@ interface CTAFinalInfluencerProps {
 export default function CTAFinalInfluencer({
   motoHref = "/checkoutsache-influencer",
   carroHref = "/checkoutpack100-influencer",
-  motoLabel = "Comprar para minha Moto",
-  carroLabel = "Comprar para meu Carro",
+  motoLabel = "Quero economizar na moto",
+  carroLabel = "Quero economizar no carro",
 }: CTAFinalInfluencerProps) {
   return (
     <section className="bg-verde-escuro pt-16 md:pt-24 pb-16 md:pb-20">

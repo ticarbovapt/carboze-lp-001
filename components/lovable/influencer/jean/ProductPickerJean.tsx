@@ -1,4 +1,5 @@
 import CTAButton from "@/components/lovable/CTAButton";
+import FreteBadge from "@/components/lovable/FreteBadge";
 
 interface ProductPickerJeanProps {
   motoHref?: string;
@@ -93,12 +94,12 @@ export default function ProductPickerJean({
                   R$ 5,99 por sachê
                 </p>
                 <p className="font-[family-name:var(--font-basement)] font-bold text-verde-medio text-xs mt-2">
-                  🚚 Frete grátis · trata até 100 litros
+                  <FreteBadge litros={100} />
                 </p>
               </div>
             </div>
 
-            <CTAButton label="Quero meu sachê" href={motoHref} />
+            <CTAButton label="Quero economizar na moto" href={motoHref} />
           </div>
 
           {/* Card FRASCO */}
@@ -131,12 +132,12 @@ export default function ProductPickerJean({
                   R$ 29,90 por frasco 100ml
                 </p>
                 <p className="font-[family-name:var(--font-basement)] font-bold text-verde-medio text-xs mt-2">
-                  🚚 Frete grátis · trata até 500 litros
+                  <FreteBadge litros={500} />
                 </p>
               </div>
             </div>
 
-            <CTAButton label="Quero meu frasco" href={carroHref} />
+            <CTAButton label="Quero economizar no carro" href={carroHref} />
           </div>
 
         </div>

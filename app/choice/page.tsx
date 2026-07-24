@@ -53,7 +53,7 @@ const PRODUCTS = [
     kitInfo: "R$ 5,99 por sachê · Frete grátis · trata até 100 L",
     benefits: ["Elimina umidade do combustível", "Melhora ignição a frio", "Limpa bicos injetores"],
     href: "/checkoutsache",
-    cta: "Quero para minha moto",
+    cta: "Quero economizar na moto",
     icon: (active: boolean) => <MotoIcon active={active} />,
   },
   {
@@ -66,7 +66,7 @@ const PRODUCTS = [
     kitInfo: "R$ 29,90 por frasco · Frete grátis · trata até 500 L",
     benefits: ["Protege bicos injetores", "Reduz consumo de combustível", "Combate bactérias no diesel B15"],
     href: "/checkoutpack100",
-    cta: "Quero para meu carro",
+    cta: "Quero economizar no carro",
     icon: (active: boolean) => <CarIcon active={active} />,
   },
 ];

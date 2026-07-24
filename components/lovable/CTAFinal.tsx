@@ -16,7 +16,7 @@ export default function CTAFinal() {
           <p className="font-[family-name:var(--font-archivo)] text-white/55 text-base md:text-lg leading-relaxed mb-10">
             Você pode continuar deixando o tanque engolir umidade e desperdiçar dinheiro em uma queima incompleta, ou pode otimizar seu combustível com engenharia real. Proteção e economia máxima direto no tanque.
           </p>
-          <CTAButton label="COMPRAR AGORA" size="large" href="/checkoutsache" />
+          <CTAButton label="Quero economizar na moto" size="large" href="/checkoutsache" />
         </div>
 
         {/* Footer */}

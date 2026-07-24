@@ -100,8 +100,8 @@ export default function JeanLPTemplate({
         <CTAFinalInfluencer
           motoHref={checkoutMotoHref}
           carroHref={checkoutCarroHref}
-          motoLabel="Quero meu sachê"
-          carroLabel="Quero meu frasco"
+          motoLabel="Quero economizar na moto"
+          carroLabel="Quero economizar no carro"
         />
       </div>
 

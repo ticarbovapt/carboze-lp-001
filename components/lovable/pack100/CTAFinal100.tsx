@@ -21,7 +21,7 @@ export default function CTAFinal100() {
 
           {/* CTA + imagem produto */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-            <CTAButton label="COMPRAR AGORA" size="large" href="/checkoutpack100" />
+            <CTAButton label="Quero economizar no carro" size="large" href="/checkoutpack100" />
 
             <div className="w-full rounded-2xl overflow-hidden bg-verde-escuro border border-verde-escuro/20">
               {/* eslint-disable-next-line @next/next/no-img-element */}

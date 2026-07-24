@@ -1,4 +1,5 @@
 import CTAButton from "../CTAButton";
+import FreteBadge from "../FreteBadge";
 
 export default function Hero100() {
   return (
@@ -63,11 +64,11 @@ export default function Hero100() {
               R$ 29,90 por frasco 100ml
             </p>
             <p className="font-[family-name:var(--font-basement)] font-bold text-limao text-xs mt-2">
-              🚚 Frete grátis · trata até 500 litros
+              <FreteBadge litros={500} />
             </p>
           </div>
 
-          <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutpack100" />
+          <CTAButton label="Quero economizar no carro" size="large" href="/checkoutpack100" />
 
           <p className="mt-3 text-xs text-white/60 font-[family-name:var(--font-archivo)]">
             Disponível no Mercado Livre e Amazon

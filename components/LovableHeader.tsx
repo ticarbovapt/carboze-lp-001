@@ -13,7 +13,7 @@ interface LovableHeaderProps {
   ctaLabel?: string;
 }
 
-export default function LovableHeader({ checkoutHref = "/choice", hideNav = false, suporteHref, transparent = false, ctaLabel = "Compre Online" }: LovableHeaderProps) {
+export default function LovableHeader({ checkoutHref = "/choice", hideNav = false, suporteHref, transparent = false, ctaLabel = "Quero economizar" }: LovableHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

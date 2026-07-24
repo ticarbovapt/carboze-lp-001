@@ -1,4 +1,5 @@
 import CTAButton from "./CTAButton";
+import FreteBadge from "./FreteBadge";
 
 export default function Hero() {
   return (
@@ -64,11 +65,11 @@ export default function Hero() {
               R$ 5,99 por sachê
             </p>
             <p className="font-[family-name:var(--font-basement)] font-bold text-limao text-xs mt-2">
-              🚚 Frete grátis · trata até 100 litros
+              <FreteBadge litros={100} />
             </p>
           </div>
 
-          <CTAButton label="QUERO MEU PACK" size="large" href="/checkoutsache" />
+          <CTAButton label="Quero economizar na moto" size="large" href="/checkoutsache" />
 
           <p className="mt-3 text-xs text-white/60 font-[family-name:var(--font-archivo)]">
             Disponível no Mercado Livre e Amazon

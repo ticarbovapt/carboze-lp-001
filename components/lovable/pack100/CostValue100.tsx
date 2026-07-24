@@ -30,7 +30,7 @@ export default function CostValue100() {
                 da manutenção do seu veículo.
               </p>
             </div>
-            <CTAButton label="QUERO O PACK 100ML" size="large" href="/checkoutpack100" />
+            <CTAButton label="Quero economizar no carro" size="large" href="/checkoutpack100" />
           </div>
 
           {/* Coluna direita — imagem */}
