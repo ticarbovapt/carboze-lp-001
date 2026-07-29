@@ -36,9 +36,21 @@ interface ExitOfferProps {
   /** Modal com overlay (exit intent) ou bloco embutido (rota /cupom). */
   variant?: "modal" | "inline";
   onClose?: () => void;
+  /**
+   * Destinos de checkout. Cada LP precisa passar os SEUS — as rotas de
+   * influencer carregam o utm_source da campanha, e usar o link genérico
+   * aqui faria a venda vinda do popup perder a atribuição.
+   */
+  motoHref?: string;
+  carroHref?: string;
 }
 
-export default function ExitOffer({ variant = "modal", onClose }: ExitOfferProps) {
+export default function ExitOffer({
+  variant = "modal",
+  onClose,
+  motoHref = CHECKOUT_MOTOS,
+  carroHref = CHECKOUT_CARROS,
+}: ExitOfferProps) {
   const [left, setLeft] = useState(EXIT_OFFER.urgencyMinutes * 60);
   const [claimed, setClaimed] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -149,7 +161,7 @@ export default function ExitOffer({ variant = "modal", onClose }: ExitOfferProps
             {/* Escolha do produto */}
             <div className="mt-5 w-full flex flex-col gap-2">
               <a
-                href={CHECKOUT_MOTOS}
+                href={motoHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cta-shine w-full bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-extrabold uppercase text-sm py-3.5 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center"
@@ -157,7 +169,7 @@ export default function ExitOffer({ variant = "modal", onClose }: ExitOfferProps
                 Usar na moto · Kit sachê
               </a>
               <a
-                href={CHECKOUT_CARROS}
+                href={carroHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full border border-limao/40 text-limao font-[family-name:var(--font-basement)] font-extrabold uppercase text-sm py-3.5 rounded-xl hover:bg-limao/10 active:scale-[0.98] transition-all flex items-center justify-center"
