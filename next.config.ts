@@ -11,10 +11,17 @@ const nextConfig: NextConfig = {
   compress: true,
   async redirects() {
     return [
-      // Aliases com acento e variantes curtas → páginas reais
-      { source: "/sachê", destination: "/sache",   permanent: true },
-      { source: "/moto",       destination: "/sache",   permanent: true },
-      { source: "/carro",      destination: "/pack100", permanent: true },
+      // As LPs /sache e /pack100 foram descontinuadas: a home passou a vender
+      // os dois produtos no seletor #escolha-produto. Redirecionamos as URLs
+      // antigas (e os aliases que apontavam pra elas) para lá, em vez de 404 —
+      // preserva link externo, tráfego de anúncio e o SEO acumulado.
+      { source: "/sache",     destination: "/#escolha-produto", permanent: true },
+      { source: "/sachê",     destination: "/#escolha-produto", permanent: true },
+      { source: "/pack100",   destination: "/#escolha-produto", permanent: true },
+      { source: "/moto",      destination: "/#escolha-produto", permanent: true },
+      { source: "/carro",     destination: "/#escolha-produto", permanent: true },
+      { source: "/choice",    destination: "/#escolha-produto", permanent: true },
+      { source: "/countdown", destination: "/",                 permanent: true },
     ];
   },
   async headers() {
