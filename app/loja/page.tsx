@@ -19,7 +19,7 @@ const stores = [
     id: "oficial",
     name: "Loja Online Oficial",
     desc: "Melhor preço garantido · compra direta",
-    href: "/choice",
+    href: "/#escolha-produto",
     featured: true,
     icon: <StoreIcon />,
     accent: "border-limao ring-1 ring-limao/20 bg-limao/[0.04] hover:bg-limao/[0.07]",
