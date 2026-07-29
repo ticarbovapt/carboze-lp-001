@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import LovableHeader from "@/components/LovableHeader";
 import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
-import HeroInstitucional from "@/components/lovable/institucional/HeroInstitucional";
-import ProblemSection from "@/components/lovable/institucional/ProblemSection";
-import ConceitoSection from "@/components/lovable/institucional/ConceitoSection";
-import DiferencialSection from "@/components/lovable/institucional/DiferencialSection";
-import ComoFunciona from "@/components/lovable/institucional/ComoFunciona";
-import CompatibilidadeSection from "@/components/lovable/institucional/CompatibilidadeSection";
-import SustentabilidadeSection from "@/components/lovable/institucional/SustentabilidadeSection";
+import HeroInfluencer from "@/components/lovable/influencer/HeroInfluencer";
+import ProductPickerJean from "@/components/lovable/influencer/jean/ProductPickerJean";
+import ScienceSectionJean from "@/components/lovable/influencer/jean/ScienceSectionJean";
+import HowToUseJean from "@/components/lovable/influencer/jean/HowToUseJean";
+import UnboxingJean from "@/components/lovable/influencer/jean/UnboxingJean";
+import DepoimentosJean from "@/components/lovable/influencer/jean/DepoimentosJean";
+import CTAFinalInfluencer from "@/components/lovable/influencer/CTAFinalInfluencer";
 import FAQInstitucional from "@/components/lovable/institucional/FAQInstitucional";
-import CTAFinalInstitucional from "@/components/lovable/institucional/CTAFinalInstitucional";
-import Depoimentos from "@/components/lovable/Depoimentos";
+import StickyPriceBar from "@/components/lovable/StickyPriceBar";
+import ProblemHome from "@/components/lovable/home/ProblemHome";
+import BeneficiosHome from "@/components/lovable/home/BeneficiosHome";
 import { WHATSAPP_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -20,22 +21,83 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+// Checkout próprio da home (sem UTM de campanha)
+const CHECKOUT_MOTO = "/checkoutsache";
+const CHECKOUT_CARRO = "/checkoutpack100";
+
+// Carrossel do hero — só packshots de produto (sem foto de campanha)
+const heroCarousel = [
+  { desktop: "/hero-bg.webp", mobile: "/LP_SACHE_MOBILE.webp" },
+  { desktop: "/cz-pack100-hero-bg.webp", mobile: "/CARBOZE_PACK_MOBILE.webp" },
+];
+
 export default function HomePage() {
   return (
     <main>
       {/* Preload do hero (LCP) desta rota */}
-      <link rel="preload" as="image" href="/design-builder-46bfb20e.webp" fetchPriority="high" />
-      <LovableHeader checkoutHref="/choice" suporteHref={WHATSAPP_URL} ctaLabel="Escolher Produto" />
-      <HeroInstitucional />
-      <ProblemSection />
-      <ConceitoSection />
-      <DiferencialSection />
-      <ComoFunciona />
-      <CompatibilidadeSection />
-      <SustentabilidadeSection />
-      <Depoimentos />
+      <link rel="preload" as="image" href="/hero-bg.webp" fetchPriority="high" />
+
+      <LovableHeader
+        checkoutHref="#escolha-produto"
+        suporteHref={WHATSAPP_URL}
+        ctaLabel="Escolher Produto"
+      />
+
+      {/* Hero — gancho de economia + carrossel de produto */}
+      <HeroInfluencer
+        bgImage="/hero-bg.webp"
+        mobileBgImage="/LP_SACHE_MOBILE.webp"
+        carousel={heroCarousel}
+        headline={
+          <>
+            O produto que faz você{" "}
+            <span className="text-limao">gastar menos.</span>
+          </>
+        }
+        subtitle="Trata o combustível a cada abastecimento — mais economia, menos manutenção."
+        ctaLabel="QUERO GASTAR MENOS"
+        ctaHref="#escolha-produto"
+        mobileSubtitle="Kit 10 sachês por R$ 59,90 · entrega em todo Brasil"
+      />
+
+      {/* Produto + dosagem — preço e checkout na 2ª dobra */}
+      <ProductPickerJean motoHref={CHECKOUT_MOTO} carroHref={CHECKOUT_CARRO} />
+
+      {/* Diagnóstico → método: bloco escuro contínuo */}
+      <ProblemHome />
+
+      <div className="bg-verde-escuro">
+        <hr className="border-white/8 max-w-6xl mx-auto" />
+      </div>
+
+      <ScienceSectionJean />
+
+      {/* Benefícios: bolso + planeta (fusão) */}
+      <BeneficiosHome />
+
+      {/* Modo de uso */}
+      <HowToUseJean />
+
+      {/* Unboxing — prova na prática */}
+      <UnboxingJean />
+
+      {/* Depoimentos — prova social */}
+      <DepoimentosJean />
+
+      {/* FAQ — quebra de objeção + conteúdo indexável */}
       <FAQInstitucional />
-      <CTAFinalInstitucional />
+
+      {/* CTA Final — id p/ o sticky saber onde parar */}
+      <div id="cta-final-section">
+        <CTAFinalInfluencer
+          motoHref={CHECKOUT_MOTO}
+          carroHref={CHECKOUT_CARRO}
+          motoLabel="Quero economizar na moto"
+          carroLabel="Quero economizar no carro"
+        />
+      </div>
+
+      <StickyPriceBar variant="ambos" motoHref={CHECKOUT_MOTO} carroHref={CHECKOUT_CARRO} />
       <FloatingWhatsApp />
     </main>
   );
