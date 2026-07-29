@@ -128,6 +128,16 @@ details[open] .faq-content {
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 
+/* Selo de frete grátis — pulse suave (chama o olho sem exagero) */
+@keyframes frete-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+.animate-frete-pulse {
+  animation: frete-pulse 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
 /* Acessibilidade — respeita usuários que pedem menos movimento */
 @media (prefers-reduced-motion: reduce) {
   html {

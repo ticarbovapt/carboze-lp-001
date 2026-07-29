@@ -6,6 +6,8 @@ const VERBOS = [
   "Quero gastar menos",
   "Quero frete grátis",
   "Quero vacinar meu combustível",
+  "Quero proteger meu motor",
+  "Quero mais potência",
 ];
 
 interface FreteGratisPillProps {
@@ -92,7 +94,7 @@ export default function FreteGratisPill({
         />
 
         {/* Selo fixo — a promessa nunca some */}
-        <span className="relative shrink-0 inline-flex items-center gap-1 bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-black text-[10px] sm:text-xs uppercase tracking-wide rounded-full pl-1.5 pr-2 py-1">
+        <span className="animate-frete-pulse relative shrink-0 inline-flex items-center gap-1 bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-black text-[10px] sm:text-xs uppercase tracking-wide rounded-full pl-1.5 pr-2 py-1">
           <TruckIcon className="w-3.5 h-3.5" />
           Frete grátis
         </span>
