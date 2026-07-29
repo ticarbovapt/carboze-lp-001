@@ -4,8 +4,8 @@ import InViewVideo from "@/components/lovable/InViewVideo";
 const steps = [
   {
     num: "01",
-    title: "Abra o sachê",
-    body: "Rasge o sachê de 10ml. Nenhuma medição necessária — a dose já vem calibrada para o tanque da moto.",
+    title: "Abra o CarboZé",
+    body: "Sachê de 10ml trata 10 litros. Frasco de 100ml trata 100 litros. A dose acompanha o que você vai abastecer — na moto ou no carro.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-limao" aria-hidden="true">
         <path d="M12 3v13M8 13l4 4 4-4M5 19h14" />
@@ -15,7 +15,7 @@ const steps = [
   {
     num: "02",
     title: "Despeje no tanque",
-    body: "Despeje o sachê direto na abertura do tanque antes de abastecer. O combustível mistura automaticamente.",
+    body: "Despeje direto na abertura do tanque antes de abastecer. O combustível mistura automaticamente.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-limao" aria-hidden="true">
         <path d="M12 3C8 3 5 6 5 10c0 5.25 7 13 7 13s7-7.75 7-13c0-4-3-7-7-7z" />
