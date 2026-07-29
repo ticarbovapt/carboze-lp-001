@@ -9,5 +9,11 @@ export const metadata: Metadata = {
 };
 
 export default function DionisioPage() {
-  return <InfluencerLPTemplate bgImage="/LP_INFLUENCERS_3.webp" mobileBgImage="/LP_INFLUENCERS_MOBILE.webp" />;
+  return (
+    <InfluencerLPTemplate
+      bgImage="/LP_INFLUENCERS_3.webp"
+      mobileBgImage="/LP_INFLUENCERS_MOBILE.webp"
+      utmSource="dionisio"
+    />
+  );
 }

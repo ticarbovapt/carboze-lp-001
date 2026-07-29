@@ -26,6 +26,8 @@ interface JeanLPTemplateProps {
   heroCampaignSlide?: boolean;
   /** Exibe a seção de parceria CarPower logo abaixo do hero. */
   showParceriaCarPower?: boolean;
+  /** Campanha desta LP — vira utm_source no link da oferta de saída. */
+  utmSource?: string;
 }
 
 export default function JeanLPTemplate({
@@ -38,6 +40,7 @@ export default function JeanLPTemplate({
   scienceVideoAspect,
   heroCampaignSlide = true,
   showParceriaCarPower = false,
+  utmSource,
 }: JeanLPTemplateProps) {
   // Carrossel do hero: Sachê → Frascos → (opcional) foto da campanha
   const heroCarousel = [
@@ -113,8 +116,8 @@ export default function JeanLPTemplate({
       {/* Pill de frete grátis — entra 2s após o load, verbo girando (empilha acima da sticky bar) */}
       <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
 
-      {/* Oferta de saída — recebe o checkout da campanha para não perder o utm_source */}
-      <ExitOfferGate motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
+      {/* Oferta de saída — leva o utm da campanha para não perder a atribuição */}
+      <ExitOfferGate utmSource={utmSource} />
     </main>
   );
 }

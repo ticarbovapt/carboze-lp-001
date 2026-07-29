@@ -110,9 +110,9 @@ export default function HomePage() {
       <FloatingWhatsApp />
 
       {/* Oferta de saída: 1º voltar (mobile), exit intent (desktop), 45s parado.
-          Vai direto ao checkout, sem passar pelo upsell: quem está saindo já
-          levou uma interrupção (o popup) — empilhar a segunda derruba a venda. */}
-      <ExitOfferGate motoHref="/checkoutsache" carroHref={CHECKOUT_CARRO} />
+          Manda direto ao SKU com desconto, sem passar pelo upsell: quem está
+          saindo já levou uma interrupção — a segunda derruba a venda. */}
+      <ExitOfferGate />
     </main>
   );
 }

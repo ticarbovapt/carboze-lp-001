@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EXIT_OFFER, CHECKOUT_MOTOS, CHECKOUT_CARROS } from "@/lib/constants";
+import { EXIT_OFFER, backCheckout } from "@/lib/constants";
 import { BadgePercentIcon, CheckCircleIcon } from "./Icons";
 
 function prefersReducedMotion() {
@@ -37,23 +37,17 @@ interface ExitOfferProps {
   variant?: "modal" | "inline";
   onClose?: () => void;
   /**
-   * Destinos de checkout. Cada LP precisa passar os SEUS — as rotas de
-   * influencer carregam o utm_source da campanha, e usar o link genérico
-   * aqui faria a venda vinda do popup perder a atribuição.
+   * Campanha da LP onde o popup está (ex.: "carpower", "jean", "dionisio").
+   * Vira utm_source no link do desconto — sem isso a venda perde a origem.
    */
-  motoHref?: string;
-  carroHref?: string;
+  utmSource?: string;
 }
 
-export default function ExitOffer({
-  variant = "modal",
-  onClose,
-  motoHref = CHECKOUT_MOTOS,
-  carroHref = CHECKOUT_CARROS,
-}: ExitOfferProps) {
+export default function ExitOffer({ variant = "modal", onClose, utmSource }: ExitOfferProps) {
+  const motoHref = backCheckout("motos", utmSource);
+  const carroHref = backCheckout("carros", utmSource);
   const [left, setLeft] = useState(EXIT_OFFER.urgencyMinutes * 60);
   const [claimed, setClaimed] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (left <= 0) return;
@@ -65,16 +59,6 @@ export default function ExitOffer({
   function claim() {
     setClaimed(true);
     fireConfetti();
-  }
-
-  async function copyCode() {
-    try {
-      await navigator.clipboard.writeText(EXIT_OFFER.code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2200);
-    } catch {
-      /* clipboard bloqueado — o código segue visível para digitar */
-    }
   }
 
   const card = (
@@ -112,7 +96,7 @@ export default function ExitOffer({
         </div>
 
         <p className="mt-4 font-[family-name:var(--font-archivo)] text-limao text-[10px] tracking-[0.18em] uppercase font-bold">
-          {claimed ? "Cupom liberado" : "Espera um segundo"}
+          {claimed ? "Desconto ativado" : "Espera um segundo"}
         </p>
 
         <h2 className="mt-1 font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl leading-tight">
@@ -141,21 +125,18 @@ export default function ExitOffer({
           </>
         ) : (
           <>
-            {/* Código do cupom */}
-            <button
-              onClick={copyCode}
-              className="mt-5 w-full rounded-2xl bg-white/[0.06] border border-dashed border-limao/50 p-4 hover:bg-white/[0.1] transition-colors group"
-            >
-              <p className="font-[family-name:var(--font-archivo)] text-white/45 text-[10px] tracking-[0.16em] uppercase mb-1">
-                {copied ? "Copiado!" : "Toque para copiar"}
+            {/* Valor conquistado — sem código para copiar, o desconto já vem no preço */}
+            <div className="mt-5 w-full rounded-2xl bg-white/[0.06] border border-dashed border-limao/50 px-4 py-5">
+              <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-3xl leading-none">
+                Você ganhou {EXIT_OFFER.percent}%
               </p>
-              <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-2xl tracking-widest">
-                {EXIT_OFFER.code}
+              <p className="mt-2 font-[family-name:var(--font-archivo)] text-white/75 text-base leading-snug">
+                na primeira compra
               </p>
-            </button>
+            </div>
 
             <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/55 text-xs leading-relaxed">
-              Cole o código no carrinho para aplicar os {EXIT_OFFER.percent}%.
+              Desconto já aplicado — é só escolher o seu.
             </p>
 
             {/* Escolha do produto */}

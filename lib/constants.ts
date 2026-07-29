@@ -7,6 +7,23 @@ export const CHECKOUT_MOTOS  = NS_MOTOS;
 export const CHECKOUT_CARROS = NS_CARROS;
 export const CHECKOUT_URL    = NS_MOTOS;
 
+// ─── Checkout da oferta de saída ("Back") ────────────────────────────────────
+// SKUs espelho cadastrados na loja já com 10% aplicado no preço:
+//   sachê  R$ 59,90 → R$ 53,91      frascos  R$ 149,50 → R$ 134,55
+// Preço conferido em nuvemshop:price. Como o desconto vem do produto, o
+// usuário não digita cupom nenhum — é o que tira a fricção do popup.
+const NS_BACK_MOTOS  = "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-10ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1lk26/";
+const NS_BACK_CARROS = "https://loja.carboze.com.br/produtos/upsell-carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1wgnb/";
+
+/**
+ * Link do desconto de saída, preservando a atribuição da campanha.
+ * Sem o utm_source, a venda vinda de uma LP de influencer fica sem origem.
+ */
+export function backCheckout(produto: "motos" | "carros", utmSource?: string) {
+  const base = produto === "motos" ? NS_BACK_MOTOS : NS_BACK_CARROS;
+  return utmSource ? `${base}?utm_source=${utmSource}` : base;
+}
+
 // ─── Upsell pré-checkout ──────────────────────────────────────────────────────
 // SKU espelho do kit de frascos, cadastrado na loja a preço promocional.
 // Só é ofertado a quem ia comprar o KIT SACHÊ (R$ 59,90): o ticket sobe para
@@ -71,11 +88,10 @@ export const STORES = {
 };
 
 // ─── Oferta de saída (/cupom + popup de exit intent) ─────────────────────────
-// ATENÇÃO: o cupom precisa existir e estar ATIVO no admin da Nuvemshop.
-// Sem isso a página promete um desconto que não aplica no carrinho.
-// Trocar percentual/código aqui muda em todos os lugares de uma vez.
+// O desconto vem dos SKUs "Back" acima (preço já abatido), não de cupom.
+// Ao mudar `percent` aqui, ajuste também o preço desses SKUs na Nuvemshop —
+// senão o popup anuncia um percentual diferente do que o checkout cobra.
 export const EXIT_OFFER = {
-  code: "VOLTA10",
   percent: 10,
   /** Minutos do contador de urgência exibido no popup. */
   urgencyMinutes: 10,

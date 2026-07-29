@@ -19,6 +19,7 @@ export default function CarPowerPage() {
       scienceVideoPoster="/ciencia-carpower-poster.webp"
       scienceVideoAspect="9 / 16"
       showParceriaCarPower
+      utmSource="carpower"
     />
   );
 }

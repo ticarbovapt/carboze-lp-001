@@ -8,12 +8,15 @@ import CTAFinalInfluencer from "./CTAFinalInfluencer";
 import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 import FreteGratisPill from "@/components/lovable/FreteGratisPill";
+import ExitOfferGate from "@/components/lovable/ExitOfferGate";
 
 interface InfluencerLPTemplateProps {
   bgImage: string;
   mobileBgImage?: string;
   checkoutMotoHref?: string;
   checkoutCarroHref?: string;
+  /** Campanha desta LP — vira utm_source no link da oferta de saída. */
+  utmSource?: string;
 }
 
 export default function InfluencerLPTemplate({
@@ -21,6 +24,7 @@ export default function InfluencerLPTemplate({
   mobileBgImage,
   checkoutMotoHref = "/checkoutsache-influencer",
   checkoutCarroHref = "/checkoutpack100-influencer",
+  utmSource,
 }: InfluencerLPTemplateProps) {
   return (
     <main>
@@ -39,6 +43,9 @@ export default function InfluencerLPTemplate({
       <StickyPriceBar variant="ambos" motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
       <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
       <FloatingWhatsApp />
+
+      {/* Oferta de saída — leva o utm da campanha para não perder a atribuição */}
+      <ExitOfferGate utmSource={utmSource} />
     </main>
   );
 }

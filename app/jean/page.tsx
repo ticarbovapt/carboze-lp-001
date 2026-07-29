@@ -15,6 +15,7 @@ export default function JeanPage() {
       mobileBgImage="/LP_INFLUENCERS_MOBILE.webp"
       checkoutMotoHref="/checkoutsache-jean"
       checkoutCarroHref="/checkoutpack100-jean"
+      utmSource="jean"
     />
   );
 }

@@ -6,12 +6,11 @@ import { useExitIntent } from "./useExitIntent";
 
 interface ExitOfferGateProps {
   /**
-   * Destinos de checkout desta LP. As rotas de influencer carregam o
-   * utm_source da campanha — passar os links certos aqui é o que impede
-   * a venda vinda do popup de perder a atribuição.
+   * Campanha desta LP (ex.: "carpower", "jean", "dionisio"). Vira utm_source
+   * no link do desconto — é o que impede a venda vinda do popup de perder
+   * a atribuição. Home não passa nada.
    */
-  motoHref?: string;
-  carroHref?: string;
+  utmSource?: string;
 }
 
 /**
@@ -21,7 +20,7 @@ interface ExitOfferGateProps {
  * `?cupom=1` (ou o antigo `?oferta=1`) abre na hora, ignorando os gatilhos e a
  * trava de sessão — serve para testar e para mandar o link já com a oferta aberta.
  */
-export default function ExitOfferGate({ motoHref, carroHref }: ExitOfferGateProps = {}) {
+export default function ExitOfferGate({ utmSource }: ExitOfferGateProps = {}) {
   const [forced, setForced] = useState(false);
   const { open, close } = useExitIntent({
     backButton: true,
@@ -42,8 +41,7 @@ export default function ExitOfferGate({ motoHref, carroHref }: ExitOfferGateProp
   return (
     <ExitOffer
       variant="modal"
-      motoHref={motoHref}
-      carroHref={carroHref}
+      utmSource={utmSource}
       onClose={() => {
         setForced(false);
         close();
