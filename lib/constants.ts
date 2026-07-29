@@ -70,7 +70,7 @@ export const STORES = {
   amazon: "#",
 };
 
-// ─── Oferta de saída (/oferta + popup de exit intent) ─────────────────────────
+// ─── Oferta de saída (/cupom + popup de exit intent) ─────────────────────────
 // ATENÇÃO: o cupom precisa existir e estar ATIVO no admin da Nuvemshop.
 // Sem isso a página promete um desconto que não aplica no carrinho.
 // Trocar percentual/código aqui muda em todos os lugares de uma vez.
