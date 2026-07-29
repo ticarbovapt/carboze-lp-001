@@ -11,6 +11,7 @@ import CTAFinalInfluencer from "@/components/lovable/influencer/CTAFinalInfluenc
 import FAQInstitucional from "@/components/lovable/institucional/FAQInstitucional";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 import FreteGratisPill from "@/components/lovable/FreteGratisPill";
+import ExitOfferGate from "@/components/lovable/ExitOfferGate";
 import ProblemHome from "@/components/lovable/home/ProblemHome";
 import BeneficiosHome from "@/components/lovable/home/BeneficiosHome";
 import { WHATSAPP_URL } from "@/lib/constants";
@@ -104,6 +105,9 @@ export default function HomePage() {
       <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
 
       <FloatingWhatsApp />
+
+      {/* Oferta de saída: 1º voltar (mobile), exit intent (desktop), 45s parado */}
+      <ExitOfferGate />
     </main>
   );
 }
