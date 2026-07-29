@@ -5,6 +5,7 @@ const DEPOIMENTOS = [
   { src: "/depoimentos/depoimento-2.webp", w: 700, h: 578 },
   { src: "/depoimentos/depoimento-3.webp", w: 700, h: 669 },
   { src: "/depoimentos/depoimento-4.webp", w: 700, h: 568 },
+  { src: "/depoimentos/depoimento-5.webp", w: 700, h: 722 },
 ];
 
 export default function DepoimentosJean() {
