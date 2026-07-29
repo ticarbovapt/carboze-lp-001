@@ -7,6 +7,29 @@ export const CHECKOUT_MOTOS  = NS_MOTOS;
 export const CHECKOUT_CARROS = NS_CARROS;
 export const CHECKOUT_URL    = NS_MOTOS;
 
+// ─── Upsell pré-checkout ──────────────────────────────────────────────────────
+// SKU espelho do kit de frascos, cadastrado na loja a preço promocional.
+// Só é ofertado a quem ia comprar o KIT SACHÊ (R$ 59,90): o ticket sobe para
+// R$ 99,50 (+66%) e o "de R$ 149,50" é o preço real do kit normal.
+// NÃO ofertar a quem já vai comprar o kit de frascos — ali seria desconto.
+const NS_UPSELL_FRASCOS =
+  "https://loja.carboze.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1p5z3/";
+
+export const UPSELL = {
+  /** Destino do upsell (kit 5 frascos a preço promocional). */
+  href: NS_UPSELL_FRASCOS + "?utm_source=upsell",
+  /** Para onde vai quem recusa: o kit sachê que ele já tinha escolhido. */
+  declineHref: NS_MOTOS,
+  precoDe: 149.5,
+  precoPor: 99.5,
+  /** O que o cliente ia levar antes da oferta. */
+  origemPreco: 59.9,
+  origemLitros: 100,
+  litros: 500,
+  /** Minutos do contador de urgência. */
+  urgencyMinutes: 10,
+} as const;
+
 // ─── Kit 6 meses (oferta pós-NPS) ─────────────────────────────────────────────
 // PROVISÓRIO: aponta p/ o kit de carros até existir o produto "6 meses".
 // Trocar a URL abaixo quando o produto real for criado na loja.
