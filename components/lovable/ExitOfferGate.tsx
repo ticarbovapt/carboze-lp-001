@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ExitOffer from "./ExitOffer";
 import { useExitIntent } from "./useExitIntent";
+import { EXIT_OFFER } from "@/lib/constants";
 
 interface ExitOfferGateProps {
   /**
@@ -22,20 +23,25 @@ interface ExitOfferGateProps {
  */
 export default function ExitOfferGate({ utmSource }: ExitOfferGateProps = {}) {
   const [forced, setForced] = useState(false);
+
+  // Desligado = nenhum gatilho é instalado. Em especial o backButton: se ele
+  // continuasse ativo, o guarda no histórico seria empilhado do mesmo jeito e
+  // o 1º "voltar" não faria nada — o usuário ficaria preso sem ver oferta.
   const { open, close } = useExitIntent({
-    backButton: true,
-    desktopExitIntent: true,
-    inactivitySeconds: 45,
+    backButton: EXIT_OFFER.enabled,
+    desktopExitIntent: EXIT_OFFER.enabled,
+    inactivitySeconds: EXIT_OFFER.enabled ? 45 : 0,
   });
 
   useEffect(() => {
+    if (!EXIT_OFFER.enabled) return;
     const q = new URLSearchParams(window.location.search);
     if (q.get("cupom") === "1" || q.get("oferta") === "1") {
       setForced(true);
     }
   }, []);
 
-  const visible = forced || open;
+  const visible = EXIT_OFFER.enabled && (forced || open);
   if (!visible) return null;
 
   return (

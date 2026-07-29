@@ -92,6 +92,12 @@ export const STORES = {
 // Ao mudar `percent` aqui, ajuste também o preço desses SKUs na Nuvemshop —
 // senão o popup anuncia um percentual diferente do que o checkout cobra.
 export const EXIT_OFFER = {
+  /**
+   * Liga/desliga o popup de saída em TODAS as LPs de uma vez (home, /jean,
+   * /carpower, /dionisio). Desligado também ignora o `?cupom=1`.
+   * Não afeta a rota /cupom, que continua no ar como página de campanha.
+   */
+  enabled: false,
   percent: 10,
   /** Minutos do contador de urgência exibido no popup. */
   urgencyMinutes: 10,
