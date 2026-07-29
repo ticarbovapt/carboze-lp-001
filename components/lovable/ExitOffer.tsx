@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { EXIT_OFFER, CHECKOUT_MOTOS, CHECKOUT_CARROS } from "@/lib/constants";
+import { BadgePercentIcon, CheckCircleIcon } from "./Icons";
 
 function prefersReducedMotion() {
   return (
@@ -32,7 +33,7 @@ function fmt(s: number) {
 }
 
 interface ExitOfferProps {
-  /** Modal com overlay (exit intent) ou bloco embutido (rota /oferta). */
+  /** Modal com overlay (exit intent) ou bloco embutido (rota /cupom). */
   variant?: "modal" | "inline";
   onClose?: () => void;
 }
@@ -90,8 +91,12 @@ export default function ExitOffer({ variant = "modal", onClose }: ExitOfferProps
       )}
 
       <div className="relative px-6 pt-7 pb-6 text-center flex flex-col items-center">
-        <div className="w-16 h-16 rounded-2xl bg-limao flex items-center justify-center text-3xl shadow-lg">
-          {claimed ? "🎉" : "✋"}
+        <div className="w-16 h-16 rounded-2xl bg-limao flex items-center justify-center shadow-lg text-verde-escuro">
+          {claimed ? (
+            <CheckCircleIcon className="w-8 h-8" />
+          ) : (
+            <BadgePercentIcon className="w-8 h-8" />
+          )}
         </div>
 
         <p className="mt-4 font-[family-name:var(--font-archivo)] text-limao text-[10px] tracking-[0.18em] uppercase font-bold">
