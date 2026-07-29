@@ -7,6 +7,7 @@ import FAQInfluencer from "./FAQInfluencer";
 import CTAFinalInfluencer from "./CTAFinalInfluencer";
 import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
+import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 
 interface InfluencerLPTemplateProps {
   bgImage: string;
@@ -36,6 +37,7 @@ export default function InfluencerLPTemplate({
         <CTAFinalInfluencer motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
       </div>
       <StickyPriceBar variant="ambos" motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
+      <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
       <FloatingWhatsApp />
     </main>
   );

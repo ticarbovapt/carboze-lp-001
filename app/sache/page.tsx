@@ -12,6 +12,7 @@ import FAQ from "@/components/lovable/FAQ";
 import CTAFinal from "@/components/lovable/CTAFinal";
 import Depoimentos from "@/components/lovable/Depoimentos";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
+import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 
 export const metadata: Metadata = {
   title: "CarboZé — Vacine seu combustível",
@@ -60,6 +61,7 @@ export default function SachePage() {
         <CTAFinal />
       </div>
       <StickyPriceBar variant="moto" motoHref="/checkoutsache" />
+      <FreteGratisPill href="/checkoutsache" bottomClass="bottom-24" />
       <FloatingWhatsApp />
     </main>
   );

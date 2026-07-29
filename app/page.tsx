@@ -11,6 +11,7 @@ import SustentabilidadeSection from "@/components/lovable/institucional/Sustenta
 import FAQInstitucional from "@/components/lovable/institucional/FAQInstitucional";
 import CTAFinalInstitucional from "@/components/lovable/institucional/CTAFinalInstitucional";
 import Depoimentos from "@/components/lovable/Depoimentos";
+import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 import { WHATSAPP_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -35,7 +36,10 @@ export default function HomePage() {
       <SustentabilidadeSection />
       <Depoimentos />
       <FAQInstitucional />
-      <CTAFinalInstitucional />
+      <div id="cta-final-section">
+        <CTAFinalInstitucional />
+      </div>
+      <FreteGratisPill href="/choice" bottomClass="bottom-6" />
       <FloatingWhatsApp />
     </main>
   );
