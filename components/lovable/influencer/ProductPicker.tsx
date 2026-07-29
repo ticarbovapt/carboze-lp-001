@@ -1,5 +1,6 @@
 import CTAButton from "@/components/lovable/CTAButton";
 import FreteBadge from "@/components/lovable/FreteBadge";
+import { FireIcon } from "@/components/lovable/Icons";
 
 interface ProductPickerProps {
   motoHref?: string;
@@ -70,8 +71,12 @@ export default function ProductPicker({
             <CTAButton label="Quero economizar na moto" href={motoHref} size="card" className="w-full" />
           </div>
 
-          {/* Card CARRO */}
-          <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
+          {/* Card CARRO — o mais escolhido */}
+          <div className="relative border-2 border-[#D4A72C] bg-[#D4A72C]/[0.05] rounded-2xl p-8 flex flex-col gap-5" style={{ boxShadow: "0 12px 45px -14px rgba(212,167,44,0.6)" }}>
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10 inline-flex items-center gap-1.5 bg-gradient-to-r from-[#F4D06A] to-[#C9971F] text-verde-escuro font-[family-name:var(--font-basement)] font-black text-[11px] uppercase tracking-wide px-3.5 py-1.5 rounded-full shadow-lg shadow-[#C9971F]/40 whitespace-nowrap">
+              <FireIcon className="w-3.5 h-3.5" />
+              O mais escolhido
+            </span>
             {/* Icon */}
             <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-verde-escuro">

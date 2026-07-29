@@ -9,6 +9,7 @@ import UnboxingJean from "./UnboxingJean";
 import DepoimentosJean from "./DepoimentosJean";
 import ParceriaCarPower from "./ParceriaCarPower";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
+import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 
 interface JeanLPTemplateProps {
   bgImage: string;
@@ -107,6 +108,9 @@ export default function JeanLPTemplate({
 
       {/* Botão flutuante = CTA de compra (aparece no scroll, some na CTA final) */}
       <StickyPriceBar variant="ambos" motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
+
+      {/* Pill de frete grátis — entra 2s após o load, verbo girando (empilha acima da sticky bar) */}
+      <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
     </main>
   );
 }

@@ -10,6 +10,7 @@ import DepoimentosJean from "@/components/lovable/influencer/jean/DepoimentosJea
 import CTAFinalInfluencer from "@/components/lovable/influencer/CTAFinalInfluencer";
 import FAQInstitucional from "@/components/lovable/institucional/FAQInstitucional";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
+import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 import ProblemHome from "@/components/lovable/home/ProblemHome";
 import BeneficiosHome from "@/components/lovable/home/BeneficiosHome";
 import { WHATSAPP_URL } from "@/lib/constants";
@@ -98,6 +99,10 @@ export default function HomePage() {
       </div>
 
       <StickyPriceBar variant="ambos" motoHref={CHECKOUT_MOTO} carroHref={CHECKOUT_CARRO} />
+
+      {/* Pill de frete grátis — bottom-28 p/ não colidir com o sticky */}
+      <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
+
       <FloatingWhatsApp />
     </main>
   );

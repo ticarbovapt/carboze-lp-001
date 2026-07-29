@@ -1,5 +1,6 @@
 import CTAButton from "@/components/lovable/CTAButton";
 import FreteBadge from "@/components/lovable/FreteBadge";
+import { FireIcon } from "@/components/lovable/Icons";
 
 interface ProductPickerJeanProps {
   motoHref?: string;
@@ -64,7 +65,7 @@ export default function ProductPickerJean({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           {/* Card SACHÊ */}
-          <div className="border-2 border-limao/40 rounded-2xl p-8 flex flex-col gap-5 bg-limao/[0.02]">
+          <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
             <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
               <DropletIcon />
             </div>
@@ -102,8 +103,12 @@ export default function ProductPickerJean({
             <CTAButton label="Quero economizar na moto" href={motoHref} size="card" className="w-full" />
           </div>
 
-          {/* Card FRASCO */}
-          <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
+          {/* Card FRASCO — o mais escolhido */}
+          <div className="relative border-2 border-[#D4A72C] bg-[#D4A72C]/[0.05] rounded-2xl p-8 flex flex-col gap-5" style={{ boxShadow: "0 12px 45px -14px rgba(212,167,44,0.6)" }}>
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10 inline-flex items-center gap-1.5 bg-gradient-to-r from-[#F4D06A] to-[#C9971F] text-verde-escuro font-[family-name:var(--font-basement)] font-black text-[11px] uppercase tracking-wide px-3.5 py-1.5 rounded-full shadow-lg shadow-[#C9971F]/40 whitespace-nowrap">
+              <FireIcon className="w-3.5 h-3.5" />
+              O mais escolhido
+            </span>
             <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
               <BottleIcon />
             </div>
