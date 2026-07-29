@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { TruckIcon } from "@/components/lovable/Icons";
 
 const VERBOS = [
   "Quero gastar menos",
@@ -21,7 +22,8 @@ export default function FreteGratisPill({
   bottomClass = "bottom-24",
   hideAtCtaFinal = true,
 }: FreteGratisPillProps) {
-  const [mounted, setMounted] = useState(false); // entra 2s após o load
+  const [mounted, setMounted] = useState(false); // passaram-se 2s do load
+  const [pastHero, setPastHero] = useState(false); // rolou além do hero
   const [atCta, setAtCta] = useState(false); // está na CTA final
   const [i, setI] = useState(0); // verbo atual
   const [paused, setPaused] = useState(false); // congela no hover
@@ -31,6 +33,17 @@ export default function FreteGratisPill({
     setReduce(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false);
     const t = setTimeout(() => setMounted(true), 2000);
     return () => clearTimeout(t);
+  }, []);
+
+  // só aparece depois de passar do hero (evita cobrir o CTA da 1ª dobra)
+  useEffect(() => {
+    const onScroll = () => {
+      const past = window.scrollY > window.innerHeight * 0.75;
+      setPastHero((prev) => (prev === past ? prev : past));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // rotação do verbo (crossfade) — pausa no hover e respeita reduced-motion
@@ -53,7 +66,7 @@ export default function FreteGratisPill({
     return () => obs.disconnect();
   }, [hideAtCtaFinal]);
 
-  const show = mounted && !atCta;
+  const show = mounted && pastHero && !atCta;
   const verbo = reduce ? VERBOS[1] : VERBOS[i]; // reduced-motion fixa em "frete grátis"
 
   return (
@@ -80,7 +93,7 @@ export default function FreteGratisPill({
 
         {/* Selo fixo — a promessa nunca some */}
         <span className="relative shrink-0 inline-flex items-center gap-1 bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-black text-[10px] sm:text-xs uppercase tracking-wide rounded-full pl-1.5 pr-2 py-1">
-          <span aria-hidden="true">🚚</span>
+          <TruckIcon className="w-3.5 h-3.5" />
           Frete grátis
         </span>
 
