@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wireframe — /carpower (Campanha CarPower)</title>
+<link rel="stylesheet" href="_base.css">
+</head>
+<body>
+
+<div class="float-wa">WA</div>
+
+<div class="wf">
+  <div class="wf-title">
+    <span>WIREFRAME</span>
+    <span>/carpower — LP Campanha · Parceria CarPower</span>
+  </div>
+
+  <div style="background:#fffde7;padding:10px 16px;border-left:3px solid #f0a000;">
+    <p style="font-size:11px;color:#666;">⚠️ LP de campanha (estilo influencer). Hero <strong>sem foto de pessoas</strong> — carrossel de packshots de produto. Novidade: seção <strong>Parceria CarPower</strong> (selo + sócios) e <strong>sticky bar</strong> fixa no rodapé.</p>
+  </div>
+
+  <!-- 1. HERO -->
+  <div class="sec sec-dark" style="min-height:400px;background:linear-gradient(to top, rgba(9,58,48,.95) 0%, rgba(9,58,48,.55) 45%, rgba(9,58,48,.15) 80%, rgba(9,58,48,.05) 100%),#123028;position:relative;">
+    <div class="sec-name">HeroCarpower · carrossel de packshots</div>
+
+    <!-- Logo absolutamente posicionada -->
+    <div style="position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:6px;z-index:20;">
+      <div class="logo" style="background:#a9da00;width:80px;height:14px;"></div>
+      <span style="font-size:9px;color:rgba(169,218,0,.7);background:rgba(0,0,0,.2);padding:2px 6px;border-radius:4px;">absolute top-6 left-6 z-20</span>
+    </div>
+
+    <!-- Carrossel BG de produto (sem pessoas) -->
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:0;gap:24px;padding:0 40px;">
+      <div class="img-box-dark" style="flex:1;min-height:220px;border:1px dashed #2d6050;display:flex;align-items:center;justify-content:center;font-size:11px;text-align:center;">PACKSHOT slide 1<br>(SACHÊ 10ml)<br>autoplay carrossel · sem pessoas</div>
+      <div class="img-box-dark" style="flex:1;min-height:220px;border:1px dashed #2d6050;display:flex;align-items:center;justify-content:center;font-size:11px;text-align:center;">PACKSHOT slide 2<br>(FRASCOS 100ml)<br>fade/slide alternando</div>
+    </div>
+    <!-- Dots carrossel -->
+    <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:15;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#a9da00;"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);"></span>
+    </div>
+
+    <!-- Conteúdo -->
+    <div style="position:relative;z-index:10;margin-top:130px;max-width:600px;">
+      <div class="tag tag-lime" style="margin-bottom:14px;">Exclusivo</div>
+      <div class="h1 white" style="font-size:36px;max-width:520px;">O produto que faz você <span class="lime">gastar menos.</span></div>
+      <p class="body body-dark mt12" style="max-width:460px;">Trata o combustível a cada abastecimento — mais economia, menos manutenção.</p>
+      <div class="mt16"><span class="btn btn-lime">QUERO GASTAR MENOS → #escolha-produto</span></div>
+      <p class="body-sm mt8" style="color:rgba(255,255,255,.25);">Disponível para motos e carros · entrega em todo Brasil</p>
+    </div>
+  </div>
+
+  <!-- 2. ESCOLHA SEU PRODUTO -->
+  <div class="sec sec-white" id="escolha-produto">
+    <div class="sec-name">ProductPicker · id=escolha-produto</div>
+    <div class="tag tag-gray">Escolha seu produto</div>
+    <div class="h2">Para cada abastecimento, <span style="color:#093a30;">a dose certa.</span></div>
+
+    <!-- Faixa de dosagem -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px;">
+      <div style="background:#f0f0f0;border:1px solid #ddd;border-radius:6px;padding:8px 14px;font-size:12px;font-weight:700;color:#093a30;">1 sachê 10ml = 10 litros</div>
+      <div style="background:#f0f0f0;border:1px solid #ddd;border-radius:6px;padding:8px 14px;font-size:12px;font-weight:700;color:#093a30;">1 frasco 100ml = 100 litros</div>
+    </div>
+
+    <div class="g2 mt16">
+      <!-- Card SACHÊ -->
+      <div class="card-white" style="border:1px solid rgba(9,58,48,.3);">
+        <div class="img-box" style="min-height:110px;margin-bottom:12px;">Packshot Kit Sachês</div>
+        <div class="h3">Kit 10 Sachês de 10ml</div>
+        <div style="border-top:1px solid #eee;margin-top:12px;padding-top:12px;">
+          <div style="font-size:30px;font-weight:900;color:#093a30;">R$ 59,90</div>
+          <div style="font-size:12px;color:#777;">R$ 5,99 por sachê</div>
+        </div>
+        <p class="body-sm mt8" style="color:#093a30;font-weight:700;">🚚 Frete grátis · trata até 100 litros</p>
+        <span class="btn btn-lime mt12" style="display:block;text-align:center;font-size:11px;padding:10px;">QUERO MEU SACHÊ → {checkoutSacheHref}</span>
+      </div>
+      <!-- Card FRASCO -->
+      <div class="card-white" style="border:1px solid rgba(9,58,48,.15);">
+        <div class="img-box" style="min-height:110px;margin-bottom:12px;">Packshot Kit Frascos</div>
+        <div class="h3">Kit 5 Frascos de 100ml</div>
+        <div style="border-top:1px solid #eee;margin-top:12px;padding-top:12px;">
+          <div style="font-size:30px;font-weight:900;color:#093a30;">R$ 149,50</div>
+          <div style="font-size:12px;color:#777;">R$ 29,90 por frasco 100ml</div>
+        </div>
+        <p class="body-sm mt8" style="color:#093a30;font-weight:700;">🚚 Frete grátis · trata até 500 litros</p>
+        <span class="btn btn-lime mt12" style="display:block;text-align:center;font-size:11px;padding:10px;">QUERO MEU FRASCO → {checkoutFrascoHref}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. A CIÊNCIA -->
+  <div class="sec sec-dark">
+    <div class="sec-name">ScienceSection</div>
+    <div class="g2l">
+      <div>
+        <div class="tag tag-lime">A ciência</div>
+        <div class="h2 white">Quer entender a ciência por trás <span class="lime">desse resultado?</span></div>
+        <ul class="check-list mt16">
+          <li style="font-size:13px;margin-bottom:10px;">Elimina a umidade do combustível</li>
+          <li style="font-size:13px;margin-bottom:10px;">Queima mais completa e eficiente</li>
+          <li style="font-size:13px;margin-bottom:10px;">Protege o sistema de injeção</li>
+        </ul>
+        <div class="mt16"><span class="btn btn-lime btn-sm">QUERO MEU CARBOZÉ → #escolha-produto</span></div>
+      </div>
+      <div>
+        <div class="img-box-dark" style="min-height:280px;aspect-ratio:9/16;max-width:180px;margin-left:auto;">VÍDEO vertical 9:16<br>(ciência do produto)<br>autoplay · muted · poster</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. BENEFÍCIOS -->
+  <div class="sec sec-white">
+    <div class="sec-name">Benefits</div>
+    <div class="tag tag-gray">Benefícios</div>
+    <div class="h2">Não é aditivo de posto. <span style="color:#093a30;">É a vacina que otimiza o seu bolso.</span></div>
+    <div class="g3 mt16">
+      <div class="card card-white">
+        <div class="h4">Menos desperdício</div>
+        <p class="body-sm mt4">Combustível melhor aproveitado a cada abastecimento.</p>
+      </div>
+      <div class="card card-white">
+        <div class="h4">Motor limpo</div>
+        <p class="body-sm mt4">Bicos e câmara sem depósitos — gasta menos e dura mais.</p>
+      </div>
+      <div class="card card-white">
+        <div class="h4">Proteção constante</div>
+        <p class="body-sm mt4">Não é manutenção, é prevenção contínua.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. MODO DE USO -->
+  <div class="sec sec-dark">
+    <div class="sec-name">HowToUse · vídeo + carrossel de passos</div>
+    <div class="tag tag-lime">Modo de uso</div>
+    <div class="h2 white">3 passos. <span class="lime">Nenhum mecânico envolvido.</span></div>
+
+    <!-- Vídeo (takes) no topo -->
+    <div class="img-box-dark mt16" style="min-height:160px;">VÍDEO (sequência de takes)<br>autoplay · muted · loop</div>
+
+    <!-- Carrossel 3 passos -->
+    <div class="g3 mt16">
+      <div class="card-dark" style="text-align:center;">
+        <div class="card-num">01</div>
+        <div class="h4 white">Abra o sachê</div>
+        <p class="body-sm mt4">Rasgue o sachê. Nenhuma ferramenta necessária.</p>
+      </div>
+      <div class="card-dark" style="text-align:center;">
+        <div class="card-num">02</div>
+        <div class="h4 white">Despeje no tanque</div>
+        <p class="body-sm mt4">1 sachê (10ml) para cada 10 litros.</p>
+      </div>
+      <div class="card-dark" style="text-align:center;">
+        <div class="card-num">03</div>
+        <div class="h4 white">Abasteça normalmente</div>
+        <p class="body-sm mt4">O CarboZé age antes mesmo do motor ligar.</p>
+      </div>
+    </div>
+    <!-- Dots carrossel -->
+    <div style="display:flex;gap:6px;justify-content:center;margin-top:14px;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#a9da00;"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);"></span>
+    </div>
+  </div>
+
+  <!-- 6. NA PRÁTICA -->
+  <div class="sec sec-white center">
+    <div class="sec-name">InPractice · headline + vídeo unboxing</div>
+    <div class="tag tag-gray">Na prática</div>
+    <div class="h2">Do envelope ao tanque em segundos.</div>
+    <div class="img-box mt16" style="min-height:300px;aspect-ratio:9/16;max-width:200px;margin:16px auto 0;">VÍDEO unboxing vertical 9:16<br>autoplay · muted · loop</div>
+  </div>
+
+  <!-- 7. DEPOIMENTOS -->
+  <div class="sec sec-dark">
+    <div class="sec-name">Testimonials · carrossel de prints</div>
+    <div class="tag tag-lime">Depoimentos</div>
+    <div class="h2 white">Quem usa, <span class="lime">recomenda.</span></div>
+    <div class="g4 mt16">
+      <div class="img-box-dark" style="min-height:150px;">Print 1</div>
+      <div class="img-box-dark" style="min-height:150px;">Print 2</div>
+      <div class="img-box-dark" style="min-height:150px;">Print 3</div>
+      <div class="img-box-dark" style="min-height:150px;">Print 4</div>
+    </div>
+    <!-- Dots carrossel -->
+    <div style="display:flex;gap:6px;justify-content:center;margin-top:14px;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#a9da00;"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);"></span>
+    </div>
+  </div>
+
+  <!-- 8. PARCERIA CARPOWER -->
+  <div class="sec sec-light">
+    <div class="sec-name">CarpowerPartnership · NOVA seção</div>
+    <div class="tag tag-gray">Parceria oficial</div>
+    <div class="h2">Aprovado por quem <span style="color:#093a30;">entende de motor.</span></div>
+
+    <div class="g2r mt16">
+      <!-- Selo/logo CarPower -->
+      <div>
+        <div style="background:#093a30;border-radius:12px;min-height:130px;display:flex;align-items:center;justify-content:center;text-align:center;color:#6a9a88;font-size:11px;border:1px dashed #2d6050;">
+          SELO / LOGO<br>CarPower<br>(placeholder escuro)
+        </div>
+      </div>
+      <!-- Sócios + endosso -->
+      <div>
+        <div class="g2">
+          <div class="img-box" style="min-height:120px;aspect-ratio:3/4;">Foto sócio 1<br>(retrato)</div>
+          <div class="img-box" style="min-height:120px;aspect-ratio:3/4;">Foto sócio 2<br>(retrato)</div>
+        </div>
+        <p class="body mt12" style="font-style:italic;">"Frase de recomendação / endosso dos sócios da CarPower sobre o CarboZé — confiança de quem trabalha com motor todo dia."</p>
+        <p class="body-sm">— Sócios CarPower · Parceria oficial</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. FAQ -->
+  <div class="sec sec-white">
+    <div class="sec-name">FAQ</div>
+    <div class="tag tag-gray">Dúvidas frequentes</div>
+    <div class="h2">Perguntas e respostas</div>
+    <div class="mt16">
+      <div class="faq-item"><span class="faq-q">Funciona em qualquer tipo de combustível?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-item"><span class="faq-q">Quantos litros cada sachê/frasco trata?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-item"><span class="faq-q">Com que frequência preciso usar?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-item"><span class="faq-q">Quanto tempo até sentir a diferença?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-item"><span class="faq-q">O frete é grátis para todo o Brasil?</span><span class="faq-arrow">+</span></div>
+    </div>
+  </div>
+
+  <!-- 10. CTA FINAL -->
+  <div class="sec sec-dark center">
+    <div class="sec-name">CTAFinal</div>
+    <div class="h2 white" style="max-width:560px;margin:0 auto;">O preço do combustível não vai mudar. <span class="lime">Mas o quanto você aproveita dele é escolha sua!</span></div>
+    <div class="flex-cc mt20" style="gap:16px;flex-wrap:wrap;">
+      <span class="btn btn-lime">QUERO MEU SACHÊ → {checkoutSacheHref}</span>
+      <span class="btn btn-outline">QUERO MEU FRASCO → {checkoutFrascoHref}</span>
+    </div>
+    <hr class="divider divider-dark mt20">
+    <div class="mt16" style="font-size:12px;color:rgba(255,255,255,.35);">
+      Dúvidas? <span style="color:#a9da00;">WhatsApp</span> · <span style="color:#a9da00;">@ocarboze</span> · <span style="color:#a9da00;">carboze.com.br</span>
+    </div>
+    <p style="font-size:10px;color:rgba(255,255,255,.25);margin-top:8px;">© 2025 CarboZé</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-inner">
+      <div class="logo"></div>
+      <div style="display:flex;gap:14px;">
+        <span style="font-size:11px;color:#6a9a88;">@ocarboze</span>
+        <span style="font-size:11px;color:#6a9a88;">carboze.com.br</span>
+      </div>
+      <p style="font-size:10px;color:#4a7a68;">© 2025 CarboZé</p>
+    </div>
+  </div>
+
+  <!-- 11. STICKY BAR (fixa no rodapé) -->
+  <div style="padding:0;border-top:2px solid #ccc;">
+    <div style="background:#f0f0f0;padding:6px 16px;font-size:11px;color:#666;border-bottom:1px dashed #ccc;">📌 StickyBar — fixed bottom-0 (representação estática abaixo)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px;background:#093a30;">
+      <span class="btn btn-lime" style="display:block;text-align:center;font-size:12px;">Quero meu sachê · R$ 59,90</span>
+      <span class="btn btn-outline" style="display:block;text-align:center;font-size:12px;">Quero meu frasco · R$ 149,50</span>
+    </div>
+  </div>
+
+  <!-- Prop reference -->
+  <div style="padding:16px;background:#f0f0f0;border-top:2px solid #ccc;">
+    <p style="font-size:12px;font-weight:700;color:#444;margin-bottom:8px;">📦 Props / referências</p>
+    <table style="font-size:11px;width:100%;border-collapse:collapse;">
+      <thead><tr style="background:#ddd;"><th style="padding:6px 10px;text-align:left;">Prop</th><th style="padding:6px 10px;text-align:left;">Valor</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #ddd;"><td style="padding:6px 10px;">checkoutSacheHref</td><td style="padding:6px 10px;color:#093a30;">/checkoutsache-carpower</td></tr>
+        <tr style="border-bottom:1px solid #ddd;"><td style="padding:6px 10px;">checkoutFrascoHref</td><td style="padding:6px 10px;color:#093a30;">/checkoutpack100-carpower</td></tr>
+        <tr><td style="padding:6px 10px;">âncora CTA hero</td><td style="padding:6px 10px;color:#666;">#escolha-produto</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
