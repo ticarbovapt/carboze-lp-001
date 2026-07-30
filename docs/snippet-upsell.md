@@ -18,15 +18,29 @@ O checkout da Nuvemshop tem duas telas, verificadas em pedido real:
 | Etapa | URL |
 |---|---|
 | Pagamento concluindo | `/checkout/v3/**next**/<id>/...` |
-| Pedido confirmado | `/checkout/v3/**success**/<id>/...` |
+| Pedido criado | `/checkout/v3/**success**/<id>/...` |
 
-"Página de finalização" dispara no momento da conclusão do pagamento — ou seja,
-ainda na tela `next`. Redirecionar dali levaria o cliente embora antes da
-confirmação aparecer. Por isso o snippet **não redireciona na hora**: ele espera
-a URL virar `success` e só então sai.
-
-Uma guarda de URL fixa não serve — foi o que impediu a primeira versão de
+"Página de finalização" dispara na conclusão do pagamento — ou seja, ainda na
+tela `next`. Uma guarda de URL fixa não serve: foi o que impediu a 1ª versão de
 funcionar, porque testava contra "success" enquanto o código rodava em "next".
+
+### `/success/` não significa pago
+
+Esta é a armadilha principal, e ela **bloqueia venda** se for ignorada.
+
+No Pix e no boleto, o pedido já existe na tela `/success/` **enquanto o
+pagamento está pendente** — é ali que o QR code aparece. Um redirect nesse
+momento tira o código da frente do cliente e ele não consegue pagar.
+
+Por isso o snippet exige duas condições, não uma:
+
+1. URL em `/success/`
+2. Texto da página indicando pagamento confirmado, **e** sem nenhum sinal de
+   pendência (QR code, "aguardando pagamento", "copiar código", boleto)
+
+No cartão isso é imediato. No Pix, só depois que o cliente paga e a tela
+atualiza. Se ele fechar antes, o upsell não roda — que é o comportamento
+correto: não existe upsell de uma compra que não aconteceu.
 
 ## Código
 
@@ -47,6 +61,26 @@ funcionar, porque testava contra "success" enquanto o código rodava em "next".
     var m = JSON.parse(sessionStorage.getItem("cz-upsell-redir") || "null");
     if (m && Date.now() - m.ts < 30 * 60 * 1000) return;
   } catch (e) {}
+
+  // ── Pagamento confirmado de verdade? ────────────────────────────────────
+  // /success/ na URL NÃO basta: no Pix e no boleto o pedido já existe nessa
+  // tela enquanto o pagamento está pendente. Sair dali tira do cliente o QR
+  // code e ele não consegue pagar.
+  function pagamentoConfirmado() {
+    var t = (document.body.innerText || "").toLowerCase();
+
+    // Qualquer sinal de pendência barra o redirect.
+    if (
+      /aguardando pagamento|aguardando confirma|escaneie|qr ?code|copiar c[oó]digo|c[oó]digo pix|copia e cola|vencimento|boleto/.test(
+        t
+      )
+    ) {
+      return false;
+    }
+
+    // E exige o sinal positivo explícito.
+    return /pagamento (foi |está )?(confirmado|aprovado)|pagamento confirmado/.test(t);
+  }
 
   function irParaUpsell() {
     try {
@@ -69,25 +103,30 @@ funcionar, porque testava contra "success" enquanto o código rodava em "next".
   }
 
   // O checkout é uma SPA: o código pode rodar ainda em /next/. Em vez de
-  // adivinhar a etapa, espera a URL chegar em /success/ — que é quando o
-  // pedido está confirmado e o nome do produto já está na tela.
-  if (location.pathname.indexOf("/success/") > -1) return irParaUpsell();
-
+  // adivinhar a etapa, observa até estar em /success/ E com pagamento
+  // confirmado. No Pix isso só acontece depois que o cliente paga — se ele
+  // fechar a página antes, o upsell simplesmente não roda, que é o certo.
   var tentativas = 0;
+  var LIMITE = 600; // 600 × 1s = 10min, tempo de sobra para pagar um Pix
+
   var timer = setInterval(function () {
-    if (location.pathname.indexOf("/success/") > -1) {
+    if (location.pathname.indexOf("/success/") > -1 && pagamentoConfirmado()) {
       clearInterval(timer);
       irParaUpsell();
-    } else if (++tentativas > 120) {
-      clearInterval(timer); // desiste após 60s
+    } else if (++tentativas > LIMITE) {
+      clearInterval(timer);
     }
-  }, 500);
+  }, 1000);
 })();
 </script>
 ```
 
 ## Como testar
 
+Testar **com Pix**, não só com cartão — é no Pix que o erro aparece.
+
+0. **Pix, até o QR code:** o código precisa ficar na tela, sem redirect. Só
+   depois de pagar é que a página pode sair para o `/upsell`.
 1. Fazer um pedido real de baixo valor (o kit sachê).
 2. Ao confirmar o pagamento, a tela deve sair sozinha para
    `carboze.com.br/upsell?p=sache`.
