@@ -56,6 +56,10 @@ export function produtoDaUrl(href: string): ProdutoFunil | null {
 }
 
 export function marcarProduto(p: ProdutoFunil) {
+  // Pedido misto → pack. Se o cliente já passou pelo pack, um clique posterior
+  // em sachê não rebaixa a marca — mesma regra que o snippet aplica quando lê
+  // o pedido com os dois produtos.
+  if (p === "sache" && ler(K_PRODUTO) === "pack") return;
   gravar(K_PRODUTO, p);
 }
 

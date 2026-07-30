@@ -5,11 +5,17 @@ entre o pagamento aprovado e a página de upsell.
 
 ## Onde colar
 
-Admin da Nuvemshop → **Configurações → Códigos externos** (ou "Scripts").
+Admin da Nuvemshop → **Configurações → Códigos externos → Códigos de conversão
+→ aba "Página de finalização"**.
 
-Se a plataforma permitir escolher a página, escopar em **"Página de obrigado /
-pedido confirmado"**. Nesse caso dá para apagar o bloco `PAGINA_DE_SUCESSO` do
-snippet — ele existe só para o caso de o código carregar na loja inteira.
+É a aba certa: dispara no momento em que o pagamento é concluído, que é onde o
+upsell precisa entrar. A aba "Página de confirmação" é a tela que o cliente
+pode revisitar depois — redirecionar dali pegaria quem só voltou a consultar o
+pedido.
+
+Como o admin já escopa o código nessa página, **não use guarda de URL**. Testar
+`location.pathname` contra um padrão adivinhado só cria a chance de o redirect
+nunca acontecer.
 
 ## Código
 
@@ -18,12 +24,12 @@ snippet — ele existe só para o caso de o código carregar na loja inteira.
 (function () {
   var DESTINO = "https://www.carboze.com.br/upsell";
 
-  // ── Guarda 1: só roda na tela de pedido confirmado ──────────────────────
-  // Desnecessário se o snippet já estiver escopado nessa página no admin.
-  var PAGINA_DE_SUCESSO = /success|obrigado|gracias|order[-_]?confirm/i;
-  if (!PAGINA_DE_SUCESSO.test(location.pathname)) return;
+  // Espera os pixels da página de conversão dispararem antes de sair.
+  // Sem isso, o redirect pode cortar Meta/Google Ads/GTM no meio e a venda
+  // deixa de ser atribuída. 1,2s costuma bastar.
+  var ESPERA_MS = 1200;
 
-  // ── Guarda 2: não redirecionar o pedido do próprio upsell ───────────────
+  // ── Guarda: não redirecionar o pedido do próprio upsell ─────────────────
   // Quem aceita a oferta gera um 2º pedido, que cai nesta mesma tela. Sem
   // isso o cliente voltaria ao /upsell logo após comprar. Expira em 30min
   // para não bloquear uma compra nova de verdade mais tarde.
@@ -35,16 +41,18 @@ snippet — ele existe só para o caso de o código carregar na loja inteira.
 
   // ── Qual produto foi comprado ───────────────────────────────────────────
   // Vira ?p=sache|pack e faz o /upsell oferecer o mesmo produto.
-  // Se o pedido tiver os dois (ou nenhum reconhecido), não manda nada e a
-  // página mostra as duas ofertas.
+  // Pedido misto (sachê + frasco) → pack: é o ticket maior, e quem já leva
+  // frasco tem carro, então a recompra de frasco faz mais sentido.
   var txt = (document.body.innerText || "").toLowerCase();
-  var temSache = txt.indexOf("sach") > -1;
   var temPack = txt.indexOf("frasco") > -1;
-  var p = temSache && !temPack ? "sache" : temPack && !temSache ? "pack" : "";
+  var temSache = txt.indexOf("sach") > -1;
+  var p = temPack ? "pack" : temSache ? "sache" : "";
 
   // replace: não deixa a tela da loja no histórico, então "voltar" não
   // devolve o cliente para cá.
-  location.replace(DESTINO + (p ? "?p=" + p : ""));
+  setTimeout(function () {
+    location.replace(DESTINO + (p ? "?p=" + p : ""));
+  }, ESPERA_MS);
 })();
 </script>
 ```
@@ -58,6 +66,7 @@ snippet — ele existe só para o caso de o código carregar na loja inteira.
 4. Recusar. Deve ir para `/obrigado`.
 5. Tentar voltar para `/upsell` — precisa cair em `/obrigado` sem oferta.
 6. Repetir comprando o kit de frascos: esperado `?p=pack` e só a oferta de pack.
+7. Pedido misto (sachê + frasco no mesmo carrinho): esperado `?p=pack`.
 
 ## Se o `?p=` não vier
 
