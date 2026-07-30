@@ -101,4 +101,21 @@ export const EXIT_OFFER = {
   percent: 5,
   /** Minutos do contador de urgência exibido no popup. */
   urgencyMinutes: 10,
+  /**
+   * Preços exibidos no popup. `por` PRECISA bater com o preço do SKU "Back"
+   * correspondente na Nuvemshop — é o número que o cliente vê aqui e espera
+   * encontrar no checkout. Conferir em nuvemshop:price ao mexer.
+   */
+  produtos: {
+    moto: {
+      titulo: "Moto · Kit 10 sachês",
+      de: "R$ 59,90",
+      por: "R$ 56,90",
+    },
+    carro: {
+      titulo: "Carro · Kit 5 frascos",
+      de: "R$ 149,50",
+      por: "R$ 142,00",
+    },
+  },
 } as const;

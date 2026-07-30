@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { EXIT_OFFER, backCheckout } from "@/lib/constants";
-import { BadgePercentIcon, CheckCircleIcon, TruckIcon } from "./Icons";
+import { BadgePercentIcon, TruckIcon } from "./Icons";
 
 function prefersReducedMotion() {
   return (
@@ -47,7 +47,6 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
   const motoHref = backCheckout("motos", utmSource);
   const carroHref = backCheckout("carros", utmSource);
   const [left, setLeft] = useState(EXIT_OFFER.urgencyMinutes * 60);
-  const [claimed, setClaimed] = useState(false);
 
   useEffect(() => {
     if (left <= 0) return;
@@ -55,11 +54,11 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
     return () => clearInterval(t);
   }, [left]);
 
-  // Confete só quando o usuário AGE — celebra a conquista, não simula sorte.
-  function claim() {
-    setClaimed(true);
+  // Confete na abertura. Antes ele premiava o clique em "resgatar", mas esse
+  // passo saiu: com o desconto já no preço, ele só atrasava a compra.
+  useEffect(() => {
     fireConfetti();
-  }
+  }, []);
 
   const card = (
     <div
@@ -88,25 +87,15 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
 
       <div className="relative px-6 pt-7 pb-6 text-center flex flex-col items-center">
         <div className="w-16 h-16 rounded-2xl bg-limao flex items-center justify-center shadow-lg text-verde-escuro">
-          {claimed ? (
-            <CheckCircleIcon className="w-8 h-8" />
-          ) : (
-            <BadgePercentIcon className="w-8 h-8" />
-          )}
+          <BadgePercentIcon className="w-8 h-8" />
         </div>
 
         <p className="mt-4 font-[family-name:var(--font-archivo)] text-limao text-[10px] tracking-[0.18em] uppercase font-bold">
-          {claimed ? "Bônus ativados" : "Espera um segundo"}
+          Espera um segundo
         </p>
 
         <h2 className="mt-1 font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl leading-tight">
-          {claimed ? (
-            <>Tudo <span className="text-limao">liberado!</span></>
-          ) : (
-            <>
-              Não vá embora <span className="text-limao">sem seus dois bônus</span>
-            </>
-          )}
+          Não vá embora <span className="text-limao">sem seus dois bônus</span>
         </h2>
 
         {/* Os dois gatilhos com o mesmo peso — é o coração da oferta */}
@@ -131,59 +120,46 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
           </div>
         </div>
 
-        {!claimed ? (
-          <>
-            <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
-              Os dois valem para o sachê e para o frasco. Acumulam.
-            </p>
+        <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
+          Os dois já estão no preço abaixo. Acumulam.
+        </p>
 
-            <button
-              onClick={claim}
-              className="cta-shine mt-5 w-full bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-extrabold uppercase text-base py-4 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all tracking-wide flex items-center justify-center gap-2"
+        {/* Escolha direta — um clique até o checkout, com o preço na cara */}
+        <div className="mt-4 w-full flex flex-col gap-2.5">
+          {(
+            [
+              { p: EXIT_OFFER.produtos.moto, href: motoHref },
+              { p: EXIT_OFFER.produtos.carro, href: carroHref },
+            ] as const
+          ).map(({ p, href }) => (
+            <a
+              key={p.titulo}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-shine group w-full rounded-2xl bg-limao text-verde-escuro px-4 py-3.5
+                         hover:brightness-110 active:scale-[0.98] transition-all
+                         flex items-center justify-between gap-3"
             >
-              Quero os dois bônus
-              <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <span className="text-left">
+                <span className="block font-[family-name:var(--font-basement)] font-extrabold uppercase text-sm leading-tight">
+                  {p.titulo}
+                </span>
+                <span className="mt-0.5 flex items-baseline gap-1.5">
+                  <span className="font-[family-name:var(--font-archivo)] text-verde-escuro/55 text-xs line-through">
+                    {p.de}
+                  </span>
+                  <span className="font-[family-name:var(--font-basement)] font-extrabold text-xl leading-none">
+                    {p.por}
+                  </span>
+                </span>
+              </span>
+              <svg viewBox="0 0 16 16" className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 8h10M9 4l4 4-4 4" />
               </svg>
-            </button>
-          </>
-        ) : (
-          <>
-            {/* Sem código para copiar: desconto e frete já vêm no checkout */}
-            <div className="mt-4 w-full rounded-2xl bg-white/[0.06] border border-dashed border-limao/50 px-4 py-5">
-              <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-3xl leading-none">
-                Você ganhou os dois
-              </p>
-              <p className="mt-2 font-[family-name:var(--font-archivo)] text-white/75 text-base leading-snug">
-                na primeira compra
-              </p>
-            </div>
-
-            <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/55 text-xs leading-relaxed">
-              Já aplicados no checkout — é só escolher o seu.
-            </p>
-
-            {/* Escolha do produto */}
-            <div className="mt-5 w-full flex flex-col gap-2">
-              <a
-                href={motoHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-shine w-full bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-extrabold uppercase text-sm py-3.5 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center"
-              >
-                Usar na moto · Kit sachê
-              </a>
-              <a
-                href={carroHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full border border-limao/40 text-limao font-[family-name:var(--font-basement)] font-extrabold uppercase text-sm py-3.5 rounded-xl hover:bg-limao/10 active:scale-[0.98] transition-all flex items-center justify-center"
-              >
-                Usar no carro · Kit frasco
-              </a>
-            </div>
-          </>
-        )}
+            </a>
+          ))}
+        </div>
 
         <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/45 text-[11px]">
           Oferta válida só agora ·{" "}
