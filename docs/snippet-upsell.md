@@ -47,19 +47,22 @@ correto: não existe upsell de uma compra que não aconteceu.
 ```html
 <script>
 (function () {
-  var DESTINO = "https://www.carboze.com.br/upsell";
+  var DESTINO_UPSELL = "https://www.carboze.com.br/upsell";
+  var DESTINO_FIM = "https://www.carboze.com.br/obrigado";
 
   // Espera os pixels de conversão dispararem antes de sair. Sem isso o
   // redirect pode cortar Meta/Google Ads/GTM e a venda perde atribuição.
   var ESPERA_MS = 1200;
 
-  // ── Guarda: uma vez por compra ──────────────────────────────────────────
-  // Cobre dois casos: o snippet colado nas duas abas, e o 2º pedido gerado
-  // por quem aceita o upsell (que cairia aqui de novo). Expira em 30min para
-  // não bloquear uma compra nova de verdade mais tarde.
+  // ── Já ofertamos o upsell nesta sessão? ─────────────────────────────────
+  // Se sim, este é o 2º pedido — o da própria oferta aceita. Não ofertar de
+  // novo, mas também não deixar o cliente parado na tela da loja: fecha o
+  // fluxo em /obrigado. Expira em 30min, para uma compra nova de verdade
+  // mais tarde voltar a ver o upsell.
+  var jaOfertou = false;
   try {
     var m = JSON.parse(sessionStorage.getItem("cz-upsell-redir") || "null");
-    if (m && Date.now() - m.ts < 30 * 60 * 1000) return;
+    jaOfertou = !!(m && Date.now() - m.ts < 30 * 60 * 1000);
   } catch (e) {}
 
   // ── Pagamento confirmado de verdade? ────────────────────────────────────
@@ -82,23 +85,30 @@ correto: não existe upsell de uma compra que não aconteceu.
     return /pagamento (foi |está )?(confirmado|aprovado)|pagamento confirmado/.test(t);
   }
 
-  function irParaUpsell() {
+  function sair() {
     try {
       sessionStorage.setItem("cz-upsell-redir", JSON.stringify({ ts: Date.now() }));
     } catch (e) {}
 
-    // Qual produto foi comprado → ?p=sache|pack
-    // Pedido misto (sachê + frasco) → pack: ticket maior, e quem leva frasco
-    // tem carro, então a recompra de frasco faz mais sentido.
-    var txt = (document.body.innerText || "").toLowerCase();
-    var temPack = txt.indexOf("frasco") > -1;
-    var temSache = txt.indexOf("sach") > -1;
-    var p = temPack ? "pack" : temSache ? "sache" : "";
+    var destino;
+    if (jaOfertou) {
+      // 2º pedido = a oferta foi aceita e paga. Fecha o fluxo.
+      destino = DESTINO_FIM;
+    } else {
+      // Qual produto foi comprado → ?p=sache|pack
+      // Pedido misto (sachê + frasco) → pack: ticket maior, e quem leva
+      // frasco tem carro, então a recompra de frasco faz mais sentido.
+      var txt = (document.body.innerText || "").toLowerCase();
+      var temPack = txt.indexOf("frasco") > -1;
+      var temSache = txt.indexOf("sach") > -1;
+      var p = temPack ? "pack" : temSache ? "sache" : "";
+      destino = DESTINO_UPSELL + (p ? "?p=" + p : "");
+    }
 
     // replace: não deixa a tela da loja no histórico, então "voltar" não
     // devolve o cliente para o checkout já concluído.
     setTimeout(function () {
-      location.replace(DESTINO + (p ? "?p=" + p : ""));
+      location.replace(destino);
     }, ESPERA_MS);
   }
 
@@ -112,7 +122,7 @@ correto: não existe upsell de uma compra que não aconteceu.
   var timer = setInterval(function () {
     if (location.pathname.indexOf("/success/") > -1 && pagamentoConfirmado()) {
       clearInterval(timer);
-      irParaUpsell();
+      sair();
     } else if (++tentativas > LIMITE) {
       clearInterval(timer);
     }
