@@ -31,10 +31,27 @@ function fmt(s: number) {
   return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
 
+/**
+ * O snippet pós-compra dispara em QUALQUER pedido aprovado — inclusive no
+ * pedido do próprio upsell. Sem trava, quem aceita a oferta volta para cá e
+ * é oferecido o mesmo produto que acabou de comprar.
+ */
+const JA_ACEITOU = "cz-upsell-aceito";
+
 export default function UpsellClient() {
   const [left, setLeft] = useState(UPSELL.urgencyMinutes * 60);
+  const [saindo, setSaindo] = useState(false);
 
   useEffect(() => {
+    try {
+      if (sessionStorage.getItem(JA_ACEITOU)) {
+        setSaindo(true);
+        window.location.replace(UPSELL.declineHref);
+        return;
+      }
+    } catch {
+      /* sessionStorage indisponível — segue sem a trava */
+    }
     fireConfetti();
   }, []);
 
@@ -46,6 +63,9 @@ export default function UpsellClient() {
 
   const produtos = [UPSELL.produtos.moto, UPSELL.produtos.carro] as const;
 
+  // Evita o flash do card antes do redirect de quem já aceitou
+  if (saindo) return null;
+
   return (
     <>
       {/* Só as duas opções de compra — nada que dispute o clique */}
@@ -54,6 +74,15 @@ export default function UpsellClient() {
           <a
             key={p.titulo}
             href={p.href}
+            onClick={() => {
+              // Marca antes de sair: quando o snippet trouxer de volta após o
+              // pagamento, esta página manda direto para /obrigado.
+              try {
+                sessionStorage.setItem(JA_ACEITOU, "1");
+              } catch {
+                /* ignora */
+              }
+            }}
             className="cta-shine group w-full rounded-2xl bg-limao text-verde-escuro px-5 py-4
                        hover:brightness-110 active:scale-[0.98] transition-all
                        flex items-center justify-between gap-3"
