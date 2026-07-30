@@ -81,6 +81,10 @@ export const CHECKOUT_JEAN_CARROS = NS_CARROS + "?utm_source=jean";
 export const CHECKOUT_CARPOWER_MOTOS  = NS_MOTOS  + "?utm_source=carpower";
 export const CHECKOUT_CARPOWER_CARROS = NS_CARROS + "?utm_source=carpower";
 
+// ─── Dionísio ────────────────────────────────────────────────────────────────
+export const CHECKOUT_DIONISIO_MOTOS  = NS_MOTOS  + "?utm_source=dionisio";
+export const CHECKOUT_DIONISIO_CARROS = NS_CARROS + "?utm_source=dionisio";
+
 // ─── TarjaPreta ──────────────────────────────────────────────────────────────
 export const CHECKOUT_TARJAPRETA_MOTOS  = NS_MOTOS  + "?utm_source=tarjapreta";
 export const CHECKOUT_TARJAPRETA_CARROS = NS_CARROS + "?utm_source=tarjapreta";

@@ -13,6 +13,8 @@ export default function DionisioPage() {
     <InfluencerLPTemplate
       bgImage="/LP_INFLUENCERS_3.webp"
       mobileBgImage="/LP_INFLUENCERS_MOBILE.webp"
+      checkoutMotoHref="/checkoutsache-dionisio"
+      checkoutCarroHref="/checkoutpack100-dionisio"
       utmSource="dionisio"
     />
   );

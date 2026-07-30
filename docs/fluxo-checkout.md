@@ -16,9 +16,12 @@ Nenhuma delas renderiza tela.
 | `/checkoutpack100-jean` | Kit 5 frascos | `utm_source=jean` |
 | `/checkoutsache-carpower` | Kit 10 sachês | `utm_source=carpower` |
 | `/checkoutpack100-carpower` | Kit 5 frascos | `utm_source=carpower` |
+| `/checkoutsache-dionisio` | Kit 10 sachês | `utm_source=dionisio` |
+| `/checkoutpack100-dionisio` | Kit 5 frascos | `utm_source=dionisio` |
 
 Descontinuadas, ainda respondendo por redirect 301 (`next.config.ts`):
-`-influencer`, `-nenel`, `-tarjapreta` → caem na versão **sem UTM**.
+`-influencer`, `-nenel`, `-tarjapreta` → caem na versão **sem UTM**. Nenhuma LP
+ativa aponta para elas.
 
 ## 2. Fluxo completo
 
@@ -29,7 +32,7 @@ flowchart TD
   ESC -->|moto| CS["/checkoutsache-*"]
   ESC -->|carro| CP["/checkoutpack100-*"]
 
-  LP -.->|"tenta sair — DESLIGADO hoje"| POP["Popup de saída<br/>5% off + frete grátis"]
+  LP -.->|"tenta sair — DESLIGADO hoje"| POP["Popup de saída<br/>5% off + frete grátis<br/>(/cupom tem o mesmo card)"]
   POP -.-> SKUB["SKU Back<br/>R$ 56,90 / R$ 142,00"]
 
   CS --> SKUN["SKU normal na loja<br/>R$ 59,90 / R$ 149,50"]
@@ -59,8 +62,10 @@ cheio, em vez de somar.
 | Kit 5 frascos | R$ 149,50 | LPs, `/checkoutpack100*` |
 | Back — sachês | R$ 56,90 (−5%) | popup de saída |
 | Back — frascos | R$ 142,00 (−5%) | popup de saída |
-| UpSell — sachês | esperado R$ 47,90 (−20%) | `/upsell` |
-| UpSell — frascos | esperado R$ 119,60 (−20%) | `/upsell` |
+| UpSell — sachês | R$ 47,90 (−20%) | `/upsell` |
+| UpSell — frascos | R$ 119,60 (−20%) | `/upsell` |
+
+Conferido em 29/07: os quatro preços do admin batem com o código.
 
 Os preços `por` vivem em `lib/constants.ts` (`EXIT_OFFER.produtos` e
 `UPSELL.produtos`). **Precisam bater com o preço do SKU na Nuvemshop** — se
@@ -80,11 +85,26 @@ manda o cliente para um 404.
 Enquanto isso não se resolve, `EXIT_OFFER.enabled = false` desliga o popup nas
 quatro LPs e faz `/cupom` redirecionar para a home.
 
-## 5. Pontos abertos
+## 5. Para religar Back e UpSell
 
-- **`/dionisio` perde atribuição.** A página não passa rotas de checkout
-  próprias, então usa os defaults do `InfluencerLPTemplate`
-  (`/checkoutsache-influencer`), que hoje redirecionam para a versão sem UTM.
-  Venda da `/dionisio` fica indistinguível da home.
-- **Preços do UpSell aparentam estar trocados no admin** (sachês com o valor
-  dos frascos e vice-versa). Conferir antes de religar o snippet.
+Ordem obrigatória — inverter derruba venda ou promete preço errado:
+
+1. **Tornar os SKUs de oferta visíveis na loja.** Enquanto "Oculto", a página
+   de oferta manda o cliente para 404. Não há como contornar pelo código.
+2. Conferir que os preços seguem batendo com `lib/constants.ts`.
+3. **Back:** `EXIT_OFFER.enabled = true`. Religa o popup nas 4 LPs e devolve
+   a `/cupom`.
+4. **UpSell:** inserir o snippet pós-compra na Nuvemshop apontando para
+   `/upsell`. Sem ele o cliente para na tela padrão da loja.
+
+Ao tornar visíveis, os SKUs voltam a aparecer em `/produtos` e no
+`sitemap.xml` — qualquer visitante pode comprar com desconto sem ver a oferta.
+É o custo aceito enquanto não houver alternativa. Por isso o popup não usa mais
+"oferta válida só agora" nem contador: seria escassez falsa.
+
+## 6. Pontos abertos
+
+- **Vazamento vs. 404** (seção 4): não existe estado intermediário na
+  Nuvemshop. A alternativa a investigar é cupom de desconto auto-aplicado por
+  URL — cupom não aparece em vitrine nem sitemap, então resolveria os dois
+  lados. Falta confirmar se a plataforma aceita auto-aplicar por link.
