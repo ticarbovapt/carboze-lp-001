@@ -47,7 +47,32 @@ flowchart TD
   UPS -->|aceita| SKUU["SKU UpSell<br/>2º pedido, soma ao ticket"]
   UPS -->|"'não, obrigado'"| OBG["/obrigado"]
   SKUU --> OBG
+  OBG -.->|"NÃO volta"| UPS
 ```
+
+### Regras do upsell
+
+**A oferta casa com o que foi comprado.** Sachê → upsell de sachê; pack →
+upsell de pack. Vale para os dois caminhos de compra (front e Back).
+
+Como o produto é identificado: a loja é outro domínio, então a captura é no
+clique da LP. `FunnelTracker` (montado no layout raiz) escuta cliques no
+documento e anota `sache`/`pack` a partir da URL de compra — os slugs das três
+variantes de cada produto carregam o mesmo trecho (`kit-10-saches` /
+`kit-5-frascos`), então normal, Back e UpSell caem no mesmo balde.
+
+Marca em **localStorage** e não sessionStorage: o popup de saída abre a loja em
+outra aba, e sessionStorage é por aba. TTL de 24h, para não cegar uma compra
+futura legítima. `/upsell` também aceita `?p=sache|pack`, se o snippet quiser
+informar direto — a URL tem prioridade sobre o clique gravado.
+
+Sem produto identificado, `/upsell` mostra as duas ofertas. Melhor ofertar
+demais que travar a venda.
+
+**Recusar queima a oferta.** Aceitar ou recusar marca o upsell como resolvido;
+de `/obrigado` não há volta para `/upsell`. Isso também protege do snippet, que
+dispara de novo no pedido gerado pelo próprio upsell — sem a trava, quem aceita
+voltaria para a página sendo oferecido o que acabou de comprar.
 
 **Por que o upsell roda depois do pagamento:** o 1º pedido já fechou, então a
 compra ali vira um **segundo pedido** e soma ao ticket. Antes do checkout, os
@@ -100,8 +125,12 @@ Ordem obrigatória — inverter derruba venda ou promete preço errado:
 4. **UpSell:** inserir o snippet pós-compra na Nuvemshop apontando para
    `/upsell`. Sem ele o cliente para na tela padrão da loja.
 
-**Status em 29/07:** passos 1, 2 e 3 feitos — Back no ar. Falta o snippet do
-UpSell (passo 4).
+**Status em 29/07:** os quatro passos feitos. Back e UpSell no ar.
+
+Único item que **não foi verificado de ponta a ponta**: o disparo do snippet.
+Ele só existe na tela de pós-compra, que exige um pedido real — não aparece nas
+páginas públicas da loja. Um pedido-teste completo é a única forma de confirmar
+que o redirect para `/upsell` acontece.
 
 ## 6. Pontos abertos
 
