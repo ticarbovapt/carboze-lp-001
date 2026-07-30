@@ -24,27 +24,44 @@ export function backCheckout(produto: "motos" | "carros", utmSource?: string) {
   return utmSource ? `${base}?utm_source=${utmSource}` : base;
 }
 
-// ─── Upsell pré-checkout ──────────────────────────────────────────────────────
-// SKU espelho do kit de frascos, cadastrado na loja a preço promocional.
-// Só é ofertado a quem ia comprar o KIT SACHÊ (R$ 59,90): o ticket sobe para
-// R$ 99,50 (+66%) e o "de R$ 149,50" é o preço real do kit normal.
-// NÃO ofertar a quem já vai comprar o kit de frascos — ali seria desconto.
-const NS_UPSELL_FRASCOS =
+// ─── Upsell PÓS-COMPRA (/upsell) ─────────────────────────────────────────────
+// SKUs "UpSell" cadastrados na loja com 20% abatido no preço:
+//   sachê  R$ 59,90 → R$ 47,90      frascos  R$ 149,50 → R$ 119,60
+//
+// Esta oferta roda DEPOIS do pagamento confirmado. É o que a torna segura:
+// como o 1º pedido já fechou, a compra aqui vira um segundo pedido e SOMA ao
+// ticket. Os mesmos preços antes do checkout seriam desconto, não upsell —
+// o carrinho estaria vazio e o cliente pagaria o menor valor no lugar do cheio.
+const NS_UPSELL_MOTOS =
+  "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-10ml-tratamento-de-combustivel-e-protecao-do-motor-copia-fovns/";
+const NS_UPSELL_CARROS =
   "https://loja.carboze.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1p5z3/";
 
 export const UPSELL = {
-  /** Destino do upsell (kit 5 frascos a preço promocional). */
-  href: NS_UPSELL_FRASCOS + "?utm_source=upsell",
-  /** Para onde vai quem recusa: o kit sachê que ele já tinha escolhido. */
-  declineHref: NS_MOTOS,
-  precoDe: 149.5,
-  precoPor: 99.5,
-  /** O que o cliente ia levar antes da oferta. */
-  origemPreco: 59.9,
-  origemLitros: 100,
-  litros: 500,
   /** Minutos do contador de urgência. */
-  urgencyMinutes: 10,
+  urgencyMinutes: 15,
+  /** Para onde vai quem recusa a oferta. */
+  declineHref: "/obrigado",
+  /**
+   * `por` PRECISA bater com o preço do SKU "UpSell" correspondente na
+   * Nuvemshop — é o número que o cliente vê aqui e espera no checkout.
+   */
+  produtos: {
+    moto: {
+      titulo: "Kit 10 sachês 10ml",
+      subtitulo: "Ideal para moto · trata 100 litros",
+      de: "R$ 59,90",
+      por: "R$ 47,90",
+      href: NS_UPSELL_MOTOS + "?utm_source=upsell",
+    },
+    carro: {
+      titulo: "Kit 5 frascos 100ml",
+      subtitulo: "Ideal para carro · trata 500 litros",
+      de: "R$ 149,50",
+      por: "R$ 119,60",
+      href: NS_UPSELL_CARROS + "?utm_source=upsell",
+    },
+  },
 } as const;
 
 // ─── Kit 6 meses (oferta pós-NPS) ─────────────────────────────────────────────

@@ -24,10 +24,9 @@ export const metadata: Metadata = {
 };
 
 // Checkout próprio da home (sem UTM de campanha).
-// Quem escolhe o sachê passa antes pelo upsell (kit de frascos a R$ 99,50):
-// o ticket sobe de R$ 59,90 para R$ 99,50. Quem já escolheu o kit de frascos
-// vai direto ao checkout — ofertar algo ali só reduziria o valor do pedido.
-const CHECKOUT_MOTO = "/upsell-sache";
+// Sem interstitial: o upsell saiu do pré-checkout e passou a rodar depois do
+// pagamento (/upsell), onde a oferta soma ao ticket em vez de substituir.
+const CHECKOUT_MOTO = "/checkoutsache";
 const CHECKOUT_CARRO = "/checkoutpack100";
 
 // Carrossel do hero — só packshots de produto (sem foto de campanha)
