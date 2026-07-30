@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { EXIT_OFFER, backCheckout } from "@/lib/constants";
-import { BadgePercentIcon, CheckCircleIcon } from "./Icons";
+import { BadgePercentIcon, CheckCircleIcon, TruckIcon } from "./Icons";
 
 function prefersReducedMotion() {
   return (
@@ -96,28 +96,52 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
         </div>
 
         <p className="mt-4 font-[family-name:var(--font-archivo)] text-limao text-[10px] tracking-[0.18em] uppercase font-bold">
-          {claimed ? "Desconto ativado" : "Espera um segundo"}
+          {claimed ? "Bônus ativados" : "Espera um segundo"}
         </p>
 
         <h2 className="mt-1 font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl leading-tight">
           {claimed ? (
-            <>Seu desconto está <span className="text-limao">pronto!</span></>
+            <>Tudo <span className="text-limao">liberado!</span></>
           ) : (
-            <>Leva <span className="text-limao">{EXIT_OFFER.percent}% off</span> antes de sair</>
+            <>
+              Não vá embora <span className="text-limao">sem seus dois bônus</span>
+            </>
           )}
         </h2>
 
+        {/* Os dois gatilhos com o mesmo peso — é o coração da oferta */}
+        <div className="mt-5 w-full grid grid-cols-2 gap-2">
+          <div className="rounded-2xl bg-limao/15 border border-limao/40 px-3 py-4 flex flex-col items-center gap-1.5">
+            <BadgePercentIcon className="w-6 h-6 text-limao" />
+            <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-xl leading-none">
+              {EXIT_OFFER.percent}% off
+            </p>
+            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[11px] leading-tight">
+              direto no preço
+            </p>
+          </div>
+          <div className="rounded-2xl bg-limao/15 border border-limao/40 px-3 py-4 flex flex-col items-center gap-1.5">
+            <TruckIcon className="w-6 h-6 text-limao" />
+            <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-xl leading-none">
+              Frete grátis
+            </p>
+            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[11px] leading-tight">
+              para todo o Brasil
+            </p>
+          </div>
+        </div>
+
         {!claimed ? (
           <>
-            <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
-              Vale para o sachê e para o frasco, somado ao frete grátis que você já tem.
+            <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
+              Os dois valem para o sachê e para o frasco. Acumulam.
             </p>
 
             <button
               onClick={claim}
               className="cta-shine mt-5 w-full bg-limao text-verde-escuro font-[family-name:var(--font-basement)] font-extrabold uppercase text-base py-4 rounded-xl hover:brightness-110 active:scale-[0.98] transition-all tracking-wide flex items-center justify-center gap-2"
             >
-              Quero meu {EXIT_OFFER.percent}% de desconto
+              Quero os dois bônus
               <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 8h10M9 4l4 4-4 4" />
               </svg>
@@ -125,10 +149,10 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
           </>
         ) : (
           <>
-            {/* Valor conquistado — sem código para copiar, o desconto já vem no preço */}
-            <div className="mt-5 w-full rounded-2xl bg-white/[0.06] border border-dashed border-limao/50 px-4 py-5">
+            {/* Sem código para copiar: desconto e frete já vêm no checkout */}
+            <div className="mt-4 w-full rounded-2xl bg-white/[0.06] border border-dashed border-limao/50 px-4 py-5">
               <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-3xl leading-none">
-                Você ganhou {EXIT_OFFER.percent}%
+                Você ganhou os dois
               </p>
               <p className="mt-2 font-[family-name:var(--font-archivo)] text-white/75 text-base leading-snug">
                 na primeira compra
@@ -136,7 +160,7 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
             </div>
 
             <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/55 text-xs leading-relaxed">
-              Desconto já aplicado — é só escolher o seu.
+              Já aplicados no checkout — é só escolher o seu.
             </p>
 
             {/* Escolha do produto */}

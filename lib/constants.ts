@@ -8,8 +8,8 @@ export const CHECKOUT_CARROS = NS_CARROS;
 export const CHECKOUT_URL    = NS_MOTOS;
 
 // ─── Checkout da oferta de saída ("Back") ────────────────────────────────────
-// SKUs espelho cadastrados na loja já com 10% aplicado no preço:
-//   sachê  R$ 59,90 → R$ 53,91      frascos  R$ 149,50 → R$ 134,55
+// SKUs espelho cadastrados na loja já com 5% aplicado no preço:
+//   sachê  R$ 59,90 → R$ 56,90      frascos  R$ 149,50 → R$ 142,00
 // Preço conferido em nuvemshop:price. Como o desconto vem do produto, o
 // usuário não digita cupom nenhum — é o que tira a fricção do popup.
 const NS_BACK_MOTOS  = "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-10ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1lk26/";
@@ -97,8 +97,8 @@ export const EXIT_OFFER = {
    * /carpower, /dionisio). Desligado também ignora o `?cupom=1`.
    * Não afeta a rota /cupom, que continua no ar como página de campanha.
    */
-  enabled: false,
-  percent: 10,
+  enabled: true,
+  percent: 5,
   /** Minutos do contador de urgência exibido no popup. */
   urgencyMinutes: 10,
 } as const;
