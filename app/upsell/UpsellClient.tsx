@@ -45,15 +45,29 @@ export default function UpsellClient() {
   useEffect(() => {
     // A oferta é de uma vez só: aceitou ou recusou, não volta.
     // Cobre também o snippet, que dispara de novo no pedido do próprio upsell.
-    if (upsellJaResolvido()) {
+    function barrarSeResolvido() {
+      if (!upsellJaResolvido()) return false;
+      setSaindo(true);
       window.location.replace(UPSELL.declineHref);
-      return;
+      return true;
     }
+
+    if (barrarSeResolvido()) return;
+
     // `?p=` permite que o snippet informe o produto; senão usa o clique gravado.
     const daUrl = new URLSearchParams(window.location.search).get("p");
     setProduto(daUrl === "sache" || daUrl === "pack" ? daUrl : lerProduto());
     setSaindo(false);
     fireConfetti();
+
+    // Voltar do /obrigado restaura esta página do bfcache — sem re-render e
+    // sem re-executar este efeito. Sem checar de novo aqui, quem recusou vê a
+    // oferta outra vez só apertando "voltar".
+    function aoRestaurar(e: PageTransitionEvent) {
+      if (e.persisted) barrarSeResolvido();
+    }
+    window.addEventListener("pageshow", aoRestaurar);
+    return () => window.removeEventListener("pageshow", aoRestaurar);
   }, []);
 
   useEffect(() => {
