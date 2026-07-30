@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { UPSELL } from "@/lib/constants";
 import {
   lerProduto,
+  limparFunil,
   marcarUpsellResolvido,
   upsellJaResolvido,
   type ProdutoFunil,
@@ -43,6 +44,16 @@ export default function UpsellClient() {
   const [produto, setProduto] = useState<ProdutoFunil | null>(null);
 
   useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+
+    // `?reset=1` zera o funil e recarrega limpo. Só para teste: refazer o
+    // percurso no mesmo navegador exigiria abrir o DevTools a cada rodada.
+    if (query.get("reset") === "1") {
+      limparFunil();
+      window.location.replace("/upsell");
+      return;
+    }
+
     // A oferta é de uma vez só: aceitou ou recusou, não volta.
     // Cobre também o snippet, que dispara de novo no pedido do próprio upsell.
     function barrarSeResolvido() {
@@ -55,7 +66,7 @@ export default function UpsellClient() {
     if (barrarSeResolvido()) return;
 
     // `?p=` permite que o snippet informe o produto; senão usa o clique gravado.
-    const daUrl = new URLSearchParams(window.location.search).get("p");
+    const daUrl = query.get("p");
     setProduto(daUrl === "sache" || daUrl === "pack" ? daUrl : lerProduto());
     setSaindo(false);
     fireConfetti();

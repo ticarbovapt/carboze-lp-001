@@ -76,3 +76,16 @@ export function marcarUpsellResolvido() {
 export function upsellJaResolvido(): boolean {
   return ler(K_RESOLVIDO) === "1";
 }
+
+/**
+ * Zera o funil. Existe para teste: refazer o percurso no mesmo navegador
+ * exigiria abrir o DevTools a cada rodada. Chamado por `/upsell?reset=1`.
+ */
+export function limparFunil() {
+  try {
+    localStorage.removeItem(K_PRODUTO);
+    localStorage.removeItem(K_RESOLVIDO);
+  } catch {
+    /* ignora */
+  }
+}
