@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import LovableHeader from "@/components/LovableHeader";
 import ExitOffer from "@/components/lovable/ExitOffer";
 import DepoimentosJean from "@/components/lovable/influencer/jean/DepoimentosJean";
@@ -16,6 +17,11 @@ export const metadata: Metadata = {
 };
 
 export default function CupomPage() {
+  // Oferta desligada: esta página anunciaria um preço que o checkout não
+  // entrega. Manda para a home em vez de 404, para não quebrar links já
+  // divulgados.
+  if (!EXIT_OFFER.enabled) redirect("/");
+
   return (
     <main>
       <LovableHeader

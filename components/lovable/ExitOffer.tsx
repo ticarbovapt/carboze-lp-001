@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { EXIT_OFFER, backCheckout } from "@/lib/constants";
 import { BadgePercentIcon, TruckIcon } from "./Icons";
 
@@ -26,12 +26,6 @@ function fireConfetti() {
     .catch(() => {});
 }
 
-function fmt(s: number) {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
-}
-
 interface ExitOfferProps {
   /** Modal com overlay (exit intent) ou bloco embutido (rota /cupom). */
   variant?: "modal" | "inline";
@@ -46,14 +40,6 @@ interface ExitOfferProps {
 export default function ExitOffer({ variant = "modal", onClose, utmSource }: ExitOfferProps) {
   const motoHref = backCheckout("motos", utmSource);
   const carroHref = backCheckout("carros", utmSource);
-  const [left, setLeft] = useState(EXIT_OFFER.urgencyMinutes * 60);
-
-  useEffect(() => {
-    if (left <= 0) return;
-    const t = setInterval(() => setLeft((v) => (v > 0 ? v - 1 : 0)), 1000);
-    return () => clearInterval(t);
-  }, [left]);
-
   // Confete na abertura. Antes ele premiava o clique em "resgatar", mas esse
   // passo saiu: com o desconto já no preço, ele só atrasava a compra.
   useEffect(() => {
@@ -161,9 +147,11 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
           ))}
         </div>
 
+        {/* Sem "válida só agora" nem contador: enquanto o mesmo preço puder ser
+            alcançado fora do popup, a escassez não é verdadeira. Só volta se a
+            oferta passar a ser de fato exclusiva deste fluxo. */}
         <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/45 text-[11px]">
-          Oferta válida só agora ·{" "}
-          <span className="text-limao font-bold tabular-nums">{fmt(left)}</span>
+          Frete grátis e {EXIT_OFFER.percent}% já inclusos.
         </p>
 
         {variant === "modal" && onClose && (

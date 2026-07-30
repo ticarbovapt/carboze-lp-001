@@ -112,9 +112,9 @@ export const EXIT_OFFER = {
   /**
    * Liga/desliga o popup de saída em TODAS as LPs de uma vez (home, /jean,
    * /carpower, /dionisio). Desligado também ignora o `?cupom=1`.
-   * Não afeta a rota /cupom, que continua no ar como página de campanha.
+   * A rota /cupom segue a mesma flag: desligada, redireciona para a home.
    */
-  enabled: true,
+  enabled: false,
   percent: 5,
   /** Minutos do contador de urgência exibido no popup. */
   urgencyMinutes: 10,
