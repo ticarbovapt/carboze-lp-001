@@ -2,6 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { UPSELL } from "@/lib/constants";
+import {
+  lerProduto,
+  marcarUpsellResolvido,
+  upsellJaResolvido,
+  type ProdutoFunil,
+} from "@/lib/funnelState";
 
 function prefersReducedMotion() {
   return (
@@ -31,27 +37,22 @@ function fmt(s: number) {
   return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
 
-/**
- * O snippet pós-compra dispara em QUALQUER pedido aprovado — inclusive no
- * pedido do próprio upsell. Sem trava, quem aceita a oferta volta para cá e
- * é oferecido o mesmo produto que acabou de comprar.
- */
-const JA_ACEITOU = "cz-upsell-aceito";
-
 export default function UpsellClient() {
   const [left, setLeft] = useState(UPSELL.urgencyMinutes * 60);
-  const [saindo, setSaindo] = useState(false);
+  const [saindo, setSaindo] = useState(true); // pessimista até liberar
+  const [produto, setProduto] = useState<ProdutoFunil | null>(null);
 
   useEffect(() => {
-    try {
-      if (sessionStorage.getItem(JA_ACEITOU)) {
-        setSaindo(true);
-        window.location.replace(UPSELL.declineHref);
-        return;
-      }
-    } catch {
-      /* sessionStorage indisponível — segue sem a trava */
+    // A oferta é de uma vez só: aceitou ou recusou, não volta.
+    // Cobre também o snippet, que dispara de novo no pedido do próprio upsell.
+    if (upsellJaResolvido()) {
+      window.location.replace(UPSELL.declineHref);
+      return;
     }
+    // `?p=` permite que o snippet informe o produto; senão usa o clique gravado.
+    const daUrl = new URLSearchParams(window.location.search).get("p");
+    setProduto(daUrl === "sache" || daUrl === "pack" ? daUrl : lerProduto());
+    setSaindo(false);
     fireConfetti();
   }, []);
 
@@ -61,9 +62,16 @@ export default function UpsellClient() {
     return () => clearInterval(t);
   }, [left]);
 
-  const produtos = [UPSELL.produtos.moto, UPSELL.produtos.carro] as const;
+  // Casa a oferta com o que foi comprado. Sem produto identificado, mostra as
+  // duas — melhor oferecer demais que travar a venda.
+  const produtos =
+    produto === "sache"
+      ? [UPSELL.produtos.moto]
+      : produto === "pack"
+        ? [UPSELL.produtos.carro]
+        : [UPSELL.produtos.moto, UPSELL.produtos.carro];
 
-  // Evita o flash do card antes do redirect de quem já aceitou
+  // Evita o flash do card antes do redirect de quem já resolveu
   if (saindo) return null;
 
   return (
@@ -74,15 +82,7 @@ export default function UpsellClient() {
           <a
             key={p.titulo}
             href={p.href}
-            onClick={() => {
-              // Marca antes de sair: quando o snippet trouxer de volta após o
-              // pagamento, esta página manda direto para /obrigado.
-              try {
-                sessionStorage.setItem(JA_ACEITOU, "1");
-              } catch {
-                /* ignora */
-              }
-            }}
+            onClick={marcarUpsellResolvido}
             className="cta-shine group w-full rounded-2xl bg-limao text-verde-escuro px-5 py-4
                        hover:brightness-110 active:scale-[0.98] transition-all
                        flex items-center justify-between gap-3"
@@ -124,9 +124,11 @@ export default function UpsellClient() {
         <span className="text-limao font-bold tabular-nums">{fmt(left)}</span>
       </p>
 
-      {/* Saída discreta, mas clicável e legível — pequeno não é escondido */}
+      {/* Saída discreta, mas clicável e legível — pequeno não é escondido.
+          Recusar também queima a oferta: de /obrigado não há volta para cá. */}
       <a
         href={UPSELL.declineHref}
+        onClick={marcarUpsellResolvido}
         className="mt-6 font-[family-name:var(--font-archivo)] text-white/30 text-xs underline underline-offset-4
                    hover:text-white/60 transition-colors"
       >

@@ -1,0 +1,74 @@
+/**
+ * Estado do funil, do lado do cliente.
+ *
+ * Por que localStorage e não sessionStorage: o caminho de compra sai do nosso
+ * domínio (loja.carboze.com.br) e volta pelo snippet pós-compra. O popup de
+ * saída abre a loja em outra aba, e sessionStorage é por aba — a marca ficaria
+ * na aba errada. localStorage é por origem, então sobrevive ao trajeto.
+ *
+ * Tudo tem validade: a marca vale para a compra em curso, não para sempre.
+ * Sem isso, quem recusou o upsell hoje nunca mais veria a oferta.
+ */
+
+export type ProdutoFunil = "sache" | "pack";
+
+const K_PRODUTO = "cz-funil-produto";
+const K_RESOLVIDO = "cz-upsell-resolvido";
+
+/** Janela em que a marca é considerada válida. */
+const TTL_MS = 24 * 60 * 60 * 1000;
+
+type Marca = { valor: string; ts: number };
+
+function gravar(chave: string, valor: string) {
+  try {
+    localStorage.setItem(chave, JSON.stringify({ valor, ts: Date.now() } satisfies Marca));
+  } catch {
+    /* storage bloqueado — o funil degrada para o comportamento neutro */
+  }
+}
+
+function ler(chave: string): string | null {
+  try {
+    const cru = localStorage.getItem(chave);
+    if (!cru) return null;
+    const m = JSON.parse(cru) as Marca;
+    if (!m?.ts || Date.now() - m.ts > TTL_MS) {
+      localStorage.removeItem(chave);
+      return null;
+    }
+    return m.valor;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Descobre o produto a partir de uma URL de compra. Cobre as três variantes
+ * de cada produto (normal, Back e UpSell), porque todas carregam o mesmo
+ * trecho no slug.
+ */
+export function produtoDaUrl(href: string): ProdutoFunil | null {
+  const h = href.toLowerCase();
+  if (h.includes("kit-10-saches") || h.includes("/checkoutsache")) return "sache";
+  if (h.includes("kit-5-frascos") || h.includes("/checkoutpack100")) return "pack";
+  return null;
+}
+
+export function marcarProduto(p: ProdutoFunil) {
+  gravar(K_PRODUTO, p);
+}
+
+export function lerProduto(): ProdutoFunil | null {
+  const v = ler(K_PRODUTO);
+  return v === "sache" || v === "pack" ? v : null;
+}
+
+/** Aceitou ou recusou o upsell — nos dois casos a oferta não volta. */
+export function marcarUpsellResolvido() {
+  gravar(K_RESOLVIDO, "1");
+}
+
+export function upsellJaResolvido(): boolean {
+  return ler(K_RESOLVIDO) === "1";
+}

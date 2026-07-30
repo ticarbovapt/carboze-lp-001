@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import Script from "next/script";
+import FunnelTracker from "@/components/lovable/FunnelTracker";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -98,6 +99,8 @@ export default function RootLayout({
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         {children}
+        {/* Anota sachê vs pack no clique de compra, p/ o /upsell casar a oferta */}
+        <FunnelTracker />
         {/* Google Tag Manager — carregado após interativo p/ não bloquear render */}
         <Script id="gtm" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
