@@ -118,7 +118,7 @@ export const EXIT_OFFER = {
    * /carpower, /dionisio). Desligado também ignora o `?cupom=1`.
    * A rota /cupom segue a mesma flag: desligada, redireciona para a home.
    */
-  enabled: false,
+  enabled: true,
   percent: 5,
   /** Minutos do contador de urgência exibido no popup. */
   urgencyMinutes: 10,

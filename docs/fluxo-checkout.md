@@ -71,40 +71,44 @@ Os preços `por` vivem em `lib/constants.ts` (`EXIT_OFFER.produtos` e
 `UPSELL.produtos`). **Precisam bater com o preço do SKU na Nuvemshop** — se
 divergirem, a página anuncia um valor e o caixa cobra outro.
 
-## 4. Bloqueio conhecido: "Oculto" = 404
+## 4. Visibilidade dos SKUs de oferta: use "Não listado"
 
-Na Nuvemshop, marcar o produto como **Oculto** não o torna "invisível mas
-comprável": a URL passa a responder **404**. Verificado nos quatro SKUs de
-oferta em 29/07.
+A Nuvemshop tem três estados, e **só um serve** para SKU de oferta:
 
-Consequência: não existe estado "vendável mas fora da vitrine". Ou o SKU está
-visível — e aí aparece em `/produtos` e no `sitemap.xml` da loja, podendo ser
-comprado por quem nunca viu a oferta — ou está oculto e a página de oferta
-manda o cliente para um 404.
+| Estado | Página do produto | Vitrine e sitemap |
+|---|---|---|
+| Visível | vende | **aparece** — vaza o desconto |
+| Oculto | **404** | fora |
+| **Não listado** | **vende** | **fora** |
 
-Enquanto isso não se resolve, `EXIT_OFFER.enabled = false` desliga o popup nas
-quatro LPs e faz `/cupom` redirecionar para a home.
+"Não listado" é o estado correto: quem tem o link compra, quem navega a loja
+nunca encontra. Verificado em 29/07 nos quatro SKUs — página com preço, botão
+Comprar e frete grátis; ausentes de `/produtos` e do `sitemap.xml`.
+
+Se algum SKU de oferta voltar a 404, é porque foi marcado como Oculto em vez de
+Não listado.
 
 ## 5. Para religar Back e UpSell
 
 Ordem obrigatória — inverter derruba venda ou promete preço errado:
 
-1. **Tornar os SKUs de oferta visíveis na loja.** Enquanto "Oculto", a página
-   de oferta manda o cliente para 404. Não há como contornar pelo código.
-2. Conferir que os preços seguem batendo com `lib/constants.ts`.
+1. **SKU em "Não listado"** (seção 4). Se estiver Oculto, a oferta manda o
+   cliente para 404; se estiver Visível, o desconto vaza pela vitrine.
+2. Conferir que os preços batem com `lib/constants.ts`.
 3. **Back:** `EXIT_OFFER.enabled = true`. Religa o popup nas 4 LPs e devolve
    a `/cupom`.
 4. **UpSell:** inserir o snippet pós-compra na Nuvemshop apontando para
    `/upsell`. Sem ele o cliente para na tela padrão da loja.
 
-Ao tornar visíveis, os SKUs voltam a aparecer em `/produtos` e no
-`sitemap.xml` — qualquer visitante pode comprar com desconto sem ver a oferta.
-É o custo aceito enquanto não houver alternativa. Por isso o popup não usa mais
-"oferta válida só agora" nem contador: seria escassez falsa.
+**Status em 29/07:** passos 1, 2 e 3 feitos — Back no ar. Falta o snippet do
+UpSell (passo 4).
 
 ## 6. Pontos abertos
 
-- **Vazamento vs. 404** (seção 4): não existe estado intermediário na
-  Nuvemshop. A alternativa a investigar é cupom de desconto auto-aplicado por
-  URL — cupom não aparece em vitrine nem sitemap, então resolveria os dois
-  lados. Falta confirmar se a plataforma aceita auto-aplicar por link.
+- **Contador de urgência do popup de saída está desligado.** Foi removido
+  quando os SKUs estavam visíveis e a escassez era falsa. Com "Não listado" o
+  preço só é alcançável pelo fluxo da oferta, então dá para restaurar — mas
+  "válida só agora" continua sendo licença poética: o popup reaparece em nova
+  sessão e o link salvo funciona depois. Decisão de marketing, não técnica.
+- **`/upsell` mantém contador** (`UPSELL.urgencyMinutes = 15`). Vale a mesma
+  ressalva quando o snippet entrar.
