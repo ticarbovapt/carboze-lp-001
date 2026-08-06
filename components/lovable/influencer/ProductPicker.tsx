@@ -1,6 +1,7 @@
 import CTAButton from "@/components/lovable/CTAButton";
 import FreteBadge from "@/components/lovable/FreteBadge";
 import { FireIcon } from "@/components/lovable/Icons";
+import FotoProduto, { FOTO_SACHE, FOTO_FRASCOS } from "@/components/lovable/FotoProduto";
 
 interface ProductPickerProps {
   motoHref?: string;
@@ -29,14 +30,7 @@ export default function ProductPicker({
 
           {/* Card MOTO */}
           <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
-            {/* Icon */}
-            <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-verde-escuro">
-                <path d="M5 17H3a2 2 0 01-2-2v-4a2 2 0 012-2h2l4-4h4l3 3 2-1 2 2-1 2 1 1-2 3h-3l-2-2H9l-4 4z" />
-                <circle cx="7.5" cy="17.5" r="1.5" />
-                <circle cx="17.5" cy="17.5" r="1.5" />
-              </svg>
-            </div>
+            <FotoProduto src={FOTO_SACHE} alt="Kit CarboZé com 10 sachês de 10ml" />
 
             {/* Content */}
             <div>
@@ -77,12 +71,7 @@ export default function ProductPicker({
               <FireIcon className="w-3.5 h-3.5" />
               O mais escolhido
             </span>
-            {/* Icon */}
-            <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-verde-escuro">
-                <path d="M5 17H3a2 2 0 01-2-2v-3a2 2 0 012-2h14a2 2 0 012 2v3a2 2 0 01-2 2h-2M5 17a2 2 0 104 0M15 17a2 2 0 104 0M7 10l2-5h6l2 5" />
-              </svg>
-            </div>
+            <FotoProduto src={FOTO_FRASCOS} alt="Kit CarboZé com 5 frascos de 100ml" />
 
             {/* Content */}
             <div>

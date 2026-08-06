@@ -1,6 +1,7 @@
 import CTAButton from "@/components/lovable/CTAButton";
 import FreteBadge from "@/components/lovable/FreteBadge";
 import { FireIcon } from "@/components/lovable/Icons";
+import FotoProduto, { FOTO_SACHE, FOTO_FRASCOS } from "@/components/lovable/FotoProduto";
 
 interface ProductPickerJeanProps {
   motoHref?: string;
@@ -66,9 +67,10 @@ export default function ProductPickerJean({
 
           {/* Card SACHÊ */}
           <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
-            <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
-              <DropletIcon />
-            </div>
+            <FotoProduto
+              src={FOTO_SACHE}
+              alt="Kit CarboZé com 10 sachês de 10ml"
+            />
 
             <div>
               <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-[11px] tracking-widest mb-1">
@@ -109,9 +111,10 @@ export default function ProductPickerJean({
               <FireIcon className="w-3.5 h-3.5" />
               O mais escolhido
             </span>
-            <div className="w-12 h-12 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
-              <BottleIcon />
-            </div>
+            <FotoProduto
+              src={FOTO_FRASCOS}
+              alt="Kit CarboZé com 5 frascos de 100ml"
+            />
 
             <div>
               <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-limao text-[11px] tracking-widest mb-1">
