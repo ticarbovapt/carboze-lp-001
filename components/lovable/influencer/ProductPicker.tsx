@@ -13,7 +13,10 @@ export default function ProductPicker({
   carroHref = "/checkoutpack100-influencer",
 }: ProductPickerProps) {
   return (
-    <section id="escolha-produto" className="bg-white py-16 md:py-24">
+    <section
+      id="escolha-produto"
+      className="py-16 md:py-24 bg-gradient-to-b from-[#E4EBE8] via-[#ECF1EF] to-[#E7EEEB]"
+    >
       <div className="max-w-5xl mx-auto px-6 md:px-10">
 
         {/* Header */}
@@ -29,7 +32,10 @@ export default function ProductPicker({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           {/* Card MOTO */}
-          <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
+          <div className="bg-white border border-verde-escuro/[0.08] rounded-2xl p-8 flex flex-col gap-5
+                          shadow-[0_10px_36px_-12px_rgba(9,58,48,0.18)]
+                          hover:shadow-[0_16px_44px_-12px_rgba(9,58,48,0.26)] hover:-translate-y-0.5
+                          transition-all duration-300">
             <FotoProduto src={FOTO_SACHE} alt="Kit CarboZé com 10 sachês de 10ml" />
 
             {/* Content */}
@@ -66,7 +72,11 @@ export default function ProductPicker({
           </div>
 
           {/* Card CARRO — o mais escolhido */}
-          <div className="relative border-2 border-[#D4A72C] bg-[#D4A72C]/[0.05] rounded-2xl p-8 flex flex-col gap-5" style={{ boxShadow: "0 12px 45px -14px rgba(212,167,44,0.6)" }}>
+          <div
+            className="relative bg-white border-2 border-[#D4A72C] rounded-2xl p-8 flex flex-col gap-5
+                       hover:-translate-y-0.5 transition-transform duration-300"
+            style={{ boxShadow: "0 14px 50px -12px rgba(212,167,44,0.45), 0 0 0 5px rgba(212,167,44,0.10)" }}
+          >
             <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10 inline-flex items-center gap-1.5 bg-gradient-to-r from-[#F4D06A] to-[#C9971F] text-verde-escuro font-[family-name:var(--font-basement)] font-black text-[11px] uppercase tracking-wide px-3.5 py-1.5 rounded-full shadow-lg shadow-[#C9971F]/40 whitespace-nowrap">
               <FireIcon className="w-3.5 h-3.5" />
               O mais escolhido

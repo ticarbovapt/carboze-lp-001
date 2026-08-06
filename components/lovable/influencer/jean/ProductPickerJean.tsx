@@ -30,7 +30,10 @@ export default function ProductPickerJean({
   carroHref = "/checkoutpack100-jean",
 }: ProductPickerJeanProps) {
   return (
-    <section id="escolha-produto" className="bg-white py-16 md:py-24">
+    <section
+      id="escolha-produto"
+      className="py-16 md:py-24 bg-gradient-to-b from-[#E4EBE8] via-[#ECF1EF] to-[#E7EEEB]"
+    >
       <div className="max-w-5xl mx-auto px-6 md:px-10">
 
         <p className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.18em] text-verde-escuro/40 mb-3">
@@ -43,7 +46,7 @@ export default function ProductPickerJean({
 
         {/* Faixa de dosagem */}
         <div className="flex flex-col sm:flex-row gap-3 mb-12">
-          <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/10 bg-verde-escuro/[0.03] px-4 py-3">
+          <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/[0.08] bg-white px-4 py-3 shadow-[0_2px_10px_-4px_rgba(9,58,48,0.14)]">
             <span className="shrink-0 w-9 h-9 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
               <DropletIcon />
             </span>
@@ -52,7 +55,7 @@ export default function ProductPickerJean({
               <strong className="font-bold text-verde-escuro">10 litros</strong> — ideal para pequenos abastecimentos.
             </p>
           </div>
-          <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/10 bg-verde-escuro/[0.03] px-4 py-3">
+          <div className="flex-1 flex items-center gap-3 rounded-xl border border-verde-escuro/[0.08] bg-white px-4 py-3 shadow-[0_2px_10px_-4px_rgba(9,58,48,0.14)]">
             <span className="shrink-0 w-9 h-9 rounded-full bg-verde-escuro/[0.06] flex items-center justify-center">
               <BottleIcon />
             </span>
@@ -66,7 +69,10 @@ export default function ProductPickerJean({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           {/* Card SACHÊ */}
-          <div className="border-2 border-verde-escuro/10 rounded-2xl p-8 flex flex-col gap-5 hover:border-verde-escuro/25 transition-colors">
+          <div className="bg-white border border-verde-escuro/[0.08] rounded-2xl p-8 flex flex-col gap-5
+                          shadow-[0_10px_36px_-12px_rgba(9,58,48,0.18)]
+                          hover:shadow-[0_16px_44px_-12px_rgba(9,58,48,0.26)] hover:-translate-y-0.5
+                          transition-all duration-300">
             <FotoProduto
               src={FOTO_SACHE}
               alt="Kit CarboZé com 10 sachês de 10ml"
@@ -106,7 +112,11 @@ export default function ProductPickerJean({
           </div>
 
           {/* Card FRASCO — o mais escolhido */}
-          <div className="relative border-2 border-[#D4A72C] bg-[#D4A72C]/[0.05] rounded-2xl p-8 flex flex-col gap-5" style={{ boxShadow: "0 12px 45px -14px rgba(212,167,44,0.6)" }}>
+          <div
+            className="relative bg-white border-2 border-[#D4A72C] rounded-2xl p-8 flex flex-col gap-5
+                       hover:-translate-y-0.5 transition-transform duration-300"
+            style={{ boxShadow: "0 14px 50px -12px rgba(212,167,44,0.45), 0 0 0 5px rgba(212,167,44,0.10)" }}
+          >
             <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10 inline-flex items-center gap-1.5 bg-gradient-to-r from-[#F4D06A] to-[#C9971F] text-verde-escuro font-[family-name:var(--font-basement)] font-black text-[11px] uppercase tracking-wide px-3.5 py-1.5 rounded-full shadow-lg shadow-[#C9971F]/40 whitespace-nowrap">
               <FireIcon className="w-3.5 h-3.5" />
               O mais escolhido
