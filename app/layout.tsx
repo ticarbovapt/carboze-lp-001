@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import FunnelTracker from "@/components/lovable/FunnelTracker";
 import MetaPixel from "@/components/lovable/MetaPixel";
+import Utmify from "@/components/lovable/Utmify";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -94,6 +95,8 @@ export default function RootLayout({
         {/* Meta Pixel — direto no código. O GTM saiu: ele só carregava este
             Pixel (sem GA4, sem outras tags), então era ~100KB de intermediário. */}
         <MetaPixel />
+        {/* UTMify — atribuição de campanha ao longo do funil */}
+        <Utmify />
       </body>
     </html>
   );
