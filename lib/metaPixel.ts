@@ -6,7 +6,7 @@
  * requisição de ~100KB e faz o PageView disparar mais cedo.
  */
 
-export const META_PIXEL_ID = "1535819957991493";
+export const META_PIXEL_ID = "2456614714856611";
 
 type Params = Record<string, string | number | boolean | undefined>;
 
