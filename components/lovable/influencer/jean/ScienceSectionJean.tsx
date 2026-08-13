@@ -1,24 +1,29 @@
 import CTAButton from "@/components/lovable/CTAButton";
 import InViewVideo from "@/components/lovable/InViewVideo";
 import VturbPlayer from "@/components/lovable/VturbPlayer";
+import { VSL_VTURB } from "@/lib/constants";
 
 interface ScienceSectionJeanProps {
-  /** Vídeo da coluna direita — permite vídeo próprio por campanha. */
+  /**
+   * Vídeo local da coluna direita. Sem isso, a seção usa a VSL do VTurb —
+   * que é o padrão de todas as LPs. Passar um arquivo aqui é o jeito de uma
+   * campanha ter vídeo próprio no lugar da VSL.
+   */
   videoSrc?: string;
   videoPoster?: string;
   /** Proporção do container (ex.: "9 / 16" p/ vídeo vertical). Sem valor = caixa larga padrão. */
   videoAspect?: string;
-  /** VSL hospedada no VTurb. Quando definido, substitui o vídeo local. */
+  /** Sobrescreve os IDs da VSL padrão, se algum dia uma LP tiver a própria. */
   vturbPlayerId?: string;
   vturbVideoId?: string;
 }
 
 export default function ScienceSectionJean({
-  videoSrc = "/sache-video.mp4",
+  videoSrc,
   videoPoster = "/sache-moto.jpg",
   videoAspect,
-  vturbPlayerId,
-  vturbVideoId,
+  vturbPlayerId = VSL_VTURB.playerId,
+  vturbVideoId = VSL_VTURB.videoId,
 }: ScienceSectionJeanProps = {}) {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
@@ -68,8 +73,8 @@ export default function ScienceSectionJean({
             <CTAButton label="QUERO MEU CARBOZÉ" href="#escolha-produto" />
           </div>
 
-          {/* Coluna direita: VSL do VTurb ou vídeo local */}
-          {vturbPlayerId ? (
+          {/* Coluna direita: vídeo local quando a campanha traz um; senão a VSL */}
+          {!videoSrc && vturbPlayerId ? (
             <VturbPlayer
               playerId={vturbPlayerId}
               videoId={vturbVideoId}
@@ -86,7 +91,7 @@ export default function ScienceSectionJean({
               style={videoAspect ? { aspectRatio: videoAspect } : undefined}
             >
               <InViewVideo
-                src={videoSrc}
+                src={videoSrc ?? "/sache-video.mp4"}
                 poster={videoPoster}
                 className="absolute inset-0 w-full h-full object-cover"
               />

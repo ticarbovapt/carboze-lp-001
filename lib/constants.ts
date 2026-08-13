@@ -2,6 +2,14 @@
 const NS_MOTOS  = "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-moto-10ml-tratamento-de-combustivel-e-protecao-do-motor/";
 const NS_CARROS = "https://loja.carboze.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor/";
 
+// ─── VSL hospedada no VTurb ──────────────────────────────────────────────────
+// Mesma VSL na seção "A ciência" de todas as LPs. Trocar o vídeo é editar
+// estes dois IDs aqui — não em cada página.
+export const VSL_VTURB = {
+  playerId: "6a7b81237f05f7fc40d60445",
+  videoId: "6a7b80dedc6ab33a6aa04626",
+} as const;
+
 // ─── Rota do funil ───────────────────────────────────────────────────────────
 // Vai em utm_source para o pedido nascer identificado no admin da loja.
 // A campanha (jean, carpower...) vai em utm_campaign, senão as duas

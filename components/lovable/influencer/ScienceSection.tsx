@@ -1,4 +1,6 @@
 import CTAButton from "@/components/lovable/CTAButton";
+import VturbPlayer from "@/components/lovable/VturbPlayer";
+import { VSL_VTURB } from "@/lib/constants";
 
 export default function ScienceSection() {
   return (
@@ -23,19 +25,13 @@ export default function ScienceSection() {
             <CTAButton label="CONHECER O CARBOZÉ" href="/sache" />
           </div>
 
-          {/* Coluna direita: vídeo em loop */}
-          <div className="relative w-full rounded-2xl overflow-hidden bg-white/5 min-h-[320px] md:min-h-[400px]">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-              poster="/sache-moto.jpg"
-            >
-              <source src="/sache-video.mp4" type="video/mp4" />
-            </video>
-          </div>
+          {/* Coluna direita: VSL do VTurb */}
+          <VturbPlayer
+            playerId={VSL_VTURB.playerId}
+            videoId={VSL_VTURB.videoId}
+            aspect="9 / 16"
+            className="w-full max-w-[300px] sm:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-black"
+          />
 
         </div>
       </div>

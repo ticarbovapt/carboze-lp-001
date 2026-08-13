@@ -74,11 +74,8 @@ export default function HomePage() {
         <hr className="border-white/8 max-w-6xl mx-auto" />
       </div>
 
-      {/* VSL hospedada no VTurb no lugar do vídeo local */}
-      <ScienceSectionJean
-        vturbPlayerId="6a7b81237f05f7fc40d60445"
-        vturbVideoId="6a7b80dedc6ab33a6aa04626"
-      />
+      {/* Ciência — a VSL do VTurb é o padrão da seção (VSL_VTURB em constants) */}
+      <ScienceSectionJean />
 
       {/* Benefícios: bolso + planeta (fusão) */}
       <BeneficiosHome />
