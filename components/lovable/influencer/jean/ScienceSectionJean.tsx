@@ -1,5 +1,6 @@
 import CTAButton from "@/components/lovable/CTAButton";
 import InViewVideo from "@/components/lovable/InViewVideo";
+import VturbPlayer from "@/components/lovable/VturbPlayer";
 
 interface ScienceSectionJeanProps {
   /** Vídeo da coluna direita — permite vídeo próprio por campanha. */
@@ -7,12 +8,17 @@ interface ScienceSectionJeanProps {
   videoPoster?: string;
   /** Proporção do container (ex.: "9 / 16" p/ vídeo vertical). Sem valor = caixa larga padrão. */
   videoAspect?: string;
+  /** VSL hospedada no VTurb. Quando definido, substitui o vídeo local. */
+  vturbPlayerId?: string;
+  vturbVideoId?: string;
 }
 
 export default function ScienceSectionJean({
   videoSrc = "/sache-video.mp4",
   videoPoster = "/sache-moto.jpg",
   videoAspect,
+  vturbPlayerId,
+  vturbVideoId,
 }: ScienceSectionJeanProps = {}) {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
@@ -62,21 +68,30 @@ export default function ScienceSectionJean({
             <CTAButton label="QUERO MEU CARBOZÉ" href="#escolha-produto" />
           </div>
 
-          {/* Coluna direita: vídeo */}
-          <div
-            className={
-              videoAspect
-                ? "relative w-full max-w-[300px] sm:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-white/5"
-                : "relative w-full rounded-2xl overflow-hidden bg-white/5 min-h-[320px] md:min-h-[400px]"
-            }
-            style={videoAspect ? { aspectRatio: videoAspect } : undefined}
-          >
-            <InViewVideo
-              src={videoSrc}
-              poster={videoPoster}
-              className="absolute inset-0 w-full h-full object-cover"
+          {/* Coluna direita: VSL do VTurb ou vídeo local */}
+          {vturbPlayerId ? (
+            <VturbPlayer
+              playerId={vturbPlayerId}
+              videoId={vturbVideoId}
+              aspect="9 / 16"
+              className="w-full max-w-[300px] sm:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-black"
             />
-          </div>
+          ) : (
+            <div
+              className={
+                videoAspect
+                  ? "relative w-full max-w-[300px] sm:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-white/5"
+                  : "relative w-full rounded-2xl overflow-hidden bg-white/5 min-h-[320px] md:min-h-[400px]"
+              }
+              style={videoAspect ? { aspectRatio: videoAspect } : undefined}
+            >
+              <InViewVideo
+                src={videoSrc}
+                poster={videoPoster}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+          )}
 
         </div>
       </div>
