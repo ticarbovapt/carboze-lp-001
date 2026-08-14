@@ -1,5 +1,4 @@
-import CTAButton from "@/components/lovable/CTAButton";
-import { WHATSAPP_URL } from "@/lib/constants";
+import WhatsAppButton from "@/components/lovable/WhatsAppButton";
 
 const faqs = [
   {
@@ -62,9 +61,12 @@ export default function FAQInstitucional() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="flex justify-center mt-10">
-          <CTAButton label="TENHO DÚVIDAS" href={WHATSAPP_URL} />
+        {/* CTA — quem chegou ao fim do FAQ tem uma dúvida que a lista não cobriu */}
+        <div className="flex flex-col items-center gap-3 mt-10">
+          <WhatsAppButton label="Ainda tenho dúvidas" />
+          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/45 text-xs text-center">
+            Atendimento direto com a equipe CarboZé
+          </p>
         </div>
       </div>
     </section>
