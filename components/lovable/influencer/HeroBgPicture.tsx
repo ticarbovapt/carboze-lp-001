@@ -20,14 +20,33 @@ interface HeroBgPictureProps {
  *
  * 2. LCP mais cedo. `background-image` em style inline só é buscada depois do
  *    CSS e do layout; um <img> no HTML é achado pelo preload scanner na hora
- *    em que o HTML chega. Com fetchPriority alto na primeira arte, ela sai na
- *    frente sem precisar de <link rel="preload"> — que na home apontava para a
- *    arte de DESKTOP e, no celular, gastava prioridade alta numa imagem que
- *    nunca era pintada.
+ *    em que o HTML chega.
+ *
+ * O preload continua, agora com `media`. O problema original era um
+ * `<link rel="preload">` na home apontando para a arte de DESKTOP: no celular
+ * gastava prioridade alta numa imagem que nunca era pintada. Eu tirei o
+ * preload inteiro, e isso custou LCP — no desktop foi de 605ms para 995ms,
+ * porque a arte passou a ser descoberta no meio do <body> em vez de no <head>.
+ * Com `media` o navegador pede uma só, e no lugar certo da fila.
+ *
+ * O preload mora aqui junto do <picture>, não na página, para não haver duas
+ * fontes de verdade sobre qual arte é a prioritária de cada LP.
  */
 export default function HeroBgPicture({ desktop, mobile, prioritaria = false }: HeroBgPictureProps) {
   return (
     <picture>
+      {prioritaria && mobile && (
+        <link rel="preload" as="image" href={mobile} media="(max-width: 639px)" fetchPriority="high" />
+      )}
+      {prioritaria && (
+        <link
+          rel="preload"
+          as="image"
+          href={desktop}
+          media={mobile ? "(min-width: 640px)" : undefined}
+          fetchPriority="high"
+        />
+      )}
       {mobile && <source media="(max-width: 639px)" srcSet={mobile} />}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
