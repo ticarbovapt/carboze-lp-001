@@ -68,17 +68,22 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${archivo.variable}`}>
       <head>
-        {/* Preload das fontes usadas acima da dobra */}
+        {/*
+          Só a Black. É o peso do H1 do hero (font-extrabold → 800/900), que é
+          o único texto grande acima da dobra.
+
+          A Regular saiu daqui: nenhum elemento acima da dobra usa Basement 400
+          — as tags e o H1 são Black, os botões são Bold, e o subtítulo é
+          Archivo. Preload dela custava 22 KB de banda em prioridade alta
+          disputando com a imagem do hero, que é o elemento de LCP.
+
+          A Bold (700, dos botões de CTA) segue sem preload, entrando pelo CSS.
+          Preloadá-la gastaria de novo os 22 KB que acabamos de liberar; se o
+          flash no texto do CTA incomodar, é aqui que se resolve.
+        */}
         <link
           rel="preload"
           href="/fonts/BasementGrotesque-Black.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/BasementGrotesque-Regular.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

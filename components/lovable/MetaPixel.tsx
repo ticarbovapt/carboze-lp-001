@@ -59,10 +59,17 @@ export default function MetaPixel() {
         Aqui as duas etapas ficam separadas. O stub e os `fbq(...)` rodam de
         imediato: `init` e `PageView` entram na fila, e qualquer clique que
         dispare InitiateCheckout antes da biblioteca carregar também entra. A
-        injeção do fbevents.js espera a página ficar ociosa (ou 2,5s, ou o
-        primeiro toque do usuário — o que vier primeiro). Quando ele carrega,
-        esvazia a fila e nada se perde: é exatamente para isso que a fila do
+        injeção do fbevents.js espera o primeiro sinal de que tem alguém ali:
+        toque, clique, tecla, rolagem ou roda do mouse. Quando ele carrega,
+        esvazia a fila e nada se perde — é exatamente para isso que a fila do
         `fbq` existe.
+
+        Antes havia um `requestIdleCallback` com timeout de 2,5s, que na prática
+        disparava perto de 1s e voltava a disputar banda dentro da janela do
+        LCP. O fallback agora é 10s, bem depois de qualquer LCP: existe só para
+        não perder o PageView de quem abre a página e fica lendo sem tocar em
+        nada. Quem sai antes dos 10s sem nenhuma interação não é contado — essa
+        é a troca, feita de propósito, para devolver banda ao carregamento.
       */}
       <Script id="meta-pixel" strategy="afterInteractive">
         {`!function(f,b,e,v,n,t,s)
@@ -77,10 +84,9 @@ function carregar(){if(carregou)return;carregou=true;
 var t=document.createElement('script');t.async=!0;
 t.src='https://connect.facebook.net/en_US/fbevents.js';
 document.head.appendChild(t);}
-['pointerdown','touchstart','keydown','scroll'].forEach(function(ev){
+['pointerdown','touchstart','keydown','scroll','wheel'].forEach(function(ev){
 addEventListener(ev,carregar,{once:true,passive:true})});
-if('requestIdleCallback' in window){requestIdleCallback(carregar,{timeout:2500})}
-else{setTimeout(carregar,2500)}})();`}
+setTimeout(carregar,10000)})();`}
       </Script>
       <noscript>
         {/* eslint-disable-next-line @next/next/no-img-element */}
