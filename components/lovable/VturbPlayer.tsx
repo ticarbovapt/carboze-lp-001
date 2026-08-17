@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 const VTURB_ACCOUNT = "309da15a-481a-42a5-88a8-7e366ad043fe";
 
-/** Distância da viewport em que o player começa a carregar. */
-const MARGEM_PX = 400;
+/** Tempo máximo esperando o player registrar a instância para dar play. */
+const ESPERA_PLAY_MS = 8000;
 
 interface VturbPlayerProps {
   /** ID do player no VTurb (o mesmo do id="vid-..." do embed). */
@@ -13,59 +13,40 @@ interface VturbPlayerProps {
   /** Proporção do player. VSL vertical = 9/16 (padrão). */
   aspect?: "9 / 16" | "16 / 9" | "1 / 1";
   className?: string;
+  /** Texto do botão que inicia o vídeo. */
+  rotulo?: string;
 }
 
 /**
- * Player do VTurb (ConverteAI), carregado só quando se aproxima da tela.
+ * Player do VTurb (ConverteAI) — carrega só no clique.
  *
- * POR QUE PREGUIÇOSO — não é micro-otimização. O script do VTurb, assim que
- * roda, pede o manifesto HLS e começa a pré-carregar segmentos da VSL. A VSL
- * tem 5min55s / 89 segmentos; em medição na produção o navegador baixou 28
- * segmentos sem ninguém dar play — foi o que levou a home a 11,3 MB no mobile
- * e empurrou o LCP para 5,2s, porque o download disputava banda com a imagem
- * do hero. A seção fica na 3ª dobra: quem não rola até lá não deve pagar nada.
+ * POR QUE NADA CARREGA ANTES. O script do VTurb, assim que roda, pede o
+ * manifesto HLS e começa a pré-carregar segmentos. A VSL tem 5min55s / 89
+ * segmentos de 478 a 1360 KB. Medindo a home em produção quando o script subia
+ * junto com a página: 28 requisições ao CDN sem ninguém dar play — foi o que
+ * levou a home a 11,3 MB no mobile e empurrou o LCP para 5,2s.
  *
- * Também não há mais `<link rel="preload">` para o player nem para o .m3u8.
- * Preload é ordem de prioridade alta ao navegador — exatamente o oposto do que
- * um vídeo abaixo da dobra merece. Ficou só o dns-prefetch, que não custa
- * bytes e deixa DNS/TLS prontos para quando o carregamento acontecer.
+ * A primeira correção foi carregar por proximidade (400px da viewport). Ainda
+ * gastava megabytes de quem só passava rolando pela seção. Agora o gatilho é o
+ * clique: quem não pede o vídeo não baixa um byte dele.
  *
- * O embed oficial é um custom element. Ele é injetado via innerHTML de
- * propósito: o React não reconcilia o conteúdo interno e não briga com as
- * mutações que o player faz na própria árvore.
+ * A caixa já sai do servidor com a proporção final, então o player entra dentro
+ * dela sem empurrar nada da página (CLS zero). Ficou só o dns-prefetch, que não
+ * custa bytes e deixa DNS/TLS prontos para o momento do clique.
+ *
+ * O embed oficial é um custom element, injetado via innerHTML de propósito: o
+ * React não reconcilia o conteúdo interno e não briga com as mutações que o
+ * player faz na própria árvore.
  */
 export default function VturbPlayer({
   playerId,
   aspect = "9 / 16",
   className = "",
+  rotulo = "Assistir",
 }: VturbPlayerProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [ativo, setAtivo] = useState(false);
 
-  // Decide a hora de carregar. Checagem por retângulo em vez de
-  // IntersectionObserver para também cobrir mudança de viewport (rotação de
-  // tela, abrir/fechar barra do navegador) com o mesmo caminho de código.
-  useEffect(() => {
-    if (ativo) return;
-    const perto = () => {
-      const el = hostRef.current;
-      if (!el) return false;
-      const r = el.getBoundingClientRect();
-      return r.top < window.innerHeight + MARGEM_PX && r.bottom > -MARGEM_PX;
-    };
-    const checar = () => {
-      if (perto()) setAtivo(true);
-    };
-    checar();
-    window.addEventListener("scroll", checar, { passive: true });
-    window.addEventListener("resize", checar, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", checar);
-      window.removeEventListener("resize", checar);
-    };
-  }, [ativo]);
-
-  // Monta o custom element e injeta o script do player.
   useEffect(() => {
     if (!ativo) return;
     const host = hostRef.current;
@@ -87,6 +68,33 @@ export default function VturbPlayer({
       s.async = true;
       document.head.appendChild(s);
     }
+
+    // O clique foi no NOSSO botão, então o player ainda mostraria o pôster dele
+    // e pediria um segundo clique. Aqui a gente pede o play por ele assim que a
+    // instância aparece, para o usuário clicar uma vez só.
+    //
+    // É best-effort de propósito: em iOS a política de autoplay exige o gesto
+    // na mesma pilha de chamada, e o script carrega depois disso. Se o play não
+    // pegar, o usuário vê o próprio botão do VTurb e toca nele — nada quebra.
+    const inicio = Date.now();
+    const timer = window.setInterval(() => {
+      const sp = (window as unknown as {
+        smartplayer?: { instances?: { instance?: { play?: () => void } }[] };
+      }).smartplayer;
+      const inst = sp?.instances?.[0]?.instance;
+      if (inst?.play) {
+        window.clearInterval(timer);
+        try {
+          inst.play();
+        } catch {
+          /* o botão do player continua ali como saída */
+        }
+        return;
+      }
+      if (Date.now() - inicio > ESPERA_PLAY_MS) window.clearInterval(timer);
+    }, 150);
+
+    return () => window.clearInterval(timer);
   }, [ativo, playerId]);
 
   return (
@@ -96,8 +104,6 @@ export default function VturbPlayer({
       <link rel="dns-prefetch" href="https://images.converteai.net" />
       <link rel="dns-prefetch" href="https://license.vturb.com" />
 
-      {/* A caixa já sai do servidor com a proporção final: o player entra
-          dentro dela sem empurrar nada da página (CLS zero). */}
       <div
         ref={hostRef}
         className={className}
@@ -105,14 +111,29 @@ export default function VturbPlayer({
         data-vturb={playerId}
       >
         {!ativo && (
-          // Marca-lugar desenhado em CSS: zero requisições até o player entrar.
-          <div className="w-full h-full flex items-center justify-center bg-black">
-            <span className="w-14 h-14 rounded-full bg-limao/90 flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-6 h-6 ml-0.5 text-verde-escuro" fill="currentColor" aria-hidden="true">
+          // Marca-lugar desenhado em CSS: zero requisições até o clique.
+          // <button> de verdade — foco por teclado e leitor de tela funcionam.
+          <button
+            type="button"
+            onClick={() => setAtivo(true)}
+            aria-label={`${rotulo} — vídeo sobre a ciência do CarboZé`}
+            className="group w-full h-full flex flex-col items-center justify-center gap-3 bg-black
+                       cursor-pointer transition-colors hover:bg-black/90
+                       focus:outline-none focus-visible:ring-2 focus-visible:ring-limao focus-visible:ring-inset"
+          >
+            <span
+              className="w-16 h-16 rounded-full bg-limao flex items-center justify-center
+                         shadow-lg shadow-limao/20 transition-transform
+                         group-hover:scale-105 group-active:scale-95"
+            >
+              <svg viewBox="0 0 24 24" className="w-7 h-7 ml-1 text-verde-escuro" fill="currentColor" aria-hidden="true">
                 <path d="M8 5v14l11-7z" />
               </svg>
             </span>
-          </div>
+            <span className="font-[family-name:var(--font-basement)] font-bold uppercase text-white text-sm tracking-wide">
+              {rotulo}
+            </span>
+          </button>
         )}
       </div>
     </>
