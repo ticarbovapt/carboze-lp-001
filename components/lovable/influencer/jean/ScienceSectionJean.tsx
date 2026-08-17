@@ -13,9 +13,8 @@ interface ScienceSectionJeanProps {
   videoPoster?: string;
   /** Proporção do container (ex.: "9 / 16" p/ vídeo vertical). Sem valor = caixa larga padrão. */
   videoAspect?: string;
-  /** Sobrescreve os IDs da VSL padrão, se algum dia uma LP tiver a própria. */
+  /** Sobrescreve o player da VSL padrão, se algum dia uma LP tiver a própria. */
   vturbPlayerId?: string;
-  vturbVideoId?: string;
 }
 
 export default function ScienceSectionJean({
@@ -23,7 +22,6 @@ export default function ScienceSectionJean({
   videoPoster = "/sache-moto.jpg",
   videoAspect,
   vturbPlayerId = VSL_VTURB.playerId,
-  vturbVideoId = VSL_VTURB.videoId,
 }: ScienceSectionJeanProps = {}) {
   return (
     <section className="bg-verde-escuro py-16 md:py-24">
@@ -87,7 +85,6 @@ export default function ScienceSectionJean({
           {!videoSrc && vturbPlayerId ? (
             <VturbPlayer
               playerId={vturbPlayerId}
-              videoId={vturbVideoId}
               aspect="9 / 16"
               className="order-2 md:order-none w-full max-w-[300px] sm:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-black"
             />

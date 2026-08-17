@@ -38,9 +38,10 @@ const heroCarousel = [
 export default function HomePage() {
   return (
     <main>
-      {/* Preload do hero (LCP) desta rota */}
-      <link rel="preload" as="image" href="/hero-bg.webp" fetchPriority="high" />
-
+      {/* Sem <link rel="preload"> do hero: ele apontava para a arte de DESKTOP
+          e no celular gastava prioridade alta numa imagem que nunca era
+          pintada. Quem prioriza agora é o <picture> do HeroBgPicture, que
+          escolhe a arte certa por breakpoint e marca a 1ª com fetchPriority. */}
       <LovableHeader
         checkoutHref="#escolha-produto"
         suporteHref={WHATSAPP_URL}

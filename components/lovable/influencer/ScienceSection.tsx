@@ -35,7 +35,6 @@ export default function ScienceSection() {
           {/* VSL do VTurb — order-2 no mobile: entre o título e o argumento */}
           <VturbPlayer
             playerId={VSL_VTURB.playerId}
-            videoId={VSL_VTURB.videoId}
             aspect="9 / 16"
             className="order-2 md:order-none w-full max-w-[300px] sm:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-black"
           />

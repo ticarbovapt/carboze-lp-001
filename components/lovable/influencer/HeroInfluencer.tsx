@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import CTAButton from "@/components/lovable/CTAButton";
 import HeroCarouselBg from "./HeroCarouselBg";
+import HeroBgPicture from "./HeroBgPicture";
 
 interface HeroInfluencerProps {
   bgImage: string;
@@ -42,22 +43,9 @@ export default function HeroInfluencer({
       {carousel && carousel.length > 0 ? (
         <HeroCarouselBg images={carousel} />
       ) : (
-        <>
-          {/* Background — mobile (só aparece se mobileBgImage fornecido) */}
-          {mobileBgImage && (
-            <div
-              className="absolute inset-0 bg-cover bg-top bg-no-repeat block sm:hidden"
-              style={{ backgroundImage: `url('${mobileBgImage}')` }}
-              aria-hidden="true"
-            />
-          )}
-          {/* Background — desktop (ou fallback único se sem mobile) */}
-          <div
-            className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${mobileBgImage ? "hidden sm:block" : ""}`}
-            style={{ backgroundImage: `url('${bgImage}')` }}
-            aria-hidden="true"
-          />
-        </>
+        /* Uma arte por breakpoint, escolhida pelo <source media> antes do
+           download — os dois <div> de background baixavam as duas. */
+        <HeroBgPicture desktop={bgImage} mobile={mobileBgImage} prioritaria />
       )}
 
       {/* Gradient overlay — bottom-heavy for legibility */}

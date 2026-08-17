@@ -48,17 +48,39 @@ export default function MetaPixel() {
 
   return (
     <>
+      {/*
+        Stub agora, biblioteca depois.
+
+        O snippet oficial do Meta faz duas coisas na mesma linha: define o `fbq`
+        (que é só uma fila) e injeta o fbevents.js. A biblioteca são 222 KB
+        entre fbevents.js e o config do pixel — o maior custo de JS da página, e
+        o principal suspeito do TBT de 445ms no mobile.
+
+        Aqui as duas etapas ficam separadas. O stub e os `fbq(...)` rodam de
+        imediato: `init` e `PageView` entram na fila, e qualquer clique que
+        dispare InitiateCheckout antes da biblioteca carregar também entra. A
+        injeção do fbevents.js espera a página ficar ociosa (ou 2,5s, ou o
+        primeiro toque do usuário — o que vier primeiro). Quando ele carrega,
+        esvazia a fila e nada se perde: é exatamente para isso que a fila do
+        `fbq` existe.
+      */}
       <Script id="meta-pixel" strategy="afterInteractive">
         {`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window,document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
+n.queue=[]}(window,document,'script');
 fbq('init','${META_PIXEL_ID}');
-fbq('track','PageView');`}
+fbq('track','PageView');
+(function(){var carregou=false;
+function carregar(){if(carregou)return;carregou=true;
+var t=document.createElement('script');t.async=!0;
+t.src='https://connect.facebook.net/en_US/fbevents.js';
+document.head.appendChild(t);}
+['pointerdown','touchstart','keydown','scroll'].forEach(function(ev){
+addEventListener(ev,carregar,{once:true,passive:true})});
+if('requestIdleCallback' in window){requestIdleCallback(carregar,{timeout:2500})}
+else{setTimeout(carregar,2500)}})();`}
       </Script>
       <noscript>
         {/* eslint-disable-next-line @next/next/no-img-element */}

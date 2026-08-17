@@ -7,6 +7,7 @@ const NS_CARROS = "https://loja.carboze.com.br/produtos/carboze-kit-5-frascos-10
 // estes dois IDs aqui — não em cada página.
 export const VSL_VTURB = {
   playerId: "6a7b81237f05f7fc40d60445",
+  /** ID do vídeo no CDN. Só para inspeção do manifesto HLS em diagnóstico. */
   videoId: "6a7b80dedc6ab33a6aa04626",
 } as const;
 
