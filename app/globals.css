@@ -155,14 +155,58 @@ details[open] .faq-content {
 
 /* ─── Roleta (/up) ─────────────────────────────────────────── */
 
-/* Pinos da borda acendendo em sequência. Só com a roda parada: girando, o
-   desenho já se move e as lâmpadas piscando viram cintilação. */
+/* O pulso todo em 1,9s: halo, aro, pinos e ponteiro na mesma batida. Tempos
+   diferentes fariam a roda cintilar em vez de respirar — é o compasso único
+   que lê como "isto aqui vale um prêmio". Tudo isso só roda com a roda
+   PARADA; durante o giro o componente tira as classes, porque animar `filter`
+   sobre um elemento já rotacionando engasga justamente o que a pessoa olha. */
+
+@keyframes roleta-halo {
+  0%, 100% { opacity: 0.16; transform: scale(1); }
+  50%      { opacity: 0.42; transform: scale(1.05); }
+}
+.roleta-halo {
+  animation: roleta-halo 1.9s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* O aro puxa do limão base para um verde quase branco no pico. É a "cor mais
+   forte": não é opacidade subindo, é o tom clareando. */
+@keyframes roleta-aro {
+  0%, 100% {
+    stroke: #8fbe00;
+    stroke-opacity: 0.6;
+    filter: drop-shadow(0 0 3px rgba(169, 218, 0, 0.5));
+  }
+  50% {
+    stroke: #eaff7a;
+    stroke-opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(200, 255, 60, 0.95));
+  }
+}
+.roleta-aro {
+  animation: roleta-aro 1.9s ease-in-out infinite;
+}
+
+/* As lâmpadas correm a volta (o atraso vem escalonado do componente), como
+   painel de roleta de feira. */
 @keyframes roleta-pino {
-  0%, 100% { opacity: 0.35; }
-  50%      { opacity: 1; }
+  0%, 100% { fill: #6f9200; opacity: 0.6; }
+  50%      { fill: #f2ffa8; opacity: 1; }
 }
 .roleta-pino {
-  animation: roleta-pino 1.6s ease-in-out infinite;
+  animation: roleta-pino 1.4s ease-in-out infinite;
+}
+
+@keyframes roleta-ponteiro {
+  0%, 100% { opacity: 0.85; transform: translateY(0); }
+  50%      { opacity: 1; transform: translateY(3px); }
+}
+.roleta-ponteiro {
+  animation: roleta-ponteiro 1.9s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 /* Miolo respirando — convida ao clique sem precisar de um "clique aqui". */
@@ -201,10 +245,59 @@ details[open] .faq-content {
   -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%);
 }
 
-/* Quem pediu menos movimento fica com a roleta parada, não sem roleta. */
+/* Quem pediu menos movimento fica com a roleta parada, não sem roleta. O
+   brilho vira estático no pico, para não perder o destaque visual. */
 @media (prefers-reduced-motion: reduce) {
   .roleta-pino,
-  .roleta-miolo {
+  .roleta-miolo,
+  .roleta-halo,
+  .roleta-aro,
+  .roleta-ponteiro {
     animation: none;
+  }
+  .roleta-halo { opacity: 0.3; }
+  .roleta-aro {
+    stroke: #c2f000;
+    stroke-opacity: 0.9;
+    filter: drop-shadow(0 0 8px rgba(200, 255, 60, 0.7));
+  }
+  .roleta-pino { fill: #dcff6e; }
+}
+
+/* CTA da roleta: pulsa na mesma batida do aro, para o botão e a roda lerem
+   como uma coisa só. Sem `transform` aqui — o .cta-shine já usa o dele. */
+@keyframes roleta-cta {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(169, 218, 0, 0.55); }
+  50%      { box-shadow: 0 0 26px 6px rgba(200, 255, 60, 0.45); }
+}
+.roleta-cta {
+  animation: roleta-cta 1.9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .roleta-cta { animation: none; box-shadow: 0 0 18px 3px rgba(200, 255, 60, 0.35); }
+}
+
+/*
+ * Tamanho da roda. Três limites, o menor vence:
+ *   94vw    — respiro lateral no celular;
+ *   520px   — teto, para ela não virar pôster no desktop;
+ *   altura  — o que sobra da tela depois do cabeçalho e do botão de girar.
+ *
+ * O terceiro é o que mantém o "GIRAR ROLETA" na dobra. Sem ele, tela baixa
+ * (iPhone SE, notebook de 900px) empurrava o CTA para fora e a pessoa via uma
+ * roleta sem como girar. A reserva muda no `sm:` porque é lá que o cabeçalho
+ * cresce — logo, título e retenção ficam maiores.
+ *
+ * `svh` e não `dvh` de propósito: com dvh a roda mudaria de tamanho enquanto a
+ * barra do navegador do celular aparece e some.
+ *
+ * 0.885 é a proporção do viewBox (400/452), que converte altura em largura.
+ */
+.roleta-caixa {
+  width: min(94vw, 520px, calc((100svh - 260px) * 0.885));
+}
+@media (min-width: 640px) {
+  .roleta-caixa {
+    width: min(94vw, 520px, calc((100svh - 350px) * 0.885));
   }
 }

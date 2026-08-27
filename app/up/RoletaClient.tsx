@@ -290,15 +290,31 @@ export default function RoletaClient() {
         rodaRef={rodaRef}
         vencedor={fase === "resultado" ? vencedor : -1}
         girando={fase === "girando"}
-        travada={fase === "resultado"}
-        onGirar={girar}
       />
+
+      {/* O CTA saiu do miolo da roda: lá ele cobria o "20% OFF" da arte e dava
+          uma área de toque pequena. Aqui é um botão de verdade, largo, no
+          alcance do polegar. Some quando o prêmio sai — o cartão assume. */}
+      {fase !== "resultado" && (
+        <button
+          type="button"
+          onClick={girar}
+          disabled={fase !== "pronto"}
+          className="cta-shine roleta-cta mt-6 w-full max-w-sm rounded-2xl bg-limao px-6 py-5
+                     font-[family-name:var(--font-basement)] font-extrabold uppercase
+                     text-verde-escuro text-xl tracking-wide
+                     hover:brightness-110 active:scale-[0.98] transition-all
+                     disabled:opacity-60 disabled:cursor-default disabled:animate-none"
+        >
+          {fase === "girando" ? "Girando…" : "Girar roleta"}
+        </button>
+      )}
 
       <button
         type="button"
         onClick={alternarSom}
         aria-pressed={semSom}
-        className="mt-5 flex items-center gap-2 rounded-full border border-white/15 px-4 py-2
+        className="mt-4 flex items-center gap-2 rounded-full border border-white/15 px-4 py-2
                    font-[family-name:var(--font-archivo)] text-white/50 text-xs
                    hover:text-white hover:border-white/35 transition-colors"
       >
@@ -307,8 +323,8 @@ export default function RoletaClient() {
       </button>
 
       {fase === "pronto" && (
-        <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/45 text-xs text-center">
-          Um giro por cliente. Toque no centro da roleta para começar.
+        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/45 text-xs text-center">
+          Um giro por cliente.
         </p>
       )}
 

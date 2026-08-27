@@ -205,10 +205,14 @@ export type ResgateRoleta =
 
 export type PremioRoleta = {
   id: string;
-  /** Texto dentro do gomo, uma linha por elemento. */
+  /**
+   * Arte do gomo, em /public/roleta. Normalizada em quadrado, com a ponta da
+   * cunha encostada embaixo — é o que faz as cinco encaixarem igual. Prêmio
+   * novo exige arte nova no mesmo formato: o gomo não desenha nada sozinho.
+   */
+  arte: string;
+  /** O que a arte diz, em texto. É a legenda que o leitor de tela anuncia. */
   linhas: readonly string[];
-  /** Índice da linha que sai em limão (o número/nome que vende o gomo). */
-  destaque: number;
   /** Peso do sorteio. Ver observação 1 acima. */
   peso: number;
   /** Muda a cor do gomo e do card: `nada` é o único vermelho. */
@@ -250,8 +254,8 @@ export const ROLETA = {
   premios: [
     {
       id: "kit20",
+      arte: "/roleta/kit20.webp",
       linhas: ["KIT CARBOZÉ", "5 FRASCOS", "20% OFF"],
-      destaque: 2,
       peso: 62,
       tom: "oferta",
       titulo: "20% OFF no Kit CarboZé",
@@ -262,8 +266,8 @@ export const ROLETA = {
     },
     {
       id: "vale200",
+      arte: "/roleta/vale200.webp",
       linhas: ["VALE COMBUSTÍVEL", "R$200,00"],
-      destaque: 1,
       peso: 2,
       tom: "premio",
       titulo: "Vale-combustível de R$ 200",
@@ -274,8 +278,8 @@ export const ROLETA = {
     },
     {
       id: "nada",
+      arte: "/roleta/nada.webp",
       linhas: ["NÃO FOI", "DESSA VEZ"],
-      destaque: 1,
       peso: 30,
       tom: "nada",
       titulo: "Não foi dessa vez",
@@ -286,8 +290,8 @@ export const ROLETA = {
     },
     {
       id: "vestuario",
+      arte: "/roleta/vestuario.webp",
       linhas: ["KIT VESTUÁRIO", "CARBOZÉ", "BONÉ + CASACO"],
-      destaque: 1,
       peso: 5,
       tom: "premio",
       titulo: "Kit vestuário CarboZé",
@@ -298,8 +302,8 @@ export const ROLETA = {
     },
     {
       id: "interlagos",
+      arte: "/roleta/interlagos.webp",
       linhas: ["VIAGEM PARA", "INTERLAGOS"],
-      destaque: 1,
       peso: 1,
       tom: "premio",
       titulo: "Viagem para Interlagos",

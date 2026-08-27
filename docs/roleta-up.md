@@ -38,6 +38,34 @@ sozinhos. `peso: 0` mantém o gomo na roda e nunca o sorteia.
    Enquanto não estiver resolvido, `peso: 0` nos três prêmios físicos deixa a
    roleta rodando só entre desconto e gomo vazio.
 
+## As artes dos gomos
+
+Cada prêmio aponta para um arquivo em `public/roleta/<id>.webp` (campo `arte`).
+O gomo não desenha nada sozinho: **prêmio novo exige arte nova**.
+
+A arte precisa chegar no mesmo formato das cinco atuais, senão não encaixa:
+
+- cunha com a **ponta para baixo**, fundo transparente (PNG/WebP com alpha);
+- recortada rente ao conteúdo e **centralizada na horizontal**;
+- **quadrada**, com a ponta encostada na borda de baixo.
+
+O componente apoia a ponta no eixo da roda e o topo no aro, então é essa
+geometria que faz a arte cair certinho dentro da fatia. O `clipPath` por gomo
+apara o que sobrar.
+
+Para normalizar uma arte nova, o caminho é: recortar na área opaca (`getbbox`
+do canal alfa), colar num quadrado de lado `max(largura, altura)` centrando na
+horizontal e encostando embaixo, redimensionar para 560×560 e salvar em WebP
+qualidade 82. As cinco atuais ficaram em ~60–75 KB cada.
+
+### Por que o botão não fica no miolo
+
+Ele ficava, e cobria a oferta. O conteúdo das artes desce até 13% do raio — o
+"20% OFF" da arte do kit vive entre 13% e 30% —, então qualquer miolo grande o
+bastante para caber "GIRAR ROLETA" apagava justamente o que a página vende. O
+botão virou CTA abaixo da roda, o que de quebra deu uma área de toque de
+verdade no celular. O miolo hoje é só o eixo que arremata as cinco pontas.
+
 ## Resgate
 
 - **Desconto (kit20 e a consolação do gomo vazio):** vai direto ao SKU "UpSell"
@@ -78,6 +106,13 @@ borda ao mesmo tempo — o que se ouve bate com o que passa pelo ponteiro.
 rodada exigiria limpar o `localStorage` na mão.
 
 `?p=sache` ou `?p=pack` força o produto do card de desconto.
+
+O tamanho da roda é limitado por três coisas ao mesmo tempo (`.roleta-caixa`
+em `globals.css`): 94vw, um teto de 520px e — o que importa — a altura que
+sobra da tela depois do cabeçalho e do botão. É esse terceiro limite que
+mantém o "GIRAR ROLETA" na dobra do iPhone SE ao notebook de 900px. Conferido
+em 320, 375, 390, 430, 768 e 1280 de largura: sem rolagem horizontal, roda
+inteira na tela e botão visível sem rolar em todos.
 
 Com `prefers-reduced-motion: reduce` o giro cai para ~1,4s e as animações de
 fundo param. O resultado é o mesmo: menos movimento, não menos roleta.
