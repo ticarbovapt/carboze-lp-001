@@ -23,10 +23,6 @@ const PASSO = 360 / PREMIOS.length;
 /** Um pino a cada tantos graus. Define o ritmo do clique. */
 const PASSO_PINO = 360 / ROLETA.pinos;
 
-/** Graus que a roda passa do alvo antes de voltar. É o "assentar" no eixo. */
-const SOBRA = 3.2;
-const ASSENTO_MS = 520;
-
 /**
  * Resposta de /api/roleta. O cliente não decide prêmio nenhum: ele pergunta o
  * que saiu e anima a roda até o gomo correspondente.
@@ -191,42 +187,68 @@ export default function RoletaClient({ variante }: Props) {
     (i: number, aoParar: () => void) => {
       const reduzido = prefereMenosMovimento();
       const inicio = anguloRef.current;
-      const duracao = reduzido ? 900 : ROLETA.duracaoGiroMs;
-      // Menos movimento é giro mais curto, não parada diferente: o desvio
-      // dentro do gomo vale para os dois caminhos. Sem ele, quem pede redução
-      // de movimento via a roda parar sempre no mesmo pixel.
-      const alvo = anguloAlvo(i, inicio, reduzido ? 1 : undefined);
-      const alvoComSobra = alvo + SOBRA;
+      const alvo = reduzido
+        ? anguloAlvo(i, inicio, 1)
+        : anguloAlvo(i, inicio);
 
+      /**
+       * A posição da roda, em graus, a `ms` do início.
+       *
+       * Duas fases, e é isso que dá a tensão do fim:
+       *
+       *  A — ARRANQUE. A velocidade cai LINEARMENTE de `v0` até `v1` (que não é
+       *      zero). Desaceleração constante, como o atrito de um eixo.
+       *  B — RASTEJO. Começa exatamente em `v1` e cai até `v2`, cobrindo
+       *      `grausRastejo` em `duracaoRastejoMs`. `v2` não é zero: caindo a
+       *      zero, o último segundo cobria 3° e o fim morria antes da hora.
+       *      Terminando a ~10°/s e travando ali — que é o que um pino faz —
+       *      o último segundo ainda anda quase um pino inteiro.
+       *
+       * Uma curva só não faz as duas coisas. Com easeOutQuad a velocidade cai
+       * até zero de uma vez: para o fim ser lento o bastante, o arranque tem
+       * de ser fraco; para o arranque ter força, o fim chega rápido demais.
+       * Quebrando em duas, `v1` é escolhido pelo rastejo que se quer (180° em
+       * 5s = 72°/s) e o arranque fica livre para ser violento.
+       *
+       * `v1` sai do fim de A e entra em B sem degrau, então não há solavanco
+       * na emenda — é o mesmo número nos dois lados.
+       */
+      function posicao(ms: number, duracao: number) {
+        const total = alvo - inicio;
+        // Em giro curto (menos movimento) o rastejo não pode comer a volta
+        // inteira, senão `v0` sairia menor que `v1` e a roda ACELERARIA.
+        const db = Math.min(ROLETA.duracaoRastejoMs, duracao * 0.35);
+        const gb = Math.min(ROLETA.grausRastejo, total * 0.35);
+        const da = duracao - db;
+        const ga = total - gb;
+        const v2 = ROLETA.velocidadeFinalGrausS;
+        const v1 = (2 * gb) / (db / 1000) - v2;
+        const v0 = (2 * ga) / (da / 1000) - v1;
+
+        if (ms < da) {
+          const u = ms / da;
+          return inicio + (da / 1000) * (v0 * u + ((v1 - v0) * u * u) / 2);
+        }
+        const w = Math.min(1, (ms - da) / db);
+        return (
+          inicio + ga + (db / 1000) * (v1 * w + ((v2 - v1) * w * w) / 2)
+        );
+      }
+
+      const duracao = reduzido ? 1200 : ROLETA.duracaoGiroMs;
       const t0 = performance.now();
       let ultimoPino = Math.floor(inicio / PASSO_PINO);
       let ultimoAngulo = inicio;
       let ultimoTempo = t0;
 
       function frame(agora: number) {
-        const t = Math.min(1, (agora - t0) / duracao);
-        let angulo: number;
+        const ms = agora - t0;
+        const angulo = ms >= duracao ? alvo : posicao(ms, duracao);
 
-        if (t < 1) {
-          // easeOutQuad, e não uma curva mais agressiva: com expoente 2 a
-          // velocidade cai LINEARMENTE até zero, que é exatamente o que o
-          // atrito constante faz numa roda de verdade. Expoentes maiores
-          // (quart, quint) chegam a 99,99% do caminho na metade do tempo e
-          // depois rastejam invisíveis — a roda parece travar cedo em vez de
-          // ir morrendo. Com quad, o último segundo ainda cobre uns 50°: dá
-          // para ver o ponteiro cruzar uma divisória devagar, sem saber se
-          // para antes ou depois dela.
-          angulo = inicio + (alvoComSobra - inicio) * (1 - Math.pow(1 - t, 2));
-        } else {
-          // Assentamento: a roda passou do alvo e volta oscilando até parar.
-          // Em u=0 vale exatamente alvoComSobra, então emenda sem salto.
-          const u = Math.min(1, (agora - t0 - duracao) / ASSENTO_MS);
-          angulo = alvo + SOBRA * Math.cos(2 * Math.PI * u) * (1 - u);
-        }
-
-        // Um clique por pino que cruza o ponteiro, com o volume caindo junto da
-        // velocidade. É daqui que vem a sensação de peso: no fim os cliques
-        // ficam espaçados e fracos sozinhos, sem curva de volume à parte.
+        // Um clique por pino que cruza o ponteiro, com o volume caindo junto
+        // da velocidade. É daqui que vem a sensação de peso — e no rastejo é
+        // o que transforma o fim em "tic... tic..... tic": os pinos ficam
+        // sozinhos, espaçados, sem nenhuma curva de volume à parte.
         const dt = Math.max(1, agora - ultimoTempo);
         const vel = Math.abs(angulo - ultimoAngulo) / (dt / 1000);
         const pino = Math.floor(angulo / PASSO_PINO);
@@ -239,11 +261,10 @@ export default function RoletaClient({ variante }: Props) {
 
         aplicar(angulo);
 
-        if (agora - t0 < duracao + ASSENTO_MS) {
+        if (ms < duracao) {
           rafRef.current = requestAnimationFrame(frame);
           return;
         }
-        aplicar(alvo);
         aoParar();
       }
 

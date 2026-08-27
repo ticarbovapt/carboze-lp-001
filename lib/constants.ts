@@ -221,18 +221,46 @@ export const ROLETA = {
   declineHref: "/obrigado",
 
   /**
-   * Duração do giro, em ms. É tempo de tensão, não de espera: o fim do giro é
-   * onde a pessoa fica olhando o ponteiro passar de gomo em gomo sem saber
-   * onde para. Abaixo de ~5s isso não chega a acontecer.
+   * Duração total do giro, em ms — arranque + rastejo final.
+   *
+   * É tempo de tensão, não de espera. Quem está olhando não quer que acabe:
+   * quer ver o ponteiro chegando perto e não saber onde para.
    */
-  duracaoGiroMs: 8000,
+  duracaoGiroMs: 20000,
 
   /**
-   * Voltas completas antes de mirar o gomo. Precisam acompanhar a duração:
-   * com o giro longo e poucas voltas, a roda passa o tempo todo rastejando.
+   * Quanto do fim é RASTEJO: a roda quase parando, passando de gomo em gomo
+   * devagar o bastante para parecer que ainda pode cair no vizinho.
    */
-  voltasMin: 8,
-  voltasMax: 12,
+  duracaoRastejoMs: 5000,
+
+  /**
+   * Graus percorridos durante o rastejo. 180° são dois gomos e meio: o
+   * ponteiro cruza duas divisórias devagar antes de assentar, que é o que
+   * cria o "vai cair uma antes ou uma depois?".
+   *
+   * Aumentar isto sem aumentar `duracaoRastejoMs` acelera o rastejo e mata o
+   * efeito; os dois andam juntos.
+   */
+  grausRastejo: 180,
+
+  /**
+   * Velocidade em que a roda TRAVA, em graus por segundo.
+   *
+   * Não é zero de propósito. Desacelerando até zero, o último segundo cobre 3°
+   * — a roda parece ter parado antes e o fim morre. Chegando ao fim ainda a
+   * ~10°/s e travando ali (que é o que um pino faz), o último segundo ainda
+   * anda uns 15°, quase um pino: dá um tique final e só então para.
+   */
+  velocidadeFinalGrausS: 10,
+
+  /**
+   * Voltas completas antes de mirar o gomo. Definem a violência do arranque:
+   * a velocidade inicial sai delas e da duração, não de um número à parte.
+   * Poucas voltas num giro longo = roda mole desde o começo.
+   */
+  voltasMin: 18,
+  voltasMax: 24,
 
   /**
    * Pinos na borda. Definem o ritmo do clique: um tique a cada 360/pinos graus.

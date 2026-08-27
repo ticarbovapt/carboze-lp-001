@@ -161,24 +161,66 @@ borda ao mesmo tempo — o que se ouve bate com o que passa pelo ponteiro.
 
 ## O giro
 
-`duracaoGiroMs: 8000`, `voltasMin/Max: 8/12`. Os dois andam juntos: giro longo
-com poucas voltas vira uma roda rastejando.
+`duracaoGiroMs: 20000`, dos quais os últimos `duracaoRastejoMs: 5000` são
+rastejo. `voltasMin/Max: 18/24`.
 
-A desaceleração é **easeOutQuad**, e o expoente 2 não é gosto — é o que faz a
-velocidade cair linearmente até zero, que é o que o atrito constante produz numa
-roda de verdade. Expoentes maiores (quart, quint) chegam a 99,99% do caminho na
-metade do tempo e depois rastejam invisíveis: a roda parece travar cedo em vez
-de ir morrendo.
+### Por que duas fases, e não uma curva só
 
-Medido no navegador: giro de 7,9s, ~9,6 voltas, **78° nos últimos 1s** e 268°
-nos últimos 2s. Como o gomo tem 72°, o último segundo cobre um prêmio inteiro
-devagar — dá tempo de ver o ponteiro cruzar a divisória sem saber se para antes
-ou depois dela.
+A animação não usa easing pronto. São duas fases coladas pela velocidade:
+
+- **A — arranque (15s).** A velocidade cai linearmente de `v0` até `v1`.
+  Desaceleração constante, que é o que o atrito de um eixo faz.
+- **B — rastejo (5s).** Começa exatamente em `v1` e cai até `v2`, cobrindo
+  `grausRastejo: 180` — dois gomos e meio.
+
+Uma curva só não faz as duas coisas. Com easeOutQuad (que era o que estava
+aqui), a velocidade cai até zero de uma vez: para o fim ser lento o bastante, o
+arranque tem de ser fraco; para o arranque ter força, o fim chega rápido
+demais. Quebrando em duas, `v1` é escolhido pelo rastejo que se quer — 180° em
+5s dão 62°/s — e o arranque fica livre para ser violento.
+
+`v1` é o mesmo número no fim de A e no início de B, então não há degrau na
+emenda.
+
+### Por que `velocidadeFinalGrausS` não é zero
+
+Desacelerando até zero, o último segundo cobria 3°: a roda parecia ter parado
+antes e o fim morria. Terminando a ~10°/s e travando ali — que é o que um pino
+faz — o último segundo ainda anda 15°, quase um pino inteiro: dá um tique final
+e só então para.
+
+### Medido no navegador
+
+Sondado amostrando o transform quadro a quadro até a roda parar de verdade
+(medir até o popup abrir dá números menores, porque o popup aparece antes do
+último grau):
+
+| | projetado | medido |
+|---|---:|---:|
+| duração | 20,0s | 20,1s |
+| entrada no rastejo (`v1`) | 62°/s | 62°/s |
+| velocidade ao travar (`v2`) | 10°/s | 9°/s |
+| últimos 5s | 180° (2,5 gomos) | 179° |
+| último 1s | 15° | 15° |
+
+Velocidade nos últimos segundos: 62 → 52 → 41 → 31 → 21 → 9 °/s. Com pinos a
+cada 18°, isso é um tique a cada 0,3s virando um a cada 2s — o "tic... tic.....
+tic" que faz parecer que ainda pode cair no gomo vizinho.
+
+### A parada
 
 O ponto de parada é sorteado dentro do gomo (`PASSO - 12`, ou ±30°, com 6° de
-folga de cada divisória), inclusive no caminho de `prefers-reduced-motion`.
-Sem isso a roda pararia sempre no mesmo pixel e dois giros entregariam que o
+folga de cada divisória), inclusive no caminho de `prefers-reduced-motion` —
+onde o giro encurta para 1,2s, mas continua parando em lugar diferente. Sem
+isso a roda pararia sempre no mesmo pixel e dois giros entregariam que o
 destino é fixo. Conferido: 8 giros, 8 pontos distintos, todos dentro do gomo.
+
+### O custo
+
+Dois giros de 20s são ~40s de roleta por pessoa, e o segundo termina em cima do
+CTA do checkout. Se o número se mostrar longo demais na prática, `duracaoGiroMs`
+e `duracaoRastejoMs` são a única coisa a mexer — o perfil se reajusta sozinho,
+porque `v0` e `v1` saem deles.
 
 ## Testar
 
