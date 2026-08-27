@@ -302,14 +302,16 @@ details[open] .faq-content {
   }
 }
 
-/* Variante do miolo (/up1): sem o CTA embaixo sobram ~70px de tela, e eles
-   vão para a roda — que é onde está o botão agora. */
+/* Variante de tela única (/up1). Não sobra nada abaixo da roda além do aviso
+   legal, e o botão de girar está dentro dela — então a reserva cobre só o
+   cabeçalho e esse aviso. É o que permite a página inteira caber em 100svh
+   sem rolagem, do iPhone SE ao desktop. */
 .roleta-caixa--miolo {
-  width: min(94vw, 520px, calc((100svh - 190px) * 0.885));
+  width: min(94vw, 520px, calc((100svh - 200px) * 0.885));
 }
 @media (min-width: 640px) {
   .roleta-caixa--miolo {
-    width: min(94vw, 520px, calc((100svh - 280px) * 0.885));
+    width: min(94vw, 520px, calc((100svh - 290px) * 0.885));
   }
 }
 

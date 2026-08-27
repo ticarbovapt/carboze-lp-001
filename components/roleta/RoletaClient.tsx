@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Roleta, { type VarianteRoleta } from "./Roleta";
 import ResultadoPopup from "./ResultadoPopup";
 import { ROLETA } from "@/lib/constants";
@@ -329,16 +330,25 @@ export default function RoletaClient({ variante }: Props) {
   }
 
   const mostrarBotao = fase !== "resultado" || podeGirar;
+  /**
+   * Dá para girar tocando agora?
+   *
+   * Não basta `fase === "pronto"`: quem fecha o popup da chance extra fica em
+   * "resultado" com um giro ainda no bolso, e sem isto a pastilha não voltava —
+   * a pessoa ficava olhando a roda sem nenhum jeito de girar.
+   */
+  const podeTocarGirar =
+    !erro && (fase === "pronto" || (fase === "resultado" && podeGirar));
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="relative w-full flex flex-col items-center">
       <Roleta
         rodaRef={rodaRef}
         vencedor={fase === "resultado" ? vencedor : -1}
         girando={fase === "girando"}
         variante={variante}
         onGirar={girar}
-        podeGirar={fase === "pronto" && !erro}
+        podeGirar={podeTocarGirar}
       />
 
       {/* Na variante `miolo` quem gira é o próprio centro da roda, então não
@@ -347,7 +357,7 @@ export default function RoletaClient({ variante }: Props) {
         <button
           type="button"
           onClick={girar}
-          disabled={fase !== "pronto" || erro}
+          disabled={!podeTocarGirar}
           className="cta-shine roleta-cta mt-6 w-full max-w-sm rounded-2xl bg-limao px-6 py-5
                      font-[family-name:var(--font-basement)] font-extrabold uppercase
                      text-verde-escuro text-xl tracking-wide
@@ -372,16 +382,21 @@ export default function RoletaClient({ variante }: Props) {
         </p>
       )}
 
+      {/* Na variante de tela única o som vira ícone no canto: em linha, ele
+          custava ~50px de altura que a roda usa melhor. */}
       <button
         type="button"
         onClick={alternarSom}
         aria-pressed={semSom}
-        className="mt-4 flex items-center gap-2 rounded-full border border-white/15 px-4 py-2
-                   font-[family-name:var(--font-archivo)] text-white/50 text-xs
-                   hover:text-white hover:border-white/35 transition-colors"
+        aria-label={semSom ? "Ligar o som" : "Desligar o som"}
+        className={
+          variante === "miolo"
+            ? "fixed right-3 top-3 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white/55 hover:text-white hover:border-white/35 transition-colors"
+            : "mt-4 flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 font-[family-name:var(--font-archivo)] text-white/50 text-xs hover:text-white hover:border-white/35 transition-colors"
+        }
       >
         {semSom ? <IconeMudo /> : <IconeSom />}
-        {semSom ? "Som desligado" : "Som ligado"}
+        {variante === "miolo" ? null : semSom ? "Som desligado" : "Som ligado"}
       </button>
 
       {/* Depois de fechar o popup a oferta continua ao alcance: um toque para
@@ -391,24 +406,41 @@ export default function RoletaClient({ variante }: Props) {
         <button
           type="button"
           onClick={() => setPopupAberto(true)}
-          className="mt-3 font-[family-name:var(--font-archivo)] text-limao text-sm
-                     underline underline-offset-4 hover:text-white transition-colors"
+          className={`font-[family-name:var(--font-archivo)] text-limao text-sm
+                      underline underline-offset-4 hover:text-white transition-colors ${
+                        variante === "miolo" ? "absolute bottom-2" : "mt-3"
+                      }`}
         >
           Ver o que você ganhou
         </button>
       )}
 
-      {popupAberto && premio && (
-        <ResultadoPopup
-          premio={premio}
-          codigo={codigo}
-          chanceExtra={podeGirar}
-          kit={kit}
-          outroKit={outroKit}
-          onFechar={() => setPopupAberto(false)}
-          onGirarDeNovo={girarDeNovo}
-        />
-      )}
+      {/*
+        Portal para o <body>, e não render aqui dentro.
+
+        `z-50` só vale dentro do contexto de empilhamento em que o elemento
+        nasce. Como a página põe a roda e o texto de apoio em blocos irmãos com
+        `z-10`, o popup renderizado aqui ficava preso no bloco da roda — e o
+        parágrafo seguinte, que vem depois no DOM, pintava por cima dele. O
+        resultado era um popup com pedaços não clicáveis.
+
+        No <body> ele não tem ancestral com contexto próprio, então nenhum
+        rearranjo de layout futuro consegue enterrá-lo de novo.
+      */}
+      {popupAberto &&
+        premio &&
+        createPortal(
+          <ResultadoPopup
+            premio={premio}
+            codigo={codigo}
+            chanceExtra={podeGirar}
+            kit={kit}
+            outroKit={outroKit}
+            onFechar={() => setPopupAberto(false)}
+            onGirarDeNovo={girarDeNovo}
+          />,
+          document.body,
+        )}
     </div>
   );
 }

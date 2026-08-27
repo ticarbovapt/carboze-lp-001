@@ -8,29 +8,42 @@ São a **mesma página** com uma diferença só, para teste A/B:
 
 | | `/up` | `/up1` |
 |---|---|---|
-| Botão de girar | CTA largo abaixo da roda | O próprio miolo da roda |
-| Arte dos gomos | tamanho cheio, ponta no centro | recuada 38 de raio, ~23% menor |
-| Abaixo da roda | CTA + "um giro por cliente" | só o botão de som |
+| Botão de girar | CTA largo abaixo da roda | Pastilha translúcida no centro |
+| Layout | a página rola | uma tela, `100svh`, sem rolagem |
+| Abaixo da roda | CTA, texto de apoio e aviso legal | só o aviso legal |
+| Som | botão com rótulo, em linha | ícone no canto superior direito |
 
-Tudo o mais — servidor, sequência, popup, som, artes — é código compartilhado
-em `components/roleta/`. As duas rotas são só `<PaginaRoleta variante="..." />`.
-Isso é de propósito: se cada uma tivesse a própria página, o primeiro ajuste de
-texto deixaria uma para trás e o teste passaria a medir a divergência em vez do
-botão.
+A **roda é idêntica** nas duas: arte em tamanho cheio, ponta no centro, eixo
+minúsculo. Tudo o mais — servidor, sequência, popup, som, artes — é código
+compartilhado em `components/roleta/`, e as rotas são só
+`<PaginaRoleta variante="..." />`. Se cada uma tivesse a própria página, o
+primeiro ajuste de texto deixaria uma para trás e o teste passaria a medir a
+divergência em vez do botão.
 
-**O que o miolo custa.** O botão precisa de ~52 de raio para caber "GIRAR
-ROLETA", e o conteúdo das artes desce até 13% do raio — o "20% OFF" vive entre
-13% e 30%. Para o botão não apagar a oferta, a arte recua até `pontaArte: 38`
-e encolhe junto. O resultado é legível, mas os gomos abrem mais espaço escuro
-entre si. É esse o trade-off que o teste decide.
+### O popup vai por portal, e isso importa
 
-Variante do upsell pós-compra. Onde o `/upsell` mostra o card de desconto
-direto, aqui o cliente gira uma roleta. O desfecho que sustenta a página é o
-mesmo — 20% off no kit — só que embalado em prêmio.
+`ResultadoPopup` é montado com `createPortal` no `<body>`, não no lugar onde
+aparece no JSX. Não é preferência: `z-50` só vale dentro do contexto de
+empilhamento em que o elemento nasce. Quando a página passou a ter a roda e o
+texto de apoio em blocos irmãos com `z-10`, o popup renderizado dentro do bloco
+da roda ficou preso nele — e o parágrafo seguinte, que vem depois no DOM,
+passou a pintar por cima. O sintoma era um popup com pedaços não clicáveis, e
+o botão do checkout entre eles. No `<body>` ele não tem ancestral com contexto
+próprio, então nenhum rearranjo de layout futuro consegue enterrá-lo de novo.
 
-As duas rotas coexistem: `/upsell` segue no ar e não foi tocada. O snippet da
-loja decide qual usar trocando o `DESTINO_UPSELL` (ver `snippet-upsell.md`)
-de `/upsell` para `/up`.
+### A pastilha da /up1
+
+Uma primeira versão punha um botão sólido no miolo e encolhia a arte ~23% para
+ele caber sem cobrir o "20% OFF" (que vive entre 13% e 30% do raio). Ficou
+ruim: gomo pequeno, muito escuro entre as artes. A versão atual mantém a arte
+cheia e põe por cima uma pastilha **translúcida**, com fundo em degradê que
+dissolve na borda — o texto tem contraste no centro e a arte continua sendo
+lida através dela, em vez de ser recortada por uma tampa.
+
+A pastilha **some no primeiro giro e não volta**, porque não precisa: o segundo
+giro sai do botão do popup. Ela só reaparece se a pessoa fechar o popup com
+giro sobrando — senão ficaria sem nenhum jeito de girar. Essa é a razão de
+`podeTocarGirar` no cliente não ser simplesmente `fase === "pronto"`.
 
 ## Como o giro é decidido
 
@@ -170,7 +183,11 @@ destino é fixo. Conferido: 8 giros, 8 pontos distintos, todos dentro do gomo.
 ## Testar
 
 `?reset=1` zera o percurso e recarrega limpo (`/up?reset=1`, `/up1?reset=1` —
-o recarregamento volta para a rota atual, não para `/up` fixo): apaga o cookie do
+o recarregamento volta para a rota atual, não para `/up` fixo).
+
+As duas rotas dividem o mesmo cookie: quem passa pela `/up` chega na `/up1` com
+o percurso gasto. Para comparar as variantes, `?reset=1` ou janelas anônimas
+separadas: apaga o cookie do
 servidor (via `DELETE /api/roleta`) e o storage do funil. Sem isso, cada rodada
 exigiria limpar cookie e storage na mão.
 
