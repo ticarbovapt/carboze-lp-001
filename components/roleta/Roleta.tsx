@@ -31,23 +31,22 @@ const CY = 252;
 const R = 168;
 const R_ARO_EXT = 190;
 /**
- * Onde fica o botão de girar. A GEOMETRIA da roda é a mesma nas duas: arte em
- * tamanho cheio, ponta no centro, eixo minúsculo. A primeira tentativa de
- * `miolo` encolhia a arte para caber um botão sólido no centro, e o preço era
- * alto demais — gomo pequeno, muito escuro entre as artes. Aqui o botão é uma
- * pastilha TRANSLÚCIDA por cima: o "20% OFF" continua sendo lido através dela.
+ * O botão de girar é uma pastilha TRANSLÚCIDA sobre o centro da roda.
+ *
+ * Uma versão anterior punha um botão sólido no miolo e encolhia a arte ~23%
+ * para ele caber sem cobrir o "20% OFF" (que vive entre 13% e 30% do raio).
+ * Ficou ruim: gomo pequeno, muito escuro entre as artes. Translúcida, a arte
+ * continua sendo lida através dela em vez de recortada por uma tampa.
  *
  * Ela some no primeiro giro e não volta, porque não precisa: o segundo giro
  * sai do botão do popup. Só reaparece se a pessoa fechar o popup com giro
  * sobrando — senão ficaria sem como girar.
  */
-export type VarianteRoleta = "abaixo" | "miolo";
-
 /** Raio do eixo — a tampa que arremata as cinco pontas das artes. */
 const R_EIXO = 19;
 /** Lado da arte (ela é quadrada). Ponta no eixo, borda de fora colada no aro. */
 const LADO_ARTE = R - 4;
-/** Raio da pastilha translúcida de girar, na variante `miolo`. */
+/** Raio da pastilha translúcida de girar. */
 const R_PASTILHA = 52;
 
 const N = ROLETA.premios.length;
@@ -84,23 +83,13 @@ type Props = {
   /** Índice do gomo sorteado, já parado. -1 enquanto não há resultado. */
   vencedor: number;
   girando: boolean;
-  variante: VarianteRoleta;
-  /** Só na variante `miolo`: o miolo vira o botão. */
-  onGirar?: () => void;
-  podeGirar?: boolean;
+  onGirar: () => void;
+  /** Há giro disponível para dar por toque? */
+  podeGirar: boolean;
 };
 
-export default function Roleta({
-  rodaRef,
-  vencedor,
-  girando,
-  variante,
-  onGirar,
-  podeGirar = false,
-}: Props) {
-  const pastilha = variante === "miolo";
-  /** A pastilha só aparece quando há giro para dar por toque. */
-  const pastilhaVisivel = pastilha && podeGirar && !girando;
+export default function Roleta({ rodaRef, vencedor, girando, onGirar, podeGirar }: Props) {
+  const pastilhaVisivel = podeGirar && !girando;
   // O pulso é a isca: ele chama enquanto a roda espera e comemora quando o
   // prêmio sai. Durante o giro ele sai de cena — animar `filter` a cada frame
   // sobre uma roda já girando custa repaint e engasga o giro, que é o que a
@@ -109,7 +98,7 @@ export default function Roleta({
 
   return (
     <div
-      className={`roleta-caixa relative ${pastilha ? "roleta-caixa--miolo" : ""}`}
+      className="roleta-caixa relative"
       style={{ aspectRatio: `${LARGURA} / ${ALTURA}` }}
     >
       {/* O botão vem ANTES do SVG de propósito: assim ele é `peer` do miolo e
@@ -334,8 +323,8 @@ export default function Roleta({
           <rect x="168" y="4" width="64" height="9" rx="4.5" fill="#c2f000" />
         </g>
 
-        {/* Eixo: arremata as cinco pontas que se encontram no centro. É o
-            mesmo nas duas variantes — a roda não muda, só o botão. */}
+        {/* Eixo: a tampinha que arremata as cinco
+            pontas das artes que se encontram no centro. */}
         <g pointerEvents="none">
           <circle cx={CX} cy={CY} r={R_EIXO + 3} fill="#050704" />
           <circle
@@ -350,52 +339,51 @@ export default function Roleta({
           <circle cx={CX} cy={CY} r={R_EIXO / 2.6} fill="#c2f000" opacity="0.85" />
         </g>
 
-        {/* Pastilha de girar (variante `miolo`). Translúcida de propósito: ela
-            fica sobre a ponta das artes, e o "20% OFF" precisa continuar
-            legível através dela. Sai de cena no primeiro giro. */}
-        {pastilha && (
-          <g
-            className={`origin-center transition-opacity duration-300 ${
-              pastilhaVisivel
-                ? "roleta-miolo peer-hover:opacity-100 peer-active:scale-95"
-                : "opacity-0"
-            }`}
-            style={{ transformBox: "fill-box", transformOrigin: "center" }}
-            pointerEvents="none"
-            aria-hidden={!pastilhaVisivel}
+        {/* Pastilha de girar. Translúcida de propósito: ela fica sobre a ponta
+            das artes, e o "20% OFF" precisa continuar legível através dela.
+            Segue montada mesmo invisível para poder SAIR com transição — se
+            desmontasse, ela sumiria de um quadro para o outro no giro. */}
+        <g
+          className={`origin-center transition-opacity duration-300 ${
+            pastilhaVisivel
+              ? "roleta-miolo peer-hover:opacity-100 peer-active:scale-95"
+              : "opacity-0"
+          }`}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+          pointerEvents="none"
+          aria-hidden={!pastilhaVisivel}
+        >
+          <circle cx={CX} cy={CY} r={R_PASTILHA + 14} fill="url(#pastilhaFundo)" />
+          <circle
+            cx={CX}
+            cy={CY}
+            r={R_PASTILHA}
+            fill="none"
+            stroke="#c2f000"
+            strokeWidth="1.8"
+            strokeOpacity="0.55"
+          />
+          <text
+            x={CX}
+            y={CY - 4}
+            textAnchor="middle"
+            style={{ fontFamily: "var(--font-basement), sans-serif", fontWeight: 800 }}
+            fontSize="24"
+            fill="#ffffff"
           >
-            <circle cx={CX} cy={CY} r={R_PASTILHA + 14} fill="url(#pastilhaFundo)" />
-            <circle
-              cx={CX}
-              cy={CY}
-              r={R_PASTILHA}
-              fill="none"
-              stroke="#c2f000"
-              strokeWidth="1.8"
-              strokeOpacity="0.55"
-            />
-            <text
-              x={CX}
-              y={CY - 4}
-              textAnchor="middle"
-              style={{ fontFamily: "var(--font-basement), sans-serif", fontWeight: 800 }}
-              fontSize="24"
-              fill="#ffffff"
-            >
-              GIRAR
-            </text>
-            <text
-              x={CX}
-              y={CY + 18}
-              textAnchor="middle"
-              style={{ fontFamily: "var(--font-basement), sans-serif", fontWeight: 800 }}
-              fontSize="19"
-              fill="#c2f000"
-            >
-              ROLETA
-            </text>
-          </g>
-        )}
+            GIRAR
+          </text>
+          <text
+            x={CX}
+            y={CY + 18}
+            textAnchor="middle"
+            style={{ fontFamily: "var(--font-basement), sans-serif", fontWeight: 800 }}
+            fontSize="19"
+            fill="#c2f000"
+          >
+            ROLETA
+          </text>
+        </g>
 
       </svg>
     </div>

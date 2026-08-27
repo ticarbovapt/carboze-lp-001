@@ -1,24 +1,22 @@
-# Roleta de prêmios — `/up` e `/up1`
+# Roleta de prêmios — `/up`
 
-`https://www.carboze.com.br/up` · `https://www.carboze.com.br/up1`
+`https://www.carboze.com.br/up`
 
-## As duas rotas
+## A página
 
-São a **mesma página** com uma diferença só, para teste A/B:
+Uma tela e ponto final: `100svh` com `overflow-hidden`. O botão de girar é uma
+pastilha translúcida no centro da roda, então nada precisa vir abaixo dela — e
+rolar só afastaria a pessoa do único gesto que a página pede. O aviso legal
+fica, mas dentro da tela. O som é um ícone no canto: em linha, ele custava
+~50px de altura que a roda usa melhor.
 
-| | `/up` | `/up1` |
-|---|---|---|
-| Botão de girar | CTA largo abaixo da roda | Pastilha translúcida no centro |
-| Layout | a página rola | uma tela, `100svh`, sem rolagem |
-| Abaixo da roda | CTA, texto de apoio e aviso legal | só o aviso legal |
-| Som | botão com rótulo, em linha | ícone no canto superior direito |
+A rota `/up1` existiu como teste A/B do botão (CTA abaixo da roda × pastilha no
+centro). A pastilha venceu, virou a `/up`, e `/up1` hoje é um redirect 301 em
+`next.config.ts` — o link foi compartilhado para teste e não dá para saber onde
+ainda está colado.
 
-A **roda é idêntica** nas duas: arte em tamanho cheio, ponta no centro, eixo
-minúsculo. Tudo o mais — servidor, sequência, popup, som, artes — é código
-compartilhado em `components/roleta/`, e as rotas são só
-`<PaginaRoleta variante="..." />`. Se cada uma tivesse a própria página, o
-primeiro ajuste de texto deixaria uma para trás e o teste passaria a medir a
-divergência em vez do botão.
+O código vive em `components/roleta/`: `PaginaRoleta` (a casca), `RoletaClient`
+(estado e animação), `Roleta` (o desenho) e `ResultadoPopup`.
 
 ### O popup vai por portal, e isso importa
 
@@ -31,14 +29,14 @@ passou a pintar por cima. O sintoma era um popup com pedaços não clicáveis, e
 o botão do checkout entre eles. No `<body>` ele não tem ancestral com contexto
 próprio, então nenhum rearranjo de layout futuro consegue enterrá-lo de novo.
 
-### A pastilha da /up1
+### A pastilha de girar
 
-Uma primeira versão punha um botão sólido no miolo e encolhia a arte ~23% para
-ele caber sem cobrir o "20% OFF" (que vive entre 13% e 30% do raio). Ficou
-ruim: gomo pequeno, muito escuro entre as artes. A versão atual mantém a arte
-cheia e põe por cima uma pastilha **translúcida**, com fundo em degradê que
-dissolve na borda — o texto tem contraste no centro e a arte continua sendo
-lida através dela, em vez de ser recortada por uma tampa.
+Uma versão punha um botão sólido no miolo e encolhia a arte ~23% para ele caber
+sem cobrir o "20% OFF" (que vive entre 13% e 30% do raio). Ficou ruim: gomo
+pequeno, muito escuro entre as artes. A versão atual mantém a arte cheia e põe
+por cima uma pastilha **translúcida**, com fundo em degradê que dissolve na
+borda — o texto tem contraste no centro e a arte continua sendo lida através
+dela, em vez de ser recortada por uma tampa.
 
 A pastilha **some no primeiro giro e não volta**, porque não precisa: o segundo
 giro sai do botão do popup. Ela só reaparece se a pessoa fechar o popup com
@@ -118,14 +116,6 @@ Para normalizar uma arte nova, o caminho é: recortar na área opaca (`getbbox`
 do canal alfa), colar num quadrado de lado `max(largura, altura)` centrando na
 horizontal e encostando embaixo, redimensionar para 560×560 e salvar em WebP
 qualidade 82. As cinco atuais ficaram em ~60–75 KB cada.
-
-### Por que o botão não fica no miolo
-
-Ele ficava, e cobria a oferta. O conteúdo das artes desce até 13% do raio — o
-"20% OFF" da arte do kit vive entre 13% e 30% —, então qualquer miolo grande o
-bastante para caber "GIRAR ROLETA" apagava justamente o que a página vende. O
-botão virou CTA abaixo da roda, o que de quebra deu uma área de toque de
-verdade no celular. O miolo hoje é só o eixo que arremata as cinco pontas.
 
 ## Resgate
 
@@ -217,12 +207,7 @@ destino é fixo. Conferido: 8 giros, 7–8 pontos distintos, todos dentro do gom
 
 ## Testar
 
-`?reset=1` zera o percurso e recarrega limpo (`/up?reset=1`, `/up1?reset=1` —
-o recarregamento volta para a rota atual, não para `/up` fixo).
-
-As duas rotas dividem o mesmo cookie: quem passa pela `/up` chega na `/up1` com
-o percurso gasto. Para comparar as variantes, `?reset=1` ou janelas anônimas
-separadas: apaga o cookie do
+`?reset=1` zera o percurso e recarrega limpo (`/up?reset=1`): apaga o cookie do
 servidor (via `DELETE /api/roleta`) e o storage do funil. Sem isso, cada rodada
 exigiria limpar cookie e storage na mão.
 

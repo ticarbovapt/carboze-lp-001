@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Roleta, { type VarianteRoleta } from "./Roleta";
+import Roleta from "./Roleta";
 import ResultadoPopup from "./ResultadoPopup";
 import { ROLETA } from "@/lib/constants";
 import { lerProduto, limparFunil, type ProdutoFunil } from "@/lib/funnelState";
@@ -69,16 +69,7 @@ function anguloAlvo(i: number, de: number, voltasFixas?: number) {
 
 type Fase = "carregando" | "pronto" | "girando" | "resultado";
 
-type Props = {
-  /**
-   * Onde fica o botão de girar. `abaixo` põe um CTA largo sob a roda;
-   * `miolo` devolve o botão ao centro dela. Ver Roleta.tsx para o que cada
-   * escolha custa no desenho.
-   */
-  variante: VarianteRoleta;
-};
-
-export default function RoletaClient({ variante }: Props) {
+export default function RoletaClient() {
   const [fase, setFase] = useState<Fase>("carregando");
   const [vencedor, setVencedor] = useState(-1);
   const [codigo, setCodigo] = useState("");
@@ -139,8 +130,9 @@ export default function RoletaClient({ variante }: Props) {
         } catch {
           /* segue mesmo assim: o recarregamento já tira o ?reset da URL */
         }
-        // O caminho atual, não "/up" fixo: a mesma página serve /up e /up1, e
-        // o destino fixo jogava quem testava a variante B de volta na A.
+        // O caminho atual, e não "/up" fixo: /up1 redireciona para cá, e um
+        // destino fixo tiraria o `?reset=1` de qualquer rota que reusasse
+        // este componente.
         window.location.replace(window.location.pathname);
         return;
       }
@@ -350,7 +342,6 @@ export default function RoletaClient({ variante }: Props) {
     return <div className="roleta-caixa" style={{ aspectRatio: "400 / 452" }} aria-hidden="true" />;
   }
 
-  const mostrarBotao = fase !== "resultado" || podeGirar;
   /**
    * Dá para girar tocando agora?
    *
@@ -367,31 +358,9 @@ export default function RoletaClient({ variante }: Props) {
         rodaRef={rodaRef}
         vencedor={fase === "resultado" ? vencedor : -1}
         girando={fase === "girando"}
-        variante={variante}
         onGirar={girar}
         podeGirar={podeTocarGirar}
       />
-
-      {/* Na variante `miolo` quem gira é o próprio centro da roda, então não
-          há botão aqui embaixo — nem o texto que o acompanhava. */}
-      {variante === "abaixo" && mostrarBotao && (
-        <button
-          type="button"
-          onClick={girar}
-          disabled={!podeTocarGirar}
-          className="cta-shine roleta-cta mt-6 w-full max-w-sm rounded-2xl bg-limao px-6 py-5
-                     font-[family-name:var(--font-basement)] font-extrabold uppercase
-                     text-verde-escuro text-xl tracking-wide
-                     hover:brightness-110 active:scale-[0.98] transition-all
-                     disabled:opacity-60 disabled:cursor-default disabled:animate-none"
-        >
-          {fase === "girando"
-            ? "Girando…"
-            : vencedor >= 0
-              ? "Girar de novo"
-              : "Girar roleta"}
-        </button>
-      )}
 
       {erro && (
         <p
@@ -403,21 +372,18 @@ export default function RoletaClient({ variante }: Props) {
         </p>
       )}
 
-      {/* Na variante de tela única o som vira ícone no canto: em linha, ele
-          custava ~50px de altura que a roda usa melhor. */}
+      {/* Som como ícone no canto: em linha, ele custava ~50px de altura que a
+          roda usa melhor — e a página inteira precisa caber em uma tela. */}
       <button
         type="button"
         onClick={alternarSom}
         aria-pressed={semSom}
         aria-label={semSom ? "Ligar o som" : "Desligar o som"}
-        className={
-          variante === "miolo"
-            ? "fixed right-3 top-3 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white/55 hover:text-white hover:border-white/35 transition-colors"
-            : "mt-4 flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 font-[family-name:var(--font-archivo)] text-white/50 text-xs hover:text-white hover:border-white/35 transition-colors"
-        }
+        className="fixed right-3 top-3 z-30 flex h-10 w-10 items-center justify-center
+                   rounded-full border border-white/15 bg-black/40 text-white/55
+                   hover:text-white hover:border-white/35 transition-colors"
       >
         {semSom ? <IconeMudo /> : <IconeSom />}
-        {variante === "miolo" ? null : semSom ? "Som desligado" : "Som ligado"}
       </button>
 
       {/* Depois de fechar o popup a oferta continua ao alcance: um toque para
@@ -427,10 +393,9 @@ export default function RoletaClient({ variante }: Props) {
         <button
           type="button"
           onClick={() => setPopupAberto(true)}
-          className={`font-[family-name:var(--font-archivo)] text-limao text-sm
-                      underline underline-offset-4 hover:text-white transition-colors ${
-                        variante === "miolo" ? "absolute bottom-2" : "mt-3"
-                      }`}
+          className="font-[family-name:var(--font-archivo)] text-limao text-sm
+                      underline underline-offset-4 hover:text-white transition-colors
+                      absolute bottom-2"
         >
           Ver o que você ganhou
         </button>

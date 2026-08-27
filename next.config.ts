@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
       { source: "/moto",  destination: "/#escolha-produto", statusCode: 301 },
       { source: "/carro", destination: "/#escolha-produto", statusCode: 301 },
 
+      // A /up1 era o teste A/B do botão de girar. O desenho dela virou a /up e
+      // a versão antiga saiu; o link segue vivo porque foi compartilhado para
+      // teste e não dá para saber onde ainda está colado.
+      { source: "/up1", destination: "/up", statusCode: 301 },
+
       // Sem intenção de produto → home
       { source: "/countdown",  destination: "/", statusCode: 301 },
       { source: "/nenel",      destination: "/", statusCode: 301 },

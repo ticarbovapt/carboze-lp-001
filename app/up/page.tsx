@@ -17,6 +17,5 @@ export default function UpPage() {
   // nosso controle assim que é publicado.
   if (!ROLETA.enabled) redirect("/upsell");
 
-  // Variante A: o botão de girar é um CTA largo abaixo da roda.
-  return <PaginaRoleta variante="abaixo" />;
+  return <PaginaRoleta />;
 }

@@ -209,13 +209,48 @@ details[open] .faq-content {
   transform-origin: center;
 }
 
-/* Miolo respirando — convida ao clique sem precisar de um "clique aqui". */
+/* Pastilha de girar respirando — convida ao toque sem precisar de um
+   "clique aqui". */
 @keyframes roleta-miolo {
   0%, 100% { opacity: 0.85; }
   50%      { opacity: 1; }
 }
 .roleta-miolo {
   animation: roleta-miolo 2.2s ease-in-out infinite;
+}
+
+/* Botão do popup: pulsa na mesma batida do aro, para o botão e a roda lerem
+   como uma coisa só. Sem `transform` aqui — o .cta-shine já usa o dele. */
+@keyframes roleta-cta {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(169, 218, 0, 0.55); }
+  50%      { box-shadow: 0 0 26px 6px rgba(200, 255, 60, 0.45); }
+}
+.roleta-cta {
+  animation: roleta-cta 1.9s ease-in-out infinite;
+}
+
+/*
+ * Tamanho da roda. Três limites, o menor vence:
+ *   94vw    — respiro lateral no celular;
+ *   520px   — teto, para ela não virar pôster no desktop;
+ *   altura  — o que sobra da tela depois do cabeçalho e do aviso legal.
+ *
+ * O terceiro é o que faz a página inteira caber em 100svh sem rolagem, do
+ * iPhone SE ao notebook de tela baixa. A reserva muda no `sm:` porque é lá que
+ * o cabeçalho cresce — logo, título e retenção ficam maiores.
+ *
+ * `svh` e não `dvh` de propósito: com dvh a roda mudaria de tamanho enquanto a
+ * barra do navegador do celular aparece e some.
+ *
+ * 0.885 é a proporção do viewBox (400/452), que converte altura em largura.
+ */
+.roleta-caixa {
+  width: min(94vw, 520px, calc((100svh - 200px) * 0.885));
+}
+@media (min-width: 640px) {
+  .roleta-caixa {
+    width: min(94vw, 520px, calc((100svh - 290px) * 0.885));
+  }
 }
 
 /* Raios de luz atrás da roda */
@@ -245,76 +280,6 @@ details[open] .faq-content {
   -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%);
 }
 
-/* Quem pediu menos movimento fica com a roleta parada, não sem roleta. O
-   brilho vira estático no pico, para não perder o destaque visual. */
-@media (prefers-reduced-motion: reduce) {
-  .roleta-pino,
-  .roleta-miolo,
-  .roleta-halo,
-  .roleta-aro,
-  .roleta-ponteiro {
-    animation: none;
-  }
-  .roleta-halo { opacity: 0.3; }
-  .roleta-aro {
-    stroke: #c2f000;
-    stroke-opacity: 0.9;
-    filter: drop-shadow(0 0 8px rgba(200, 255, 60, 0.7));
-  }
-  .roleta-pino { fill: #dcff6e; }
-}
-
-/* CTA da roleta: pulsa na mesma batida do aro, para o botão e a roda lerem
-   como uma coisa só. Sem `transform` aqui — o .cta-shine já usa o dele. */
-@keyframes roleta-cta {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(169, 218, 0, 0.55); }
-  50%      { box-shadow: 0 0 26px 6px rgba(200, 255, 60, 0.45); }
-}
-.roleta-cta {
-  animation: roleta-cta 1.9s ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .roleta-cta { animation: none; box-shadow: 0 0 18px 3px rgba(200, 255, 60, 0.35); }
-}
-
-/*
- * Tamanho da roda. Três limites, o menor vence:
- *   94vw    — respiro lateral no celular;
- *   520px   — teto, para ela não virar pôster no desktop;
- *   altura  — o que sobra da tela depois do cabeçalho e do botão de girar.
- *
- * O terceiro é o que mantém o "GIRAR ROLETA" na dobra. Sem ele, tela baixa
- * (iPhone SE, notebook de 900px) empurrava o CTA para fora e a pessoa via uma
- * roleta sem como girar. A reserva muda no `sm:` porque é lá que o cabeçalho
- * cresce — logo, título e retenção ficam maiores.
- *
- * `svh` e não `dvh` de propósito: com dvh a roda mudaria de tamanho enquanto a
- * barra do navegador do celular aparece e some.
- *
- * 0.885 é a proporção do viewBox (400/452), que converte altura em largura.
- */
-.roleta-caixa {
-  width: min(94vw, 520px, calc((100svh - 260px) * 0.885));
-}
-@media (min-width: 640px) {
-  .roleta-caixa {
-    width: min(94vw, 520px, calc((100svh - 350px) * 0.885));
-  }
-}
-
-/* Variante de tela única (/up1). Não sobra nada abaixo da roda além do aviso
-   legal, e o botão de girar está dentro dela — então a reserva cobre só o
-   cabeçalho e esse aviso. É o que permite a página inteira caber em 100svh
-   sem rolagem, do iPhone SE ao desktop. */
-.roleta-caixa--miolo {
-  width: min(94vw, 520px, calc((100svh - 200px) * 0.885));
-}
-@media (min-width: 640px) {
-  .roleta-caixa--miolo {
-    width: min(94vw, 520px, calc((100svh - 290px) * 0.885));
-  }
-}
-
 /* Popup do resultado: sobe da base no celular, aparece no lugar no desktop.
    No celular a base é onde o polegar já está — a animação vindo dali entrega
    o botão embaixo do dedo em vez de longe dele. */
@@ -332,6 +297,25 @@ details[open] .faq-content {
 @media (min-width: 640px) {
   .popup-sobe { animation: popup-surge 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
 }
+
+/* Quem pediu menos movimento fica com a roleta parada, não sem roleta. O
+   brilho vira estático no pico, para não perder o destaque visual. */
 @media (prefers-reduced-motion: reduce) {
-  .popup-sobe { animation: none; }
+  .roleta-pino,
+  .roleta-miolo,
+  .roleta-halo,
+  .roleta-aro,
+  .roleta-ponteiro,
+  .roleta-cta,
+  .popup-sobe {
+    animation: none;
+  }
+  .roleta-halo { opacity: 0.3; }
+  .roleta-aro {
+    stroke: #c2f000;
+    stroke-opacity: 0.9;
+    filter: drop-shadow(0 0 8px rgba(200, 255, 60, 0.7));
+  }
+  .roleta-pino { fill: #dcff6e; }
+  .roleta-cta { box-shadow: 0 0 18px 3px rgba(200, 255, 60, 0.35); }
 }
