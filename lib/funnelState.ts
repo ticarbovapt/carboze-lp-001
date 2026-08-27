@@ -14,6 +14,7 @@ export type ProdutoFunil = "sache" | "pack";
 
 const K_PRODUTO = "cz-funil-produto";
 const K_RESOLVIDO = "cz-upsell-resolvido";
+const K_ROLETA = "cz-roleta-giro";
 
 /** Janela em que a marca é considerada válida. */
 const TTL_MS = 24 * 60 * 60 * 1000;
@@ -77,14 +78,62 @@ export function upsellJaResolvido(): boolean {
   return ler(K_RESOLVIDO) === "1";
 }
 
+// ─── Roleta (/up) ────────────────────────────────────────────────────────────
+
+export type GiroRoleta = {
+  /** `id` do prêmio em ROLETA.premios. */
+  premio: string;
+  /** Código do giro, o que o cliente leva para o WhatsApp ao resgatar. */
+  codigo: string;
+};
+
+/**
+ * Validade do giro. Sete dias, não as 24h do resto do funil: o resultado aqui
+ * não é só uma marca de "já ofertamos", é o comprovante de um prêmio. Quem
+ * tirou o vale-combustível numa sexta e só foi resgatar na segunda precisa
+ * reencontrar o código na tela.
+ */
+const TTL_ROLETA_MS = 7 * 24 * 60 * 60 * 1000;
+
+/** Grava o resultado do giro. Um giro por navegador — não sobrescreve. */
+export function gravarGiroRoleta(premio: string, codigo: string) {
+  try {
+    localStorage.setItem(
+      K_ROLETA,
+      JSON.stringify({ premio, codigo, ts: Date.now() }),
+    );
+  } catch {
+    /* storage bloqueado: o giro vale só enquanto a aba estiver aberta */
+  }
+}
+
+/** Resultado do giro anterior, ou null se nunca girou / passou da validade. */
+export function lerGiroRoleta(): GiroRoleta | null {
+  try {
+    const cru = localStorage.getItem(K_ROLETA);
+    if (!cru) return null;
+    const g = JSON.parse(cru) as GiroRoleta & { ts?: number };
+    if (!g?.ts || !g.premio || !g.codigo) return null;
+    if (Date.now() - g.ts > TTL_ROLETA_MS) {
+      localStorage.removeItem(K_ROLETA);
+      return null;
+    }
+    return { premio: g.premio, codigo: g.codigo };
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Zera o funil. Existe para teste: refazer o percurso no mesmo navegador
- * exigiria abrir o DevTools a cada rodada. Chamado por `/upsell?reset=1`.
+ * exigiria abrir o DevTools a cada rodada. Chamado por `/upsell?reset=1` e
+ * por `/up?reset=1`.
  */
 export function limparFunil() {
   try {
     localStorage.removeItem(K_PRODUTO);
     localStorage.removeItem(K_RESOLVIDO);
+    localStorage.removeItem(K_ROLETA);
   } catch {
     /* ignora */
   }

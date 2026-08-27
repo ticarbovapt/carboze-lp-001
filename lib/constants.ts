@@ -169,3 +169,168 @@ export const EXIT_OFFER = {
     },
   },
 } as const;
+
+// ─── Roleta de prêmios (/up) ─────────────────────────────────────────────────
+// Variante do upsell pós-compra: em vez do card de desconto direto (/upsell),
+// o cliente gira uma roleta. O prêmio que sustenta a página é o mesmo kit com
+// 20% off — os demais são reais, mas raros.
+//
+// LEIA ANTES DE MEXER NOS PESOS:
+//
+// 1. A roleta é sorteada por peso, não em partes iguais. `peso` é relativo à
+//    soma de todos os pesos: com a tabela abaixo (soma 100), `peso: 62` é 62%.
+//    Isso é o padrão do mercado para roleta de oferta, mas é uma roleta viciada
+//    — o desenho tem 5 gomos iguais e as chances não são iguais. Se a promoção
+//    for divulgada como sorteio, iguale os pesos ou informe as probabilidades.
+//
+// 2. Os prêmios físicos (viagem, vale-combustível, vestuário) criam obrigação
+//    real de entrega para quem tirar. No Brasil, distribuição gratuita de
+//    prêmios por sorteio depende de autorização (Lei 5.768/71, SPA/MF): isso é
+//    decisão de negócio/jurídico, não do código. Para desligar um prêmio sem
+//    tirá-lo da roda, ponha `peso: 0` — ele aparece no desenho e nunca sai.
+//
+// 3. `peso: 0` em TODOS os prêmios trava o sorteio. Ao menos um peso > 0.
+//
+// Os SKUs são os mesmos "UpSell" do /upsell — o desconto é o mesmo, muda só a
+// embalagem da oferta. `utm_campaign=roleta` é o que separa as duas no admin.
+
+/** Como o cliente resgata o que tirou. */
+export type ResgateRoleta =
+  /** Vai direto ao checkout do SKU com desconto já no preço. */
+  | "checkout"
+  /** Fala com o time no WhatsApp levando o código do giro. */
+  | "whatsapp"
+  /** Não ganhou: segue para a oferta de consolação. */
+  | "consolo";
+
+export type PremioRoleta = {
+  id: string;
+  /** Texto dentro do gomo, uma linha por elemento. */
+  linhas: readonly string[];
+  /** Índice da linha que sai em limão (o número/nome que vende o gomo). */
+  destaque: number;
+  /** Peso do sorteio. Ver observação 1 acima. */
+  peso: number;
+  /** Muda a cor do gomo e do card: `nada` é o único vermelho. */
+  tom: "oferta" | "premio" | "nada";
+  titulo: string;
+  descricao: string;
+  ctaLabel: string;
+  resgate: ResgateRoleta;
+};
+
+export const ROLETA = {
+  /**
+   * Desliga a roleta inteira. Desligada, /up manda para /upsell — que oferece
+   * o mesmo kit com 20%, só sem a roda. Nunca 404: o link vai em snippet de
+   * pós-compra e em campanha, e some do nosso controle depois de publicado.
+   */
+  enabled: true,
+
+  /** Para onde vai quem gira e não quer o prêmio. */
+  declineHref: "/obrigado",
+
+  /** Duração do giro, em ms. Abaixo de ~4s a roda não parece pesada. */
+  duracaoGiroMs: 5200,
+
+  /** Voltas completas antes de mirar o gomo sorteado. */
+  voltasMin: 6,
+  voltasMax: 9,
+
+  /**
+   * Pinos na borda. Definem o ritmo do clique: um tique a cada 360/pinos graus.
+   * O desenho da borda usa o mesmo número, para o som bater com o que se vê.
+   */
+  pinos: 20,
+
+  /**
+   * Ordem HORÁRIA a partir do ponteiro (12h). O primeiro item é o gomo que
+   * está sob o ponteiro com a roda parada — mexer na ordem gira o desenho.
+   */
+  premios: [
+    {
+      id: "kit20",
+      linhas: ["KIT CARBOZÉ", "5 FRASCOS", "20% OFF"],
+      destaque: 2,
+      peso: 62,
+      tom: "oferta",
+      titulo: "20% OFF no Kit CarboZé",
+      descricao:
+        "O desconto já vem aplicado no preço, com frete grátis — não precisa digitar cupom nenhum.",
+      ctaLabel: "Resgatar meus 20% off",
+      resgate: "checkout",
+    },
+    {
+      id: "vale200",
+      linhas: ["VALE COMBUSTÍVEL", "R$200,00"],
+      destaque: 1,
+      peso: 2,
+      tom: "premio",
+      titulo: "Vale-combustível de R$ 200",
+      descricao:
+        "Mande o código do seu giro no WhatsApp para o time confirmar o prêmio e combinar como você recebe o vale.",
+      ctaLabel: "Falar com o time e resgatar",
+      resgate: "whatsapp",
+    },
+    {
+      id: "nada",
+      linhas: ["NÃO FOI", "DESSA VEZ"],
+      destaque: 1,
+      peso: 30,
+      tom: "nada",
+      titulo: "Não foi dessa vez",
+      descricao:
+        "A roda parou no gomo vazio. Mas você não sai daqui de mãos abanando: como cliente, seus 20% off no kit continuam de pé.",
+      ctaLabel: "Pegar meus 20% off assim mesmo",
+      resgate: "consolo",
+    },
+    {
+      id: "vestuario",
+      linhas: ["KIT VESTUÁRIO", "CARBOZÉ", "BONÉ + CASACO"],
+      destaque: 1,
+      peso: 5,
+      tom: "premio",
+      titulo: "Kit vestuário CarboZé",
+      descricao:
+        "Boné + casaco CarboZé. Mande o código do seu giro no WhatsApp para o time confirmar o tamanho e o endereço de entrega.",
+      ctaLabel: "Falar com o time e resgatar",
+      resgate: "whatsapp",
+    },
+    {
+      id: "interlagos",
+      linhas: ["VIAGEM PARA", "INTERLAGOS"],
+      destaque: 1,
+      peso: 1,
+      tom: "premio",
+      titulo: "Viagem para Interlagos",
+      descricao:
+        "Mande o código do seu giro no WhatsApp para o time confirmar o prêmio e combinar as datas com você.",
+      ctaLabel: "Falar com o time e resgatar",
+      resgate: "whatsapp",
+    },
+  ] as const satisfies readonly PremioRoleta[],
+
+  /** Checkout do prêmio `kit20` e da consolação do `nada`. */
+  checkout: {
+    carro: {
+      titulo: "Kit 5 frascos 100ml",
+      subtitulo: "Ideal para carro · trata 500 litros",
+      de: "R$ 149,50",
+      por: "R$ 119,60",
+      href: comUtm(NS_UPSELL_CARROS, ROTA.upsell, "roleta"),
+    },
+    moto: {
+      titulo: "Kit 10 sachês 10ml",
+      subtitulo: "Ideal para moto · trata 100 litros",
+      de: "R$ 59,90",
+      por: "R$ 47,90",
+      href: comUtm(NS_UPSELL_MOTOS, ROTA.upsell, "roleta"),
+    },
+  },
+} as const;
+
+/** Link de resgate no WhatsApp, já com o código do giro na mensagem. */
+export function resgateWhatsApp(premio: string, codigo: string) {
+  const texto = `Olá! Girei a roleta CarboZé e ganhei: ${premio}. Meu código é ${codigo}.`;
+  return `${WHATSAPP_URL}?text=${encodeURIComponent(texto)}`;
+}

@@ -152,3 +152,59 @@ details[open] .faq-content {
     scroll-behavior: auto !important;
   }
 }
+
+/* ─── Roleta (/up) ─────────────────────────────────────────── */
+
+/* Pinos da borda acendendo em sequência. Só com a roda parada: girando, o
+   desenho já se move e as lâmpadas piscando viram cintilação. */
+@keyframes roleta-pino {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+.roleta-pino {
+  animation: roleta-pino 1.6s ease-in-out infinite;
+}
+
+/* Miolo respirando — convida ao clique sem precisar de um "clique aqui". */
+@keyframes roleta-miolo {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+.roleta-miolo {
+  animation: roleta-miolo 2.2s ease-in-out infinite;
+}
+
+/* Raios de luz atrás da roda */
+.roleta-raios {
+  background:
+    conic-gradient(
+      from 0deg at 50% 42%,
+      transparent 0deg, rgba(169, 218, 0, 0.09) 6deg, transparent 12deg,
+      transparent 40deg, rgba(169, 218, 0, 0.07) 46deg, transparent 52deg,
+      transparent 88deg, rgba(169, 218, 0, 0.1) 94deg, transparent 100deg,
+      transparent 150deg, rgba(169, 218, 0, 0.06) 156deg, transparent 162deg,
+      transparent 210deg, rgba(169, 218, 0, 0.09) 216deg, transparent 222deg,
+      transparent 280deg, rgba(169, 218, 0, 0.07) 286deg, transparent 292deg,
+      transparent 330deg, rgba(169, 218, 0, 0.08) 336deg, transparent 342deg
+    );
+}
+
+/* Piso quadriculado em fuga, como na arte da roleta */
+.roleta-grade {
+  background-image:
+    linear-gradient(rgba(169, 218, 0, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(169, 218, 0, 0.18) 1px, transparent 1px);
+  background-size: 46px 46px;
+  transform: perspective(320px) rotateX(62deg);
+  transform-origin: bottom center;
+  mask-image: linear-gradient(to top, #000 10%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%);
+}
+
+/* Quem pediu menos movimento fica com a roleta parada, não sem roleta. */
+@media (prefers-reduced-motion: reduce) {
+  .roleta-pino,
+  .roleta-miolo {
+    animation: none;
+  }
+}
