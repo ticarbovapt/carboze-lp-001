@@ -161,51 +161,51 @@ borda ao mesmo tempo — o que se ouve bate com o que passa pelo ponteiro.
 
 ## O giro
 
-`duracaoGiroMs: 20000`, dos quais os últimos `duracaoRastejoMs: 5000` são
-rastejo. `voltasMin/Max: 18/24`.
+`duracaoGiroMs: 10000`, dos quais os últimos `duracaoRastejoMs: 3500` são
+rastejo. `voltasMin/Max: 8/12`.
 
 ### Por que duas fases, e não uma curva só
 
 A animação não usa easing pronto. São duas fases coladas pela velocidade:
 
-- **A — arranque (15s).** A velocidade cai linearmente de `v0` até `v1`.
-  Desaceleração constante, que é o que o atrito de um eixo faz.
-- **B — rastejo (5s).** Começa exatamente em `v1` e cai até `v2`, cobrindo
-  `grausRastejo: 180` — dois gomos e meio.
+- **A — arranque (6,5s).** A velocidade cai linearmente de `v0` (~900°/s) até
+  `v1`. Desaceleração constante, que é o que o atrito de um eixo faz.
+- **B — rastejo (3,5s).** Começa exatamente em `v1` e cai até `v2`, cobrindo
+  `grausRastejo: 150` — pouco mais de dois gomos.
 
-Uma curva só não faz as duas coisas. Com easeOutQuad (que era o que estava
-aqui), a velocidade cai até zero de uma vez: para o fim ser lento o bastante, o
-arranque tem de ser fraco; para o arranque ter força, o fim chega rápido
-demais. Quebrando em duas, `v1` é escolhido pelo rastejo que se quer — 180° em
-5s dão 62°/s — e o arranque fica livre para ser violento.
+Uma curva só não faz as duas coisas. Com easeOutQuad (que já esteve aqui), a
+velocidade cai até zero de uma vez: para o fim ser lento o bastante, o arranque
+tem de ser fraco; para o arranque ter força, o fim chega rápido demais.
+Quebrando em duas, `v1` é escolhido pelo rastejo que se quer — 150° em 3,5s dão
+~76°/s — e o arranque fica livre para ser violento.
 
 `v1` é o mesmo número no fim de A e no início de B, então não há degrau na
-emenda.
+emenda. E `v0` **sai da duração**: mexer em `duracaoGiroMs` reajusta o arranque
+sozinho, sem tocar em mais nada.
 
 ### Por que `velocidadeFinalGrausS` não é zero
 
 Desacelerando até zero, o último segundo cobria 3°: a roda parecia ter parado
 antes e o fim morria. Terminando a ~10°/s e travando ali — que é o que um pino
-faz — o último segundo ainda anda 15°, quase um pino inteiro: dá um tique final
-e só então para.
+faz — o último segundo ainda anda ~19°, um pino inteiro: dá um tique final e só
+então para.
 
 ### Medido no navegador
 
-Sondado amostrando o transform quadro a quadro até a roda parar de verdade
-(medir até o popup abrir dá números menores, porque o popup aparece antes do
-último grau):
+Sondado amostrando o transform quadro a quadro **até a roda parar de verdade**.
+Medir até o popup abrir dá números menores, porque o popup aparece antes do
+último grau — foi o que mascarou o problema do fim morto na primeira versão.
 
 | | projetado | medido |
 |---|---:|---:|
-| duração | 20,0s | 20,1s |
-| entrada no rastejo (`v1`) | 62°/s | 62°/s |
-| velocidade ao travar (`v2`) | 10°/s | 9°/s |
-| últimos 5s | 180° (2,5 gomos) | 179° |
-| último 1s | 15° | 15° |
+| duração | 10,0s | 10,3s |
+| últimos 3s | 114° | 113° |
+| últimos 2s | 58° | 58° |
+| último 1s | 19° | 19° |
+| velocidade ao travar | 10°/s | 10°/s |
 
-Velocidade nos últimos segundos: 62 → 52 → 41 → 31 → 21 → 9 °/s. Com pinos a
-cada 18°, isso é um tique a cada 0,3s virando um a cada 2s — o "tic... tic.....
-tic" que faz parecer que ainda pode cair no gomo vizinho.
+Com pinos a cada 18°, o rastejo é um tique a cada ~0,25s virando um a cada ~2s
+— o "tic... tic..... tic" que faz parecer que ainda pode cair no gomo vizinho.
 
 ### A parada
 
@@ -213,14 +213,7 @@ O ponto de parada é sorteado dentro do gomo (`PASSO - 12`, ou ±30°, com 6° d
 folga de cada divisória), inclusive no caminho de `prefers-reduced-motion` —
 onde o giro encurta para 1,2s, mas continua parando em lugar diferente. Sem
 isso a roda pararia sempre no mesmo pixel e dois giros entregariam que o
-destino é fixo. Conferido: 8 giros, 8 pontos distintos, todos dentro do gomo.
-
-### O custo
-
-Dois giros de 20s são ~40s de roleta por pessoa, e o segundo termina em cima do
-CTA do checkout. Se o número se mostrar longo demais na prática, `duracaoGiroMs`
-e `duracaoRastejoMs` são a única coisa a mexer — o perfil se reajusta sozinho,
-porque `v0` e `v1` saem deles.
+destino é fixo. Conferido: 8 giros, 7–8 pontos distintos, todos dentro do gomo.
 
 ## Testar
 

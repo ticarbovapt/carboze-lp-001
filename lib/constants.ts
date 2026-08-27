@@ -226,23 +226,23 @@ export const ROLETA = {
    * É tempo de tensão, não de espera. Quem está olhando não quer que acabe:
    * quer ver o ponteiro chegando perto e não saber onde para.
    */
-  duracaoGiroMs: 20000,
+  duracaoGiroMs: 10000,
 
   /**
    * Quanto do fim é RASTEJO: a roda quase parando, passando de gomo em gomo
    * devagar o bastante para parecer que ainda pode cair no vizinho.
    */
-  duracaoRastejoMs: 5000,
+  duracaoRastejoMs: 3500,
 
   /**
-   * Graus percorridos durante o rastejo. 180° são dois gomos e meio: o
-   * ponteiro cruza duas divisórias devagar antes de assentar, que é o que
+   * Graus percorridos durante o rastejo. 150° são pouco mais de dois gomos:
+   * o ponteiro cruza duas divisórias devagar antes de assentar, que é o que
    * cria o "vai cair uma antes ou uma depois?".
    *
    * Aumentar isto sem aumentar `duracaoRastejoMs` acelera o rastejo e mata o
    * efeito; os dois andam juntos.
    */
-  grausRastejo: 180,
+  grausRastejo: 150,
 
   /**
    * Velocidade em que a roda TRAVA, em graus por segundo.
@@ -259,8 +259,8 @@ export const ROLETA = {
    * a velocidade inicial sai delas e da duração, não de um número à parte.
    * Poucas voltas num giro longo = roda mole desde o começo.
    */
-  voltasMin: 18,
-  voltasMax: 24,
+  voltasMin: 8,
+  voltasMax: 12,
 
   /**
    * Pinos na borda. Definem o ritmo do clique: um tique a cada 360/pinos graus.
