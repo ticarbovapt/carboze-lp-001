@@ -1,6 +1,28 @@
-# Roleta de prêmios — `/up`
+# Roleta de prêmios — `/up` e `/up1`
 
-`https://www.carboze.com.br/up`
+`https://www.carboze.com.br/up` · `https://www.carboze.com.br/up1`
+
+## As duas rotas
+
+São a **mesma página** com uma diferença só, para teste A/B:
+
+| | `/up` | `/up1` |
+|---|---|---|
+| Botão de girar | CTA largo abaixo da roda | O próprio miolo da roda |
+| Arte dos gomos | tamanho cheio, ponta no centro | recuada 38 de raio, ~23% menor |
+| Abaixo da roda | CTA + "um giro por cliente" | só o botão de som |
+
+Tudo o mais — servidor, sequência, popup, som, artes — é código compartilhado
+em `components/roleta/`. As duas rotas são só `<PaginaRoleta variante="..." />`.
+Isso é de propósito: se cada uma tivesse a própria página, o primeiro ajuste de
+texto deixaria uma para trás e o teste passaria a medir a divergência em vez do
+botão.
+
+**O que o miolo custa.** O botão precisa de ~52 de raio para caber "GIRAR
+ROLETA", e o conteúdo das artes desce até 13% do raio — o "20% OFF" vive entre
+13% e 30%. Para o botão não apagar a oferta, a arte recua até `pontaArte: 38`
+e encolhe junto. O resultado é legível, mas os gomos abrem mais espaço escuro
+entre si. É esse o trade-off que o teste decide.
 
 Variante do upsell pós-compra. Onde o `/upsell` mostra o card de desconto
 direto, aqui o cliente gira uma roleta. O desfecho que sustenta a página é o
@@ -124,9 +146,31 @@ usuário, iOS e Chrome recusam o `AudioContext` e o giro sairia mudo. O botão
 `ROLETA.pinos` controla o ritmo do clique e o número de lâmpadas desenhadas na
 borda ao mesmo tempo — o que se ouve bate com o que passa pelo ponteiro.
 
+## O giro
+
+`duracaoGiroMs: 8000`, `voltasMin/Max: 8/12`. Os dois andam juntos: giro longo
+com poucas voltas vira uma roda rastejando.
+
+A desaceleração é **easeOutQuad**, e o expoente 2 não é gosto — é o que faz a
+velocidade cair linearmente até zero, que é o que o atrito constante produz numa
+roda de verdade. Expoentes maiores (quart, quint) chegam a 99,99% do caminho na
+metade do tempo e depois rastejam invisíveis: a roda parece travar cedo em vez
+de ir morrendo.
+
+Medido no navegador: giro de 7,9s, ~9,6 voltas, **78° nos últimos 1s** e 268°
+nos últimos 2s. Como o gomo tem 72°, o último segundo cobre um prêmio inteiro
+devagar — dá tempo de ver o ponteiro cruzar a divisória sem saber se para antes
+ou depois dela.
+
+O ponto de parada é sorteado dentro do gomo (`PASSO - 12`, ou ±30°, com 6° de
+folga de cada divisória), inclusive no caminho de `prefers-reduced-motion`.
+Sem isso a roda pararia sempre no mesmo pixel e dois giros entregariam que o
+destino é fixo. Conferido: 8 giros, 8 pontos distintos, todos dentro do gomo.
+
 ## Testar
 
-`?reset=1` zera o percurso e recarrega limpo (`/up?reset=1`): apaga o cookie do
+`?reset=1` zera o percurso e recarrega limpo (`/up?reset=1`, `/up1?reset=1` —
+o recarregamento volta para a rota atual, não para `/up` fixo): apaga o cookie do
 servidor (via `DELETE /api/roleta`) e o storage do funil. Sem isso, cada rodada
 exigiria limpar cookie e storage na mão.
 

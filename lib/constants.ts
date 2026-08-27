@@ -220,12 +220,19 @@ export const ROLETA = {
   /** Para onde vai quem gira e não quer o prêmio. */
   declineHref: "/obrigado",
 
-  /** Duração do giro, em ms. Abaixo de ~4s a roda não parece pesada. */
-  duracaoGiroMs: 5200,
+  /**
+   * Duração do giro, em ms. É tempo de tensão, não de espera: o fim do giro é
+   * onde a pessoa fica olhando o ponteiro passar de gomo em gomo sem saber
+   * onde para. Abaixo de ~5s isso não chega a acontecer.
+   */
+  duracaoGiroMs: 8000,
 
-  /** Voltas completas antes de mirar o gomo sorteado. */
-  voltasMin: 6,
-  voltasMax: 9,
+  /**
+   * Voltas completas antes de mirar o gomo. Precisam acompanhar a duração:
+   * com o giro longo e poucas voltas, a roda passa o tempo todo rastejando.
+   */
+  voltasMin: 8,
+  voltasMax: 12,
 
   /**
    * Pinos na borda. Definem o ritmo do clique: um tique a cada 360/pinos graus.

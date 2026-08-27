@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import Roleta from "./Roleta";
+import Roleta, { type VarianteRoleta } from "./Roleta";
 import ResultadoPopup from "./ResultadoPopup";
 import { ROLETA } from "@/lib/constants";
 import { lerProduto, limparFunil, type ProdutoFunil } from "@/lib/funnelState";
@@ -55,10 +55,15 @@ function prefereMenosMovimento() {
  * gomo, com 8° de folga para não encostar na divisória, onde o resultado
  * ficaria ambíguo aos olhos de quem assiste.
  */
-function anguloAlvo(i: number, de: number) {
+function anguloAlvo(i: number, de: number, voltasFixas?: number) {
   const voltas =
+    voltasFixas ??
     ROLETA.voltasMin + Math.floor(Math.random() * (ROLETA.voltasMax - ROLETA.voltasMin + 1));
-  const desvio = (Math.random() - 0.5) * (PASSO - 16);
+  // Ponto de parada dentro do gomo, com 6° de folga de cada divisória. Sem
+  // isto a roda pararia sempre no mesmo pixel e dois giros entregariam que o
+  // destino é fixo. Com isto, cada giro termina num lugar diferente do gomo —
+  // e nos últimos graus ainda parece que vai parar no gomo vizinho.
+  const desvio = (Math.random() - 0.5) * (PASSO - 12);
   // A partir da volta inteira seguinte, para o giro nunca ser curto quando a
   // roda já está parada num ângulo qualquer do giro anterior.
   const base = Math.ceil(de / 360) * 360;
@@ -67,7 +72,16 @@ function anguloAlvo(i: number, de: number) {
 
 type Fase = "carregando" | "pronto" | "girando" | "resultado";
 
-export default function RoletaClient() {
+type Props = {
+  /**
+   * Onde fica o botão de girar. `abaixo` põe um CTA largo sob a roda;
+   * `miolo` devolve o botão ao centro dela. Ver Roleta.tsx para o que cada
+   * escolha custa no desenho.
+   */
+  variante: VarianteRoleta;
+};
+
+export default function RoletaClient({ variante }: Props) {
   const [fase, setFase] = useState<Fase>("carregando");
   const [vencedor, setVencedor] = useState(-1);
   const [codigo, setCodigo] = useState("");
@@ -79,6 +93,15 @@ export default function RoletaClient() {
 
   const rodaRef = useRef<SVGGElement | null>(null);
   const rafRef = useRef(0);
+  /**
+   * Trava do giro em curso.
+   *
+   * Em ref e não em `fase` porque o botão do popup dispara o giro seguinte
+   * ainda com a fase em "resultado": esperar o React repintar para só então
+   * liberar criaria uma janela em que o clique não faz nada. A ref muda no
+   * mesmo tick do clique.
+   */
+  const girandoRef = useRef(false);
   /** Ângulo atual da roda, em graus. Fora do state: muda 60x por segundo. */
   const anguloRef = useRef(0);
 
@@ -119,7 +142,9 @@ export default function RoletaClient() {
         } catch {
           /* segue mesmo assim: o recarregamento já tira o ?reset da URL */
         }
-        window.location.replace("/up");
+        // O caminho atual, não "/up" fixo: a mesma página serve /up e /up1, e
+        // o destino fixo jogava quem testava a variante B de volta na A.
+        window.location.replace(window.location.pathname);
         return;
       }
 
@@ -166,9 +191,10 @@ export default function RoletaClient() {
       const reduzido = prefereMenosMovimento();
       const inicio = anguloRef.current;
       const duracao = reduzido ? 900 : ROLETA.duracaoGiroMs;
-      const alvo = reduzido
-        ? Math.ceil(inicio / 360) * 360 + 360 - i * PASSO
-        : anguloAlvo(i, inicio);
+      // Menos movimento é giro mais curto, não parada diferente: o desvio
+      // dentro do gomo vale para os dois caminhos. Sem ele, quem pede redução
+      // de movimento via a roda parar sempre no mesmo pixel.
+      const alvo = anguloAlvo(i, inicio, reduzido ? 1 : undefined);
       const alvoComSobra = alvo + SOBRA;
 
       const t0 = performance.now();
@@ -181,9 +207,15 @@ export default function RoletaClient() {
         let angulo: number;
 
         if (t < 1) {
-          // easeOutQuart: sai rápido e passa a maior parte do tempo
-          // desacelerando, que é o perfil de uma roda pesada no atrito do eixo.
-          angulo = inicio + (alvoComSobra - inicio) * (1 - Math.pow(1 - t, 4));
+          // easeOutQuad, e não uma curva mais agressiva: com expoente 2 a
+          // velocidade cai LINEARMENTE até zero, que é exatamente o que o
+          // atrito constante faz numa roda de verdade. Expoentes maiores
+          // (quart, quint) chegam a 99,99% do caminho na metade do tempo e
+          // depois rastejam invisíveis — a roda parece travar cedo em vez de
+          // ir morrendo. Com quad, o último segundo ainda cobre uns 50°: dá
+          // para ver o ponteiro cruzar uma divisória devagar, sem saber se
+          // para antes ou depois dela.
+          angulo = inicio + (alvoComSobra - inicio) * (1 - Math.pow(1 - t, 2));
         } else {
           // Assentamento: a roda passou do alvo e volta oscilando até parar.
           // Em u=0 vale exatamente alvoComSobra, então emenda sem salto.
@@ -220,7 +252,8 @@ export default function RoletaClient() {
   );
 
   const girar = useCallback(async () => {
-    if (fase !== "pronto" || erro) return;
+    if (girandoRef.current || erro) return;
+    girandoRef.current = true;
 
     // Precisa acontecer DENTRO do gesto: fora dele o navegador recusa criar o
     // AudioContext e o giro sai mudo.
@@ -233,6 +266,7 @@ export default function RoletaClient() {
       const r = await fetch("/api/roleta", { method: "POST", cache: "no-store" });
       estado = (await r.json()) as Resultado;
     } catch {
+      girandoRef.current = false;
       setErro(true);
       setFase("pronto");
       return;
@@ -240,6 +274,7 @@ export default function RoletaClient() {
 
     const i = estado.premio ? PREMIOS.findIndex((p) => p.id === estado.premio) : -1;
     if (i < 0) {
+      girandoRef.current = false;
       setErro(true);
       setFase("pronto");
       return;
@@ -249,6 +284,7 @@ export default function RoletaClient() {
     track("ViewContent", { content_name: `roleta:${premio.id}`, content_type: "product" });
 
     animarAte(i, () => {
+      girandoRef.current = false;
       setVencedor(i);
       setCodigo(estado.codigo ?? "");
       setPodeGirar(estado.podeGirar);
@@ -262,12 +298,17 @@ export default function RoletaClient() {
         festa();
       }
     });
-  }, [fase, erro, animarAte]);
+  }, [erro, animarAte]);
 
+  /**
+   * Confirmou a chance extra: o popup sai e a roda começa a girar no mesmo
+   * gesto. Voltar para o botão obrigaria a pessoa a tocar duas vezes para uma
+   * decisão que ela já tomou.
+   */
   const girarDeNovo = useCallback(() => {
     setPopupAberto(false);
-    setFase("pronto");
-  }, []);
+    void girar();
+  }, [girar]);
 
   const alternarSom = useCallback(() => {
     iniciarAudio();
@@ -295,12 +336,14 @@ export default function RoletaClient() {
         rodaRef={rodaRef}
         vencedor={fase === "resultado" ? vencedor : -1}
         girando={fase === "girando"}
+        variante={variante}
+        onGirar={girar}
+        podeGirar={fase === "pronto" && !erro}
       />
 
-      {/* O CTA fica fora da roda: no miolo ele cobria o "20% OFF" da arte e
-          dava uma área de toque pequena. Aqui é um botão de verdade, largo, no
-          alcance do polegar. */}
-      {mostrarBotao && (
+      {/* Na variante `miolo` quem gira é o próprio centro da roda, então não
+          há botão aqui embaixo — nem o texto que o acompanhava. */}
+      {variante === "abaixo" && mostrarBotao && (
         <button
           type="button"
           onClick={girar}

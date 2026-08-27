@@ -11,12 +11,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function UpPage() {
+export default function Up1Page() {
   // Roleta desligada: manda para o upsell direto, que entrega o mesmo desconto
   // sem a roda. Nunca 404 — este link vai em snippet de pós-compra e some do
   // nosso controle assim que é publicado.
   if (!ROLETA.enabled) redirect("/upsell");
 
-  // Variante A: o botão de girar é um CTA largo abaixo da roda.
-  return <PaginaRoleta variante="abaixo" />;
+  // Variante B: o botão de girar é o próprio miolo da roda. Fora isso é a
+  // mesma engrenagem da /up — o teste mede o botão, e nada além dele.
+  return <PaginaRoleta variante="miolo" />;
 }

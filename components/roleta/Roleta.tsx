@@ -31,18 +31,25 @@ const CY = 252;
 const R = 168;
 const R_ARO_EXT = 190;
 /**
- * Raio do eixo central — só a tampa que arremata as cinco pontas.
+ * Onde o botão de girar fica, e o que isso custa.
  *
- * Era aqui que ficava o botão "GIRAR ROLETA", e ele precisava de ~54 de raio.
- * Só que o conteúdo das artes desce até 13% do raio: o "20% OFF" da arte do
- * kit vive entre 13% e 30%, e qualquer miolo grande o cobria. Como o texto é
- * a oferta, quem saiu foi o botão — virou CTA abaixo da roda, que ainda por
- * cima é área de toque de verdade no celular.
+ * O conteúdo das artes desce fundo: na arte do kit, o "OFF" vive entre 13% e
+ * 18% do raio e o "20%" entre 22% e 30%. Miolo grande cobre os dois.
+ *
+ * - `abaixo`: eixo minúsculo, arte com a ponta no centro e tamanho cheio. Só
+ *   a bico da cunha some sob a tampa. O botão é um CTA fora da roda.
+ * - `miolo`: o botão volta para dentro, e para caber sem apagar a oferta a
+ *   arte recua até `pontaArte` — o "OFF" passa a nascer acima do miolo. A
+ *   conta de `pontaArte` é essa: 38 + 13% de 126 ≈ 54, folga sobre o miolo de
+ *   52. O preço é a arte encolher ~23% e os gomos abrirem mais espaço escuro
+ *   entre si.
  */
-const R_EIXO = 19;
+export type VarianteRoleta = "abaixo" | "miolo";
 
-/** Lado da arte (ela é quadrada). Ponta no eixo, borda de fora colada no aro. */
-const LADO_ARTE = R - 4;
+const GEOMETRIA = {
+  abaixo: { raioMiolo: 19, pontaArte: 0 },
+  miolo: { raioMiolo: 52, pontaArte: 38 },
+} as const;
 
 const N = ROLETA.premios.length;
 const PASSO = 360 / N;
@@ -78,9 +85,24 @@ type Props = {
   /** Índice do gomo sorteado, já parado. -1 enquanto não há resultado. */
   vencedor: number;
   girando: boolean;
+  variante: VarianteRoleta;
+  /** Só na variante `miolo`: o miolo vira o botão. */
+  onGirar?: () => void;
+  podeGirar?: boolean;
 };
 
-export default function Roleta({ rodaRef, vencedor, girando }: Props) {
+export default function Roleta({
+  rodaRef,
+  vencedor,
+  girando,
+  variante,
+  onGirar,
+  podeGirar = false,
+}: Props) {
+  const { raioMiolo, pontaArte } = GEOMETRIA[variante];
+  /** Lado da arte (ela é quadrada). Da ponta até colar no aro interno. */
+  const ladoArte = R - 4 - pontaArte;
+  const miolloClicavel = variante === "miolo";
   // O pulso é a isca: ele chama enquanto a roda espera e comemora quando o
   // prêmio sai. Durante o giro ele sai de cena — animar `filter` a cada frame
   // sobre uma roda já girando custa repaint e engasga o giro, que é o que a
@@ -89,9 +111,34 @@ export default function Roleta({ rodaRef, vencedor, girando }: Props) {
 
   return (
     <div
-      className="roleta-caixa"
+      className={`roleta-caixa relative ${miolloClicavel ? "roleta-caixa--miolo" : ""}`}
       style={{ aspectRatio: `${LARGURA} / ${ALTURA}` }}
     >
+      {/* O botão vem ANTES do SVG de propósito: assim ele é `peer` do miolo e
+          o hover/foco dele acende o desenho, que sozinho não reage. Fica por
+          cima pelo z-index, não pela ordem. É ele que dá teclado, foco e nome
+          acessível — que um <g> de SVG não dá. */}
+      {miolloClicavel && (
+        <button
+          type="button"
+          onClick={onGirar}
+          disabled={!podeGirar || girando}
+          aria-label="Girar a roleta"
+          className="peer absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full
+                     bg-transparent focus-visible:outline-2 focus-visible:outline-offset-4
+                     focus-visible:outline-limao disabled:cursor-default"
+          style={{
+            left: "50%",
+            // O miolo não está no meio da caixa: a faixa do ponteiro empurrou
+            // a roda para baixo. Em % da altura, é onde CY caiu.
+            top: `${(CY / ALTURA) * 100}%`,
+            width: `${((raioMiolo * 2) / LARGURA) * 100}%`,
+            height: `${((raioMiolo * 2) / ALTURA) * 100}%`,
+            cursor: podeGirar && !girando ? "pointer" : "default",
+          }}
+        />
+      )}
+
       <svg
         viewBox={`0 0 ${LARGURA} ${ALTURA}`}
         className="w-full h-full overflow-visible"
@@ -183,12 +230,13 @@ export default function Roleta({ rodaRef, vencedor, girando }: Props) {
                 <g clipPath={`url(#gomo-${p.id})`}>
                   <image
                     href={p.arte}
-                    // Ponta no centro da roda: assim a cunha da arte nasce no
-                    // mesmo vértice do gomo e encaixa sem o clipe cortar nada.
-                    x={CX - LADO_ARTE / 2}
-                    y={CY - LADO_ARTE}
-                    width={LADO_ARTE}
-                    height={LADO_ARTE}
+                    // A cunha da arte é mais estreita que o gomo em qualquer
+                    // raio, então recuar a ponta nunca faz o clipe cortá-la:
+                    // o que muda é só quanto de escuro sobra ao redor.
+                    x={CX - ladoArte / 2}
+                    y={CY - pontaArte - ladoArte}
+                    width={ladoArte}
+                    height={ladoArte}
                     transform={`rotate(${i * PASSO} ${CX} ${CY})`}
                   />
                 </g>
@@ -279,19 +327,56 @@ export default function Roleta({ rodaRef, vencedor, girando }: Props) {
           <rect x="168" y="4" width="64" height="9" rx="4.5" fill="#c2f000" />
         </g>
 
-        {/* Eixo: arremata as cinco pontas que se encontram no centro. */}
-        <g pointerEvents="none">
-          <circle cx={CX} cy={CY} r={R_EIXO + 3} fill="#050704" />
+        {/* O miolo. Na variante `abaixo` é só a tampa que arremata as cinco
+            pontas; na `miolo` é o botão de girar, e aí ele precisa dizer isso
+            sozinho — daí o texto, o anel aceso e o pulso. */}
+        <g
+          className={
+            miolloClicavel && podeGirar && !girando
+              ? "pointer-events-none origin-center transition-transform duration-200 roleta-miolo peer-hover:scale-[1.04] peer-active:scale-95"
+              : "pointer-events-none"
+          }
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          <circle cx={CX} cy={CY} r={raioMiolo + 3} fill="#050704" />
           <circle
             cx={CX}
             cy={CY}
-            r={R_EIXO}
+            r={raioMiolo}
             fill="url(#miolo)"
             stroke="#c2f000"
             strokeWidth="2.5"
-            filter="url(#neon)"
+            strokeOpacity={girando ? 0.45 : 1}
+            filter={girando ? undefined : "url(#neon)"}
           />
-          <circle cx={CX} cy={CY} r={R_EIXO / 2.6} fill="#c2f000" opacity="0.85" />
+          {miolloClicavel ? (
+            <>
+              <text
+                x={CX}
+                y={CY - 4}
+                textAnchor="middle"
+                style={{ fontFamily: "var(--font-basement), sans-serif", fontWeight: 800 }}
+                fontSize="21"
+                fill="#ffffff"
+              >
+                {girando ? "GIRANDO" : "GIRAR"}
+              </text>
+              {!girando && (
+                <text
+                  x={CX}
+                  y={CY + 17}
+                  textAnchor="middle"
+                  style={{ fontFamily: "var(--font-basement), sans-serif", fontWeight: 800 }}
+                  fontSize="17"
+                  fill="#c2f000"
+                >
+                  ROLETA
+                </text>
+              )}
+            </>
+          ) : (
+            <circle cx={CX} cy={CY} r={raioMiolo / 2.6} fill="#c2f000" opacity="0.85" />
+          )}
         </g>
 
       </svg>
