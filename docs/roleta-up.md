@@ -12,31 +12,57 @@ de `/upsell` para `/up`.
 
 ## Como o giro é decidido
 
-O sorteio é **por peso**, não em partes iguais — a roleta tem 5 gomos do mesmo
-tamanho e chances diferentes. Os pesos estão em `ROLETA.premios`
-(`lib/constants.ts`), relativos à soma:
+**No servidor, não no navegador.** Toda a decisão vive em
+`app/api/roleta/route.ts`, que nunca vai para o bundle do cliente. A página só
+pergunta "o que saiu?" e anima a roda até o gomo da resposta.
 
-| Gomo | `peso` | Chance | Resgate |
-|---|---:|---:|---|
-| Kit CarboZé 20% off | 62 | 62% | Checkout direto |
-| Não foi dessa vez | 30 | 30% | Consolação: os mesmos 20% off |
-| Kit vestuário | 5 | 5% | WhatsApp, com código |
-| Vale-combustível R$ 200 | 2 | 2% | WhatsApp, com código |
-| Viagem para Interlagos | 1 | 1% | WhatsApp, com código |
+O percurso é um roteiro fixo, na constante `SEQUENCIA` da rota:
 
-Mexer nos pesos é mexer só nesta tabela — o desenho, o giro e o som se ajustam
-sozinhos. `peso: 0` mantém o gomo na roda e nunca o sorteia.
+| Giro | Resultado | O que a pessoa vê |
+|---|---|---|
+| 1º | `nada` | Popup "Você ganhou mais 1 chance", com botão para girar de novo |
+| 2º | `kit20` | Popup "20% OFF no Kit CarboZé", com o botão do checkout |
 
-### Duas coisas para decidir antes de publicar
+Depois do 2º giro não há mais giro. Os outros três gomos (viagem, vale e
+vestuário) estão no desenho da roda mas não estão na `SEQUENCIA`, então nunca
+saem.
 
-1. **A roleta é viciada por construção.** Isso é o padrão do mercado em roleta
-   de oferta, mas se a promoção for divulgada como sorteio, ou os pesos viram
-   iguais, ou as probabilidades vão anunciadas.
-2. **Os prêmios físicos criam obrigação de entrega.** No Brasil, distribuição
-   gratuita de prêmio por sorteio depende de autorização (Lei 5.768/71,
-   SPA/MF). É decisão de negócio/jurídico — o código não presume nenhuma.
-   Enquanto não estiver resolvido, `peso: 0` nos três prêmios físicos deixa a
-   roleta rodando só entre desconto e gomo vazio.
+O estado fica num **cookie httpOnly** (`cz_roleta`, 7 dias) com o número de
+giros, o último prêmio e o código. httpOnly porque é isso que impede o próprio
+navegador de reescrever a contagem por script. Limpar os cookies zera o
+percurso — e tudo bem: o pior caso é a pessoa refazer a mesma sequência e
+receber o mesmo desconto. Um POST a mais não avança nada; devolve o que já
+estava guardado, o que cobre clique duplo e replay da requisição.
+
+O que o bundle do navegador contém, e só: os cinco gomos, as artes e o texto de
+cada resultado. Sem pesos, sem ordem, sem `SEQUENCIA`. Conferido com grep nos
+chunks depois do build.
+
+### O que isso não esconde
+
+Mover a lógica para o servidor tira a regra do DevTools, mas não torna o
+comportamento indetectável: duas pessoas comparando o percurso veem a mesma
+sequência, e qualquer uma que gire duas vezes percebe que o 1º giro sempre
+perde. Concealment por servidor é sobre não publicar a regra, não sobre
+torná-la impossível de inferir.
+
+### O ponto que continua aberto
+
+Três prêmios estão desenhados na roda e não podem ser ganhos. A página diz
+"concorra a prêmios incríveis" e o gomo do Interlagos aparece girando junto dos
+outros. Isso é diferente de uma roleta com chances desiguais: é anunciar prêmio
+com probabilidade zero, o que no CDC (art. 37) é publicidade enganosa, e não
+tem correção possível no código — a correção é no desenho da roda.
+
+Duas saídas, as duas simples:
+
+1. **Tirar os três da roda.** A roleta fica com "20% OFF" e "não foi dessa
+   vez" repetidos nos cinco gomos (ou vira uma roda de 2–3 gomos). O mecanismo
+   de perde-e-ganha continua idêntico, e nada anunciado deixa de existir.
+2. **Torná-los reais**, como sorteio de verdade entre quem girou — o que exige
+   autorização (Lei 5.768/71, SPA/MF) e um sorteio que aconteça.
+
+Enquanto nenhuma das duas for feita, a exposição é essa e está registrada aqui.
 
 ## As artes dos gomos
 
@@ -68,19 +94,17 @@ verdade no celular. O miolo hoje é só o eixo que arremata as cinco pontas.
 
 ## Resgate
 
-- **Desconto (kit20 e a consolação do gomo vazio):** vai direto ao SKU "UpSell"
-  da Nuvemshop, com o desconto já no preço — os mesmos SKUs do `/upsell`, com
-  `utm_campaign=roleta` para separar as duas no admin. O card oferece o kit que
-  casa com o que a pessoa comprou (`?p=` ou o clique gravado na LP), e um link
-  para o outro kit com o mesmo desconto.
-- **Prêmios físicos:** a página gera um código (`CZ-XXXXX`) e abre o WhatsApp
-  com a mensagem pronta. **O código é o único registro do giro** — ele fica no
-  `localStorage` do cliente, não em banco nenhum. Se a operação precisar de
-  trilha de auditoria, é aqui que entra um `insertRow` (`lib/supabase.ts`) para
-  uma tabela de giros.
-
-Um giro por navegador, válido por 7 dias (`gravarGiroRoleta`). Quem volta
-reencontra o prêmio e o código; o resultado não se perde num F5.
+- **`kit20`:** vai direto ao SKU "UpSell" da Nuvemshop, com o desconto já no
+  preço — os mesmos SKUs do `/upsell`, com `utm_campaign=roleta` para separar
+  as duas no admin. O popup oferece o kit que casa com o que a pessoa comprou
+  (`?p=` ou o clique gravado na LP), e um link para o outro kit com o mesmo
+  desconto.
+- **`nada`:** não é o fim. O popup anuncia a chance extra e devolve o botão de
+  girar.
+- **Prêmios com `resgate: "whatsapp"`:** o popup mostra o código do giro e abre
+  o WhatsApp com a mensagem pronta. Hoje nenhum deles sai da `SEQUENCIA`, mas o
+  popup é um renderizador genérico — ele desenha o que o servidor mandar, seja
+  qual for.
 
 ## Som
 
@@ -102,8 +126,18 @@ borda ao mesmo tempo — o que se ouve bate com o que passa pelo ponteiro.
 
 ## Testar
 
-`?reset=1` zera o funil e recarrega limpo (`/up?reset=1`) — sem isso, cada
-rodada exigiria limpar o `localStorage` na mão.
+`?reset=1` zera o percurso e recarrega limpo (`/up?reset=1`): apaga o cookie do
+servidor (via `DELETE /api/roleta`) e o storage do funil. Sem isso, cada rodada
+exigiria limpar cookie e storage na mão.
+
+A API dá para exercitar direto, sem navegador:
+
+```bash
+curl -s -c j -b j       localhost:3000/api/roleta   # estado
+curl -s -c j -b j -XPOST localhost:3000/api/roleta  # 1º giro -> nada
+curl -s -c j -b j -XPOST localhost:3000/api/roleta  # 2º giro -> kit20
+curl -s -c j -b j -XPOST localhost:3000/api/roleta  # não avança
+```
 
 `?p=sache` ou `?p=pack` força o produto do card de desconto.
 

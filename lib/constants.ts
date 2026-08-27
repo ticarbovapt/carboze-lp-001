@@ -173,28 +173,16 @@ export const EXIT_OFFER = {
 // ─── Roleta de prêmios (/up) ─────────────────────────────────────────────────
 // Variante do upsell pós-compra: em vez do card de desconto direto (/upsell),
 // o cliente gira uma roleta. O prêmio que sustenta a página é o mesmo kit com
-// 20% off — os demais são reais, mas raros.
+// 20% off.
 //
-// LEIA ANTES DE MEXER NOS PESOS:
-//
-// 1. A roleta é sorteada por peso, não em partes iguais. `peso` é relativo à
-//    soma de todos os pesos: com a tabela abaixo (soma 100), `peso: 62` é 62%.
-//    Isso é o padrão do mercado para roleta de oferta, mas é uma roleta viciada
-//    — o desenho tem 5 gomos iguais e as chances não são iguais. Se a promoção
-//    for divulgada como sorteio, iguale os pesos ou informe as probabilidades.
-//
-// 2. Os prêmios físicos (viagem, vale-combustível, vestuário) criam obrigação
-//    real de entrega para quem tirar. No Brasil, distribuição gratuita de
-//    prêmios por sorteio depende de autorização (Lei 5.768/71, SPA/MF): isso é
-//    decisão de negócio/jurídico, não do código. Para desligar um prêmio sem
-//    tirá-lo da roda, ponha `peso: 0` — ele aparece no desenho e nunca sai.
-//
-// 3. `peso: 0` em TODOS os prêmios trava o sorteio. Ao menos um peso > 0.
+// O que este arquivo tem é só o DESENHO da roda: os gomos, as artes e o texto
+// de cada resultado. Qual gomo sai em cada giro é decidido em
+// app/api/roleta/route.ts, que roda no servidor — este módulo é importado pelo
+// cliente e vai inteiro para o bundle do navegador.
 //
 // Os SKUs são os mesmos "UpSell" do /upsell — o desconto é o mesmo, muda só a
 // embalagem da oferta. `utm_campaign=roleta` é o que separa as duas no admin.
 
-/** Como o cliente resgata o que tirou. */
 export type ResgateRoleta =
   /** Vai direto ao checkout do SKU com desconto já no preço. */
   | "checkout"
@@ -213,8 +201,6 @@ export type PremioRoleta = {
   arte: string;
   /** O que a arte diz, em texto. É a legenda que o leitor de tela anuncia. */
   linhas: readonly string[];
-  /** Peso do sorteio. Ver observação 1 acima. */
-  peso: number;
   /** Muda a cor do gomo e do card: `nada` é o único vermelho. */
   tom: "oferta" | "premio" | "nada";
   titulo: string;
@@ -256,7 +242,6 @@ export const ROLETA = {
       id: "kit20",
       arte: "/roleta/kit20.webp",
       linhas: ["KIT CARBOZÉ", "5 FRASCOS", "20% OFF"],
-      peso: 62,
       tom: "oferta",
       titulo: "20% OFF no Kit CarboZé",
       descricao:
@@ -268,7 +253,6 @@ export const ROLETA = {
       id: "vale200",
       arte: "/roleta/vale200.webp",
       linhas: ["VALE COMBUSTÍVEL", "R$200,00"],
-      peso: 2,
       tom: "premio",
       titulo: "Vale-combustível de R$ 200",
       descricao:
@@ -280,7 +264,6 @@ export const ROLETA = {
       id: "nada",
       arte: "/roleta/nada.webp",
       linhas: ["NÃO FOI", "DESSA VEZ"],
-      peso: 30,
       tom: "nada",
       titulo: "Não foi dessa vez",
       descricao:
@@ -292,7 +275,6 @@ export const ROLETA = {
       id: "vestuario",
       arte: "/roleta/vestuario.webp",
       linhas: ["KIT VESTUÁRIO", "CARBOZÉ", "BONÉ + CASACO"],
-      peso: 5,
       tom: "premio",
       titulo: "Kit vestuário CarboZé",
       descricao:
@@ -304,7 +286,6 @@ export const ROLETA = {
       id: "interlagos",
       arte: "/roleta/interlagos.webp",
       linhas: ["VIAGEM PARA", "INTERLAGOS"],
-      peso: 1,
       tom: "premio",
       titulo: "Viagem para Interlagos",
       descricao:
@@ -332,6 +313,9 @@ export const ROLETA = {
     },
   },
 } as const;
+
+/** Um dos kits que a roleta oferece — o de moto ou o de carro. */
+export type KitRoleta = (typeof ROLETA.checkout)[keyof typeof ROLETA.checkout];
 
 /** Link de resgate no WhatsApp, já com o código do giro na mensagem. */
 export function resgateWhatsApp(premio: string, codigo: string) {

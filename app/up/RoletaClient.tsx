@@ -2,15 +2,9 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Roleta from "./Roleta";
-import { ROLETA, resgateWhatsApp } from "@/lib/constants";
-import {
-  gravarGiroRoleta,
-  lerGiroRoleta,
-  lerProduto,
-  limparFunil,
-  marcarUpsellResolvido,
-  type ProdutoFunil,
-} from "@/lib/funnelState";
+import ResultadoPopup from "./ResultadoPopup";
+import { ROLETA } from "@/lib/constants";
+import { lerProduto, limparFunil, type ProdutoFunil } from "@/lib/funnelState";
 import { track } from "@/lib/metaPixel";
 import {
   definirMudo,
@@ -32,52 +26,22 @@ const PASSO_PINO = 360 / ROLETA.pinos;
 const SOBRA = 3.2;
 const ASSENTO_MS = 520;
 
+/**
+ * Resposta de /api/roleta. O cliente não decide prêmio nenhum: ele pergunta o
+ * que saiu e anima a roda até o gomo correspondente.
+ */
+type Resultado = {
+  premio: string | null;
+  codigo: string | null;
+  podeGirar: boolean;
+};
+
 function prefereMenosMovimento() {
   return (
     typeof window !== "undefined" &&
     typeof window.matchMedia === "function" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
-}
-
-/** Aleatório em [0,1). Usa o gerador criptográfico: o resultado vale prêmio. */
-function acaso() {
-  try {
-    const b = new Uint32Array(1);
-    crypto.getRandomValues(b);
-    return b[0] / 4294967296;
-  } catch {
-    return Math.random();
-  }
-}
-
-/**
- * Sorteia o gomo por peso. Devolve o índice em ROLETA.premios.
- * Com todos os pesos zerados não há sorteio possível — cai no gomo vazio, que
- * é o único desfecho que não promete nada a ninguém.
- */
-function sortear() {
-  const total = PREMIOS.reduce((s, p) => s + Math.max(0, p.peso), 0);
-  if (total <= 0) {
-    const vazio = PREMIOS.findIndex((p) => p.tom === "nada");
-    return vazio >= 0 ? vazio : 0;
-  }
-  let r = acaso() * total;
-  for (let i = 0; i < PREMIOS.length; i++) {
-    r -= Math.max(0, PREMIOS[i].peso);
-    if (r < 0) return i;
-  }
-  return PREMIOS.length - 1;
-}
-
-/** Código do giro. Sem O/0, I/1, S/5 e B/8 — vai ser ditado no WhatsApp. */
-function gerarCodigo() {
-  const alfabeto = "ACDEFGHJKLMNPQRTUVWXYZ2346789";
-  let s = "";
-  for (let i = 0; i < 5; i++) {
-    s += alfabeto[Math.floor(acaso() * alfabeto.length)];
-  }
-  return `CZ-${s}`;
 }
 
 /**
@@ -87,15 +51,18 @@ function gerarCodigo() {
  * Girar a roda em R leva esse centro para `i * PASSO + R`, e queremos isso em
  * 0 (mod 360) — daí o `- i * PASSO`. As voltas inteiras só dão espetáculo.
  *
- * O desvio não é enfeite: parar sempre no centro do gomo entrega o truque em
- * dois giros. Fica dentro do gomo com 8° de folga para não encostar na
- * divisória, onde o prêmio ficaria ambíguo aos olhos de quem assiste.
+ * O desvio existe para a roda não parar sempre no mesmo pixel: fica dentro do
+ * gomo, com 8° de folga para não encostar na divisória, onde o resultado
+ * ficaria ambíguo aos olhos de quem assiste.
  */
-function anguloAlvo(i: number) {
+function anguloAlvo(i: number, de: number) {
   const voltas =
-    ROLETA.voltasMin + Math.floor(acaso() * (ROLETA.voltasMax - ROLETA.voltasMin + 1));
-  const desvio = (acaso() - 0.5) * (PASSO - 16);
-  return 360 * voltas - i * PASSO + desvio;
+    ROLETA.voltasMin + Math.floor(Math.random() * (ROLETA.voltasMax - ROLETA.voltasMin + 1));
+  const desvio = (Math.random() - 0.5) * (PASSO - 16);
+  // A partir da volta inteira seguinte, para o giro nunca ser curto quando a
+  // roda já está parada num ângulo qualquer do giro anterior.
+  const base = Math.ceil(de / 360) * 360;
+  return base + 360 * voltas - i * PASSO + desvio;
 }
 
 type Fase = "carregando" | "pronto" | "girando" | "resultado";
@@ -104,11 +71,13 @@ export default function RoletaClient() {
   const [fase, setFase] = useState<Fase>("carregando");
   const [vencedor, setVencedor] = useState(-1);
   const [codigo, setCodigo] = useState("");
+  const [podeGirar, setPodeGirar] = useState(false);
+  const [popupAberto, setPopupAberto] = useState(false);
   const [produto, setProduto] = useState<ProdutoFunil | null>(null);
   const [semSom, setSemSom] = useState(false);
+  const [erro, setErro] = useState(false);
 
   const rodaRef = useRef<SVGGElement | null>(null);
-  const cartaoRef = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef(0);
   /** Ângulo atual da roda, em graus. Fora do state: muda 60x por segundo. */
   const anguloRef = useRef(0);
@@ -124,7 +93,7 @@ export default function RoletaClient() {
    * Necessário porque quem já girou tem o ângulo definido ainda em "carregando",
    * quando a roda nem está no DOM — `aplicar` escreve em `rodaRef.current` nulo
    * e o transform se perde. Sem isto, quem volta à página vê a roda parada no
-   * primeiro gomo enquanto o cartão anuncia outro prêmio.
+   * primeiro gomo enquanto o resultado anuncia outro.
    *
    * useLayoutEffect, não useEffect: com este a correção acontece antes da
    * pintura, então a roda nunca chega a aparecer na posição errada.
@@ -136,141 +105,175 @@ export default function RoletaClient() {
   }, [fase]);
 
   useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
+    let vivo = true;
 
-    // `?reset=1` zera o funil e recarrega limpo. Só para teste: sem isso,
-    // reconferir a roleta exigiria limpar o localStorage a cada rodada.
-    if (query.get("reset") === "1") {
-      limparFunil();
-      window.location.replace("/up");
-      return;
-    }
+    async function montar() {
+      const query = new URLSearchParams(window.location.search);
 
-    setSemSom(lerPreferenciaMudo());
-    // `?p=` deixa o snippet pós-compra informar o produto; senão vale o clique
-    // gravado na LP.
-    const daUrl = query.get("p");
-    setProduto(daUrl === "sache" || daUrl === "pack" ? daUrl : lerProduto());
-
-    // Um giro por navegador. Quem volta reencontra o que tirou e o código —
-    // o prêmio não pode sumir com um F5.
-    const anterior = lerGiroRoleta();
-    if (anterior) {
-      const i = PREMIOS.findIndex((p) => p.id === anterior.premio);
-      if (i >= 0) {
-        setVencedor(i);
-        setCodigo(anterior.codigo);
-        // Posiciona a roda parada no gomo certo, sem animação nenhuma.
-        aplicar(-i * PASSO);
-        setFase("resultado");
+      // `?reset=1` zera o percurso e recarrega limpo. Só para teste: sem isso,
+      // reconferir a roleta exigiria limpar cookie e storage a cada rodada.
+      if (query.get("reset") === "1") {
+        limparFunil();
+        try {
+          await fetch("/api/roleta", { method: "DELETE" });
+        } catch {
+          /* segue mesmo assim: o recarregamento já tira o ?reset da URL */
+        }
+        window.location.replace("/up");
         return;
+      }
+
+      setSemSom(lerPreferenciaMudo());
+      // `?p=` deixa o snippet pós-compra informar o produto; senão vale o
+      // clique gravado na LP.
+      const daUrl = query.get("p");
+      setProduto(daUrl === "sache" || daUrl === "pack" ? daUrl : lerProduto());
+
+      // Quem já girou reencontra onde parou — o resultado não pode sumir num F5.
+      try {
+        const r = await fetch("/api/roleta", { cache: "no-store" });
+        if (!vivo) return;
+        const estado = (await r.json()) as Resultado;
+        const i = estado.premio ? PREMIOS.findIndex((p) => p.id === estado.premio) : -1;
+        if (i >= 0) {
+          setVencedor(i);
+          setCodigo(estado.codigo ?? "");
+          aplicar(-i * PASSO);
+        }
+        setPodeGirar(estado.podeGirar);
+        // Sobrou giro: volta para o botão, com a roda parada onde estava.
+        // Acabaram: mostra o resultado, sem reabrir o popup a cada visita.
+        setFase(estado.podeGirar ? "pronto" : i >= 0 ? "resultado" : "pronto");
+      } catch {
+        if (!vivo) return;
+        // Sem resposta do servidor não há giro possível. Melhor dizer isso do
+        // que deixar um botão que não faz nada.
+        setErro(true);
+        setFase("pronto");
       }
     }
 
-    setFase("pronto");
+    void montar();
+    return () => {
+      vivo = false;
+    };
   }, [aplicar]);
 
   useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
-  const girar = useCallback(() => {
-    if (fase !== "pronto") return;
+  const animarAte = useCallback(
+    (i: number, aoParar: () => void) => {
+      const reduzido = prefereMenosMovimento();
+      const inicio = anguloRef.current;
+      const duracao = reduzido ? 900 : ROLETA.duracaoGiroMs;
+      const alvo = reduzido
+        ? Math.ceil(inicio / 360) * 360 + 360 - i * PASSO
+        : anguloAlvo(i, inicio);
+      const alvoComSobra = alvo + SOBRA;
 
-    // Precisa acontecer DENTRO do clique: fora dele o navegador recusa criar
-    // o AudioContext e o giro sai mudo.
+      const t0 = performance.now();
+      let ultimoPino = Math.floor(inicio / PASSO_PINO);
+      let ultimoAngulo = inicio;
+      let ultimoTempo = t0;
+
+      function frame(agora: number) {
+        const t = Math.min(1, (agora - t0) / duracao);
+        let angulo: number;
+
+        if (t < 1) {
+          // easeOutQuart: sai rápido e passa a maior parte do tempo
+          // desacelerando, que é o perfil de uma roda pesada no atrito do eixo.
+          angulo = inicio + (alvoComSobra - inicio) * (1 - Math.pow(1 - t, 4));
+        } else {
+          // Assentamento: a roda passou do alvo e volta oscilando até parar.
+          // Em u=0 vale exatamente alvoComSobra, então emenda sem salto.
+          const u = Math.min(1, (agora - t0 - duracao) / ASSENTO_MS);
+          angulo = alvo + SOBRA * Math.cos(2 * Math.PI * u) * (1 - u);
+        }
+
+        // Um clique por pino que cruza o ponteiro, com o volume caindo junto da
+        // velocidade. É daqui que vem a sensação de peso: no fim os cliques
+        // ficam espaçados e fracos sozinhos, sem curva de volume à parte.
+        const dt = Math.max(1, agora - ultimoTempo);
+        const vel = Math.abs(angulo - ultimoAngulo) / (dt / 1000);
+        const pino = Math.floor(angulo / PASSO_PINO);
+        if (pino !== ultimoPino) {
+          tique(Math.sqrt(Math.min(1, vel / 1100)));
+          ultimoPino = pino;
+        }
+        ultimoAngulo = angulo;
+        ultimoTempo = agora;
+
+        aplicar(angulo);
+
+        if (agora - t0 < duracao + ASSENTO_MS) {
+          rafRef.current = requestAnimationFrame(frame);
+          return;
+        }
+        aplicar(alvo);
+        aoParar();
+      }
+
+      rafRef.current = requestAnimationFrame(frame);
+    },
+    [aplicar],
+  );
+
+  const girar = useCallback(async () => {
+    if (fase !== "pronto" || erro) return;
+
+    // Precisa acontecer DENTRO do gesto: fora dele o navegador recusa criar o
+    // AudioContext e o giro sai mudo.
     iniciarAudio();
     tocarGiro();
+    setFase("girando");
 
-    const i = sortear();
-    const cod = gerarCodigo();
+    let estado: Resultado;
+    try {
+      const r = await fetch("/api/roleta", { method: "POST", cache: "no-store" });
+      estado = (await r.json()) as Resultado;
+    } catch {
+      setErro(true);
+      setFase("pronto");
+      return;
+    }
+
+    const i = estado.premio ? PREMIOS.findIndex((p) => p.id === estado.premio) : -1;
+    if (i < 0) {
+      setErro(true);
+      setFase("pronto");
+      return;
+    }
     const premio = PREMIOS[i];
 
-    setFase("girando");
     track("ViewContent", { content_name: `roleta:${premio.id}`, content_type: "product" });
 
-    // Quem pediu menos movimento não fica sem resultado — fica sem o giro
-    // longo. Uma volta rápida e a roda para no mesmo gomo.
-    const reduzido = prefereMenosMovimento();
-    const duracao = reduzido ? 900 : ROLETA.duracaoGiroMs;
-    const alvo = reduzido ? 360 - i * PASSO : anguloAlvo(i);
-    const alvoComSobra = alvo + SOBRA;
-    const inicio = anguloRef.current;
-
-    const t0 = performance.now();
-    let ultimoPino = Math.floor(inicio / PASSO_PINO);
-    let ultimoAngulo = inicio;
-    let ultimoTempo = t0;
-
-    function frame(agora: number) {
-      const t = Math.min(1, (agora - t0) / duracao);
-      let angulo: number;
-
-      if (t < 1) {
-        // easeOutQuart: sai rápido e passa a maior parte do tempo desacelerando,
-        // que é o perfil de uma roda pesada no atrito do eixo.
-        angulo = inicio + (alvoComSobra - inicio) * (1 - Math.pow(1 - t, 4));
-      } else {
-        // Assentamento: a roda passou do alvo e volta oscilando até parar.
-        // Em u=0 vale exatamente alvoComSobra, então emenda sem salto.
-        const u = Math.min(1, (agora - t0 - duracao) / ASSENTO_MS);
-        angulo = alvo + SOBRA * Math.cos(2 * Math.PI * u) * (1 - u);
-      }
-
-      // Um clique por pino que cruza o ponteiro, com o volume caindo junto da
-      // velocidade. É daqui que vem a sensação de peso: no fim os cliques
-      // ficam espaçados e fracos sozinhos, sem nenhuma curva de volume à parte.
-      const dt = Math.max(1, agora - ultimoTempo);
-      const vel = Math.abs(angulo - ultimoAngulo) / (dt / 1000);
-      const pino = Math.floor(angulo / PASSO_PINO);
-      if (pino !== ultimoPino) {
-        tique(Math.sqrt(Math.min(1, vel / 1100)));
-        ultimoPino = pino;
-      }
-      ultimoAngulo = angulo;
-      ultimoTempo = agora;
-
-      aplicar(angulo);
-
-      if (agora - t0 < duracao + ASSENTO_MS) {
-        rafRef.current = requestAnimationFrame(frame);
-        return;
-      }
-
-      aplicar(alvo);
+    animarAte(i, () => {
       setVencedor(i);
-      setCodigo(cod);
-      gravarGiroRoleta(premio.id, cod);
+      setCodigo(estado.codigo ?? "");
+      setPodeGirar(estado.podeGirar);
       setFase("resultado");
+      setPopupAberto(true);
 
       if (premio.tom === "nada") {
         tocarDerrota();
       } else {
         tocarVitoria();
-        festa(premio.tom === "oferta");
+        festa();
       }
-    }
+    });
+  }, [fase, erro, animarAte]);
 
-    rafRef.current = requestAnimationFrame(frame);
-  }, [fase, aplicar]);
+  const girarDeNovo = useCallback(() => {
+    setPopupAberto(false);
+    setFase("pronto");
+  }, []);
 
   const alternarSom = useCallback(() => {
     iniciarAudio();
     definirMudo(!estaMudo());
     setSemSom(estaMudo());
   }, []);
-
-  // Em tela de celular o cartão nasce abaixo da dobra: sem isto o giro termina
-  // e a pessoa fica olhando a roda parada, sem saber que o resultado saiu.
-  // Só depois de um respiro, para o confete ser visto antes da rolagem.
-  useEffect(() => {
-    if (fase !== "resultado" || !cartaoRef.current) return;
-    const t = setTimeout(() => {
-      cartaoRef.current?.scrollIntoView({
-        behavior: prefereMenosMovimento() ? "auto" : "smooth",
-        block: "center",
-      });
-    }, 900);
-    return () => clearTimeout(t);
-  }, [fase]);
 
   const premio = vencedor >= 0 ? PREMIOS[vencedor] : null;
   // O gomo desenhado é o kit de 5 frascos, mas os 20% valem para os dois
@@ -279,10 +282,12 @@ export default function RoletaClient() {
   const outroKit = produto === "sache" ? ROLETA.checkout.carro : ROLETA.checkout.moto;
 
   if (fase === "carregando") {
-    // Não renderiza a roda antes de saber se esta pessoa já girou: o gomo
+    // Não renderiza a roda antes de saber onde esta pessoa parou: o gomo
     // vencedor apareceria por um frame no lugar errado.
-    return <div className="w-full max-w-[min(88vw,440px)] aspect-square" aria-hidden="true" />;
+    return <div className="roleta-caixa" style={{ aspectRatio: "400 / 452" }} aria-hidden="true" />;
   }
+
+  const mostrarBotao = fase !== "resultado" || podeGirar;
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -292,22 +297,36 @@ export default function RoletaClient() {
         girando={fase === "girando"}
       />
 
-      {/* O CTA saiu do miolo da roda: lá ele cobria o "20% OFF" da arte e dava
-          uma área de toque pequena. Aqui é um botão de verdade, largo, no
-          alcance do polegar. Some quando o prêmio sai — o cartão assume. */}
-      {fase !== "resultado" && (
+      {/* O CTA fica fora da roda: no miolo ele cobria o "20% OFF" da arte e
+          dava uma área de toque pequena. Aqui é um botão de verdade, largo, no
+          alcance do polegar. */}
+      {mostrarBotao && (
         <button
           type="button"
           onClick={girar}
-          disabled={fase !== "pronto"}
+          disabled={fase !== "pronto" || erro}
           className="cta-shine roleta-cta mt-6 w-full max-w-sm rounded-2xl bg-limao px-6 py-5
                      font-[family-name:var(--font-basement)] font-extrabold uppercase
                      text-verde-escuro text-xl tracking-wide
                      hover:brightness-110 active:scale-[0.98] transition-all
                      disabled:opacity-60 disabled:cursor-default disabled:animate-none"
         >
-          {fase === "girando" ? "Girando…" : "Girar roleta"}
+          {fase === "girando"
+            ? "Girando…"
+            : vencedor >= 0
+              ? "Girar de novo"
+              : "Girar roleta"}
         </button>
+      )}
+
+      {erro && (
+        <p
+          role="alert"
+          className="mt-3 font-[family-name:var(--font-archivo)] text-red-300 text-xs text-center max-w-xs"
+        >
+          Não conseguimos falar com o servidor agora. Recarregue a página para
+          girar — o seu pedido segue garantido.
+        </p>
       )}
 
       <button
@@ -322,146 +341,42 @@ export default function RoletaClient() {
         {semSom ? "Som desligado" : "Som ligado"}
       </button>
 
-      {fase === "pronto" && (
-        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/45 text-xs text-center">
-          Um giro por cliente.
-        </p>
+      {/* Depois de fechar o popup a oferta continua ao alcance: um toque para
+          reabrir, em vez de obrigar a pessoa a girar de novo para reencontrar
+          o que ganhou. */}
+      {fase === "resultado" && !popupAberto && premio && !podeGirar && (
+        <button
+          type="button"
+          onClick={() => setPopupAberto(true)}
+          className="mt-3 font-[family-name:var(--font-archivo)] text-limao text-sm
+                     underline underline-offset-4 hover:text-white transition-colors"
+        >
+          Ver o que você ganhou
+        </button>
       )}
 
-      {/* Resultado. `aria-live` porque o desfecho de uma animação não chega a
-          quem usa leitor de tela — o gomo aceso não é anunciado. */}
-      <div aria-live="polite" className="w-full">
-        {fase === "resultado" && premio && (
-          <div
-            ref={cartaoRef}
-            className="popup-in mt-8 w-full max-w-md mx-auto rounded-2xl border border-white/10 bg-black/50 p-6 backdrop-blur-sm"
-          >
-            <p
-              className={`font-[family-name:var(--font-basement)] font-bold uppercase text-[11px] tracking-[0.18em] ${
-                premio.tom === "nada" ? "text-red-400" : "text-limao"
-              }`}
-            >
-              {premio.tom === "nada" ? "A roda parou" : "Você ganhou"}
-            </p>
-
-            <h2 className="mt-2 font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl leading-tight">
-              {premio.titulo}
-            </h2>
-
-            <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
-              {premio.descricao}
-            </p>
-
-            {premio.resgate === "whatsapp" ? (
-              <>
-                <div className="mt-5 rounded-xl border border-limao/25 bg-limao/[0.06] px-4 py-3 text-center">
-                  <p className="font-[family-name:var(--font-archivo)] text-white/45 text-[11px] uppercase tracking-wider">
-                    Código do seu giro
-                  </p>
-                  <p className="mt-1 font-[family-name:var(--font-basement)] font-extrabold text-limao text-2xl tracking-[0.12em] tabular-nums">
-                    {codigo}
-                  </p>
-                </div>
-
-                <a
-                  href={resgateWhatsApp(premio.titulo, codigo)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => track("Lead", { content_name: `roleta:${premio.id}` })}
-                  className="cta-shine mt-4 block w-full rounded-2xl bg-limao px-5 py-4 text-center
-                             font-[family-name:var(--font-basement)] font-extrabold uppercase
-                             text-verde-escuro text-base hover:brightness-110 active:scale-[0.98] transition-all"
-                >
-                  {premio.ctaLabel}
-                </a>
-
-                <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/35 text-xs text-center">
-                  Guarde o código: ele é o comprovante do seu giro.
-                </p>
-              </>
-            ) : (
-              <>
-                <a
-                  href={kit.href}
-                  onClick={marcarUpsellResolvido}
-                  className="cta-shine group mt-5 flex w-full items-center justify-between gap-3
-                             rounded-2xl bg-limao px-5 py-4 text-verde-escuro
-                             hover:brightness-110 active:scale-[0.98] transition-all"
-                >
-                  <span className="text-left">
-                    <span className="block font-[family-name:var(--font-basement)] font-extrabold uppercase text-base leading-tight">
-                      {kit.titulo}
-                    </span>
-                    <span className="block font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-xs mt-0.5">
-                      {kit.subtitulo}
-                    </span>
-                    <span className="mt-1.5 flex items-baseline gap-2">
-                      <span className="font-[family-name:var(--font-archivo)] text-verde-escuro/50 text-sm line-through">
-                        {kit.de}
-                      </span>
-                      <span className="font-[family-name:var(--font-basement)] font-extrabold text-2xl leading-none">
-                        {kit.por}
-                      </span>
-                    </span>
-                  </span>
-                  <svg
-                    viewBox="0 0 16 16"
-                    className="w-6 h-6 shrink-0 group-hover:translate-x-0.5 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M3 8h10M9 4l4 4-4 4" />
-                  </svg>
-                </a>
-
-                {/* O desconto vale para os dois kits; quem tem os dois veículos
-                    não precisa voltar à loja para achar o outro. */}
-                <a
-                  href={outroKit.href}
-                  onClick={marcarUpsellResolvido}
-                  className="mt-3 block text-center font-[family-name:var(--font-archivo)]
-                             text-white/45 text-xs underline underline-offset-4 hover:text-white/75 transition-colors"
-                >
-                  Quero o {outroKit.titulo.toLowerCase()} com o mesmo desconto
-                </a>
-              </>
-            )}
-
-            <a
-              href={ROLETA.declineHref}
-              onClick={marcarUpsellResolvido}
-              className="mt-6 block text-center font-[family-name:var(--font-archivo)]
-                         text-white/30 text-xs underline underline-offset-4 hover:text-white/60 transition-colors"
-            >
-              {premio.resgate === "whatsapp"
-                ? "Resgatar depois, ir para o meu pedido"
-                : "Não quero agora, ir para o meu pedido"}
-            </a>
-          </div>
-        )}
-      </div>
+      {popupAberto && premio && (
+        <ResultadoPopup
+          premio={premio}
+          codigo={codigo}
+          chanceExtra={podeGirar}
+          kit={kit}
+          outroKit={outroKit}
+          onFechar={() => setPopupAberto(false)}
+          onGirarDeNovo={girarDeNovo}
+        />
+      )}
     </div>
   );
 }
 
 /** Confete. Só chega junto do som de vitória, nunca da derrota. */
-function festa(discreto: boolean) {
+function festa() {
   if (prefereMenosMovimento()) return;
   import("canvas-confetti")
     .then(({ default: confetti }) => {
       const colors = ["#a9da00", "#83ce0d", "#ffffff"];
-      confetti({
-        particleCount: discreto ? 90 : 160,
-        spread: discreto ? 85 : 110,
-        origin: { y: 0.35 },
-        colors,
-        zIndex: 9999,
-      });
-      if (discreto) return;
+      confetti({ particleCount: 150, spread: 105, origin: { y: 0.35 }, colors, zIndex: 9999 });
       setTimeout(() => {
         confetti({ particleCount: 70, angle: 60, spread: 75, origin: { x: 0, y: 0.6 }, colors, zIndex: 9999 });
         confetti({ particleCount: 70, angle: 120, spread: 75, origin: { x: 1, y: 0.6 }, colors, zIndex: 9999 });
