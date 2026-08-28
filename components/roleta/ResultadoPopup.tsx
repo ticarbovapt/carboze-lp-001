@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import BotaoPayt from "./BotaoPayt";
 import { ROLETA, resgateWhatsApp, type KitRoleta, type PremioRoleta } from "@/lib/constants";
 import { marcarUpsellResolvido } from "@/lib/funnelState";
 import { track } from "@/lib/metaPixel";
@@ -26,6 +27,12 @@ type Props = {
   /** Kit que casa com o que a pessoa comprou, e o outro. */
   kit: KitRoleta;
   outroKit: KitRoleta;
+  /**
+   * Fechado, ele se ESCONDE — não desmonta. O botão da Payt é ligado ao nó do
+   * <a> pelo script deles; recriar o nó a cada abertura o deixaria sem
+   * vínculo, e o cliente clicaria num botão morto. Ver BotaoPayt.
+   */
+  aberto: boolean;
   onFechar: () => void;
   /** Só existe quando há giro sobrando. */
   onGirarDeNovo?: () => void;
@@ -37,6 +44,7 @@ export default function ResultadoPopup({
   chanceExtra,
   kit,
   outroKit,
+  aberto,
   onFechar,
   onGirarDeNovo,
 }: Props) {
@@ -46,31 +54,36 @@ export default function ResultadoPopup({
   // Foco no botão principal e Esc para fechar. Sem isso o popup é uma imagem:
   // quem navega por teclado ficaria preso atrás dele.
   useEffect(() => {
+    if (!aberto) return;
     primeiroRef.current?.focus();
     function aoTeclar(e: KeyboardEvent) {
       if (e.key === "Escape") onFechar();
     }
     document.addEventListener("keydown", aoTeclar);
     return () => document.removeEventListener("keydown", aoTeclar);
-  }, [onFechar]);
+  }, [aberto, onFechar]);
 
   // Trava a rolagem do fundo enquanto o popup está aberto — senão o toque
   // "atravessa" o overlay e a página corre por baixo dele no celular.
   useEffect(() => {
+    if (!aberto) return;
     const antes = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = antes;
     };
-  }, []);
+  }, [aberto]);
 
   const cor = premio.tom === "nada" ? "text-red-400" : "text-limao";
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+      className={`fixed inset-0 z-50 flex items-end justify-center sm:items-center ${
+        aberto ? "" : "invisible pointer-events-none"
+      }`}
       role="dialog"
       aria-modal="true"
+      aria-hidden={!aberto}
       aria-labelledby="roleta-resultado-titulo"
     >
       {/* Fundo. Clicar fora fecha — é o gesto que todo mundo tenta primeiro. */}
@@ -157,11 +170,11 @@ export default function ResultadoPopup({
           </>
         ) : (
           <>
-            {/* O produto, o preço e a seta: daqui a pessoa vai direto ao
-                checkout com o desconto já no preço. */}
-            <a
-              ref={primeiroRef as React.RefObject<HTMLAnchorElement>}
-              href={kit.href}
+            {/* Compra em 1 clique da Payt: o cartão do pedido que a pessoa
+                acabou de fazer é reusado, então daqui não há checkout para
+                preencher — clicou, comprou. O preço mostrado tem de bater com
+                o do produto no painel da Payt; ver PAYT_ONECLICK. */}
+            <BotaoPayt
               onClick={marcarUpsellResolvido}
               className="cta-shine group mt-5 flex w-full items-center justify-between gap-3
                          rounded-2xl bg-limao px-5 py-4 text-left text-verde-escuro
@@ -195,7 +208,7 @@ export default function ResultadoPopup({
               >
                 <path d="M3 8h10M9 4l4 4-4 4" />
               </svg>
-            </a>
+            </BotaoPayt>
 
             {/* O desconto vale para os dois kits; quem tem moto e carro não
                 precisa voltar à loja para achar o outro. */}

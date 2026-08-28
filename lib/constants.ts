@@ -349,6 +349,24 @@ export const ROLETA = {
   },
 } as const;
 
+/**
+ * Compra em 1 clique da Payt, no botão do prêmio.
+ *
+ * A Payt só consegue cobrar em 1 clique porque reusa o cartão do pedido que a
+ * pessoa ACABOU de fazer — é por isso que isto só existe aqui, no pós-compra,
+ * e não numa LP qualquer. Quem chega em /up sem ter comprado pela Payt não tem
+ * cartão guardado, e o botão não conclui.
+ *
+ * `objeto` é o código do produto no painel da Payt. O preço cobrado é o que
+ * ESTIVER LÁ — nada aqui manda no valor. Ao mudar o preço do produto na Payt,
+ * mude junto `ROLETA.checkout.*.por`, senão o cartão mostra um valor e a tela
+ * mostrou outro.
+ */
+export const PAYT_ONECLICK = {
+  objeto: "RD33AW-LJA2G7",
+  script: "https://checkout.payt.com.br/multiple-oneclickbuyscript/LYK2ZA.js",
+} as const;
+
 /** Um dos kits que a roleta oferece — o de moto ou o de carro. */
 export type KitRoleta = (typeof ROLETA.checkout)[keyof typeof ROLETA.checkout];
 

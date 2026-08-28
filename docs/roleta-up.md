@@ -119,17 +119,50 @@ qualidade 82. As cinco atuais ficaram em ~60–75 KB cada.
 
 ## Resgate
 
-- **`kit20`:** vai direto ao SKU "UpSell" da Nuvemshop, com o desconto já no
-  preço — os mesmos SKUs do `/upsell`, com `utm_campaign=roleta` para separar
-  as duas no admin. O popup oferece o kit que casa com o que a pessoa comprou
-  (`?p=` ou o clique gravado na LP), e um link para o outro kit com o mesmo
-  desconto.
+- **`kit20`:** o botão principal é **compra em 1 clique da Payt**
+  (`PAYT_ONECLICK` em `lib/constants.ts`). Não há checkout para preencher: a
+  Payt reusa o cartão do pedido que a pessoa acabou de fazer. O link secundário
+  ("quero o outro kit") continua indo ao SKU "UpSell" da Nuvemshop, com
+  `utm_campaign=roleta`.
 - **`nada`:** não é o fim. O popup anuncia a chance extra e devolve o botão de
   girar.
 - **Prêmios com `resgate: "whatsapp"`:** o popup mostra o código do giro e abre
   o WhatsApp com a mensagem pronta. Hoje nenhum deles sai da `SEQUENCIA`, mas o
   popup é um renderizador genérico — ele desenha o que o servidor mandar, seja
   qual for.
+
+## O botão da Payt
+
+O script da Payt varre o DOM atrás de elementos com `payt_action` e liga o
+clique neles. Isso impõe duas coisas, e as duas estão no código por causa
+disto:
+
+1. **O script carrega depois do botão existir.** Ele é montado dentro de
+   `BotaoPayt`, junto do `<a>`, e não no layout. No layout ele varreria um DOM
+   em que o botão ainda não existe — o popup do prêmio só aparece uns 20s
+   depois, no fim do segundo giro. Conferido no navegador: o script é pedido
+   uma vez só, depois do prêmio final, e quando roda já enxerga o botão.
+2. **O botão não é destruído e recriado.** Por isso o popup **se esconde** ao
+   fechar em vez de desmontar (`aberto` em `ResultadoPopup`), e o `key` pelo id
+   do prêmio preserva a animação de entrada sem remontar no abre/fecha. Se a
+   Payt guardou referência ao nó, um `<a>` novo nasceria sem vínculo e o
+   cliente clicaria num botão morto.
+
+`payt_action` e `payt_element` não são atributos de HTML; o React os repassa,
+mas o TypeScript precisa da declaração que está no topo de `BotaoPayt.tsx`.
+
+### O que não deu para testar aqui
+
+`checkout.payt.com.br` não é alcançável do ambiente de build, então a compra em
+si nunca rodou. O que foi verificado é a montagem: atributos no DOM, ordem de
+carga do script e sobrevivência do nó ao fechar e reabrir o popup. **A compra
+de ponta a ponta precisa de um teste com pedido real.**
+
+### O preço não sai daqui
+
+Quem cobra é a Payt, pelo produto `RD33AW-LJA2G7`. O `R$ 119,60` que aparece na
+tela vem de `ROLETA.checkout.carro.por`. Mudar um sem o outro faz a tela
+prometer um valor e o cartão cobrar outro.
 
 ## Som
 

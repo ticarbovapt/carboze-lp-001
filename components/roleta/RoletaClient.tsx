@@ -413,15 +413,26 @@ export default function RoletaClient() {
         No <body> ele não tem ancestral com contexto próprio, então nenhum
         rearranjo de layout futuro consegue enterrá-lo de novo.
       */}
-      {popupAberto &&
-        premio &&
+      {/*
+        Montado assim que HÁ prêmio, e não quando o popup abre: fechar apenas
+        o esconde. O botão da Payt é ligado ao nó do <a> pelo script deles, e
+        recriá-lo a cada abertura o deixaria sem vínculo — o cliente clicaria
+        num botão morto na hora de comprar.
+
+        A `key` pelo id do prêmio é o que preserva a entrada animada: trocar
+        de prêmio remonta (o resultado final sobe da base como deve), mas
+        abrir e fechar o mesmo prêmio não.
+      */}
+      {premio &&
         createPortal(
           <ResultadoPopup
+            key={premio.id}
             premio={premio}
             codigo={codigo}
             chanceExtra={podeGirar}
             kit={kit}
             outroKit={outroKit}
+            aberto={popupAberto}
             onFechar={() => setPopupAberto(false)}
             onGirarDeNovo={girarDeNovo}
           />,
