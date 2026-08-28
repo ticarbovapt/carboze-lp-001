@@ -175,7 +175,31 @@ export default function ResultadoPopup({
                 preencher — clicou, comprou. O preço mostrado tem de bater com
                 o do produto no painel da Payt; ver PAYT_ONECLICK. */}
             <BotaoPayt
-              onClick={marcarUpsellResolvido}
+              onClick={() => {
+                marcarUpsellResolvido();
+                /*
+                 * Clicou em comprar: a partir daqui a tela é da Payt, e o
+                 * nosso popup sai da frente.
+                 *
+                 * Não é cosmético. O checkout deles é um overlay que a gente
+                 * não controla — se ele não declarar z-index, o nosso fundo
+                 * escuro (z-50) fica POR CIMA e o botão de confirmar a compra
+                 * vira inclicável, sem nenhum sinal de erro. Testado: com o
+                 * modal em z-index automático, o clique não chega nele.
+                 *
+                 * Fechar também solta a trava de rolagem do body, que um
+                 * formulário de pagamento no celular quase sempre precisa.
+                 *
+                 * Sair pelo `onFechar` normal, e não por um estado próprio, é
+                 * o que mantém o caminho de volta: se a Payt não abrir nada, a
+                 * pessoa cai na roda com o "ver o que você ganhou" à mão.
+                 *
+                 * O atraso deixa o handler da Payt rodar inteiro antes de o
+                 * container virar `invisible`. O <a> continua montado — quem
+                 * some é só a camada por cima.
+                 */
+                setTimeout(onFechar, 250);
+              }}
               className="cta-shine group mt-5 flex w-full items-center justify-between gap-3
                          rounded-2xl bg-limao px-5 py-4 text-left text-verde-escuro
                          hover:brightness-110 active:scale-[0.98] transition-all"

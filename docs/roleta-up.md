@@ -151,6 +151,32 @@ disto:
 `payt_action` e `payt_element` não são atributos de HTML; o React os repassa,
 mas o TypeScript precisa da declaração que está no topo de `BotaoPayt.tsx`.
 
+### O popup sai da frente no clique
+
+Clicou em comprar, o popup se fecha (com 250ms de atraso, para o handler da
+Payt rodar inteiro antes). Não é cosmético:
+
+- o checkout da Payt é um overlay que a gente não controla. Se ele não
+  declarasse z-index, o nosso fundo escuro (z-50) ficaria por cima e o botão de
+  confirmar viraria inclicável, **sem nenhum sinal de erro**;
+- fechar solta a trava de rolagem do `body`, que um formulário de pagamento no
+  celular quase sempre precisa.
+
+Sai pelo `onFechar` normal, e não por um estado próprio, porque é isso que
+mantém o caminho de volta: se a Payt não abrir nada, a pessoa cai na roda com o
+"ver o que você ganhou" à mão. E o `<a>` continua montado — some só a camada.
+
+Testado com um dublê do script deles, medindo se o botão de confirmar recebe o
+clique:
+
+| z-index do modal da Payt | resultado |
+|---|---|
+| 9999 / 1000 / 100 | confirmar clicável |
+| nenhum (`auto`) | coberto pela roleta (bloco `z-10` da página) |
+
+O caso sem z-index quebraria em qualquer site com conteúdo posicionado, então
+nenhum checkout de produção sai assim. Qualquer valor a partir de 11 funciona.
+
 ### O que não deu para testar aqui
 
 `checkout.payt.com.br` não é alcançável do ambiente de build, então a compra em
