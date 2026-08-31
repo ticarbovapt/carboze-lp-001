@@ -60,12 +60,38 @@ Depois do 2º giro não há mais giro. Os outros três gomos (viagem, vale e
 vestuário) estão no desenho da roda mas não estão na `SEQUENCIA`, então nunca
 saem.
 
-O estado fica num **cookie httpOnly** (`cz_roleta`, 7 dias) com o número de
-giros, o último prêmio e o código. httpOnly porque é isso que impede o próprio
-navegador de reescrever a contagem por script. Limpar os cookies zera o
-percurso — e tudo bem: o pior caso é a pessoa refazer a mesma sequência e
-receber o mesmo desconto. Um POST a mais não avança nada; devolve o que já
-estava guardado, o que cobre clique duplo e replay da requisição.
+### Onde mora a contagem de giros
+
+Em **dois lugares**, e nenhum deles basta sozinho.
+
+A página roda **dentro de um iframe** na página de upsell da Payt
+(`checkout.payt.com.br/upsell/...`). Num iframe de outro site o cookie é de
+terceiro: com `SameSite=Lax` o navegador **nem chega a guardá-lo**. Foi o que
+aconteceu em produção — o servidor via "zero giros" a cada clique, respondia
+`nada` toda vez, e a pessoa ganhava chance extra eternamente sem nunca chegar
+aos 20%. Só com a contagem do cliente, por outro lado, um F5 zeraria tudo.
+
+Então:
+
+| | onde | serve para |
+|---|---|---|
+| cookie `cz_roleta` | servidor, httpOnly, `None; Secure; Partitioned`, 7 dias | impedir o cliente de VOLTAR no percurso |
+| `cz-roleta-percurso` | `localStorage` do navegador | fazer o percurso ANDAR onde o cookie não sobrevive |
+
+O servidor usa `max(cookie, cliente)`. O cliente manda a contagem no corpo do
+POST e em `?giros=` no GET (GET não tem corpo).
+
+**O que continua exclusivo do servidor é o que importa:** qual prêmio sai em
+cada giro. O cliente sabe em que giro está, nunca o que aquele giro vale.
+Adiantar a contagem na mão não revela nem escolhe prêmio — no máximo pula o
+"não foi dessa vez" e cai no desconto, que é o desfecho de qualquer jeito.
+
+Um POST a mais não avança nada; devolve o que já estava guardado, o que cobre
+clique duplo e replay da requisição.
+
+Conferido no navegador, com a página dentro de um iframe de outro host: giro 1
+dá chance extra, giro 2 dá os 20% — inclusive com **todos os cookies
+bloqueados**, simulando o Safari.
 
 O que o bundle do navegador contém, e só: os cinco gomos, as artes e o texto de
 cada resultado. Sem pesos, sem ordem, sem `SEQUENCIA`. Conferido com grep nos

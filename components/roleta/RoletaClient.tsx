@@ -31,7 +31,47 @@ type Resultado = {
   premio: string | null;
   codigo: string | null;
   podeGirar: boolean;
+  giros: number;
 };
+
+/**
+ * Percurso guardado no navegador.
+ *
+ * Existe porque a página roda DENTRO DE UM IFRAME na página da Payt, e ali o
+ * cookie do servidor é de terceiro — o navegador não o guarda. Sem esta
+ * contagem, o servidor via "zero giros" a cada clique e a pessoa ganhava
+ * chance extra para sempre, sem nunca chegar aos 20%.
+ *
+ * Guarda só EM QUE GIRO a pessoa está, e o resultado que já recebeu. O que
+ * cada giro vale continua sendo decisão do servidor: adiantar este número não
+ * revela nem escolhe prêmio nenhum.
+ */
+const K_PERCURSO = "cz-roleta-percurso";
+
+type Percurso = { giros: number; premio: string | null; codigo: string | null };
+
+function lerPercurso(): Percurso {
+  try {
+    const cru = localStorage.getItem(K_PERCURSO);
+    if (!cru) return { giros: 0, premio: null, codigo: null };
+    const p = JSON.parse(cru) as Percurso;
+    return {
+      giros: Number.isInteger(p?.giros) && p.giros > 0 ? p.giros : 0,
+      premio: typeof p?.premio === "string" ? p.premio : null,
+      codigo: typeof p?.codigo === "string" ? p.codigo : null,
+    };
+  } catch {
+    return { giros: 0, premio: null, codigo: null };
+  }
+}
+
+function gravarPercurso(p: Percurso) {
+  try {
+    localStorage.setItem(K_PERCURSO, JSON.stringify(p));
+  } catch {
+    /* storage bloqueado: o percurso vale só enquanto a aba estiver aberta */
+  }
+}
 
 function prefereMenosMovimento() {
   return (
@@ -90,6 +130,8 @@ export default function RoletaClient() {
    * mesmo tick do clique.
    */
   const girandoRef = useRef(false);
+  /** Giros já feitos. Em ref porque o POST do clique precisa do valor atual. */
+  const girosRef = useRef(0);
   /** Ângulo atual da roda, em graus. Fora do state: muda 60x por segundo. */
   const anguloRef = useRef(0);
 
@@ -126,6 +168,11 @@ export default function RoletaClient() {
       if (query.get("reset") === "1") {
         limparFunil();
         try {
+          localStorage.removeItem(K_PERCURSO);
+        } catch {
+          /* ignora */
+        }
+        try {
           await fetch("/api/roleta", { method: "DELETE" });
         } catch {
           /* segue mesmo assim: o recarregamento já tira o ?reset da URL */
@@ -144,14 +191,20 @@ export default function RoletaClient() {
       setProduto(daUrl === "sache" || daUrl === "pack" ? daUrl : lerProduto());
 
       // Quem já girou reencontra onde parou — o resultado não pode sumir num F5.
+      // O servidor responde pelo cookie, que no iframe da Payt não existe;
+      // então vale o percurso mais adiantado entre os dois.
+      const local = lerPercurso();
       try {
-        const r = await fetch("/api/roleta", { cache: "no-store" });
+        const r = await fetch(`/api/roleta?giros=${local.giros}`, { cache: "no-store" });
         if (!vivo) return;
         const estado = (await r.json()) as Resultado;
-        const i = estado.premio ? PREMIOS.findIndex((p) => p.id === estado.premio) : -1;
+        girosRef.current = Math.max(estado.giros ?? 0, local.giros);
+
+        const premioId = estado.premio ?? local.premio;
+        const i = premioId ? PREMIOS.findIndex((p) => p.id === premioId) : -1;
         if (i >= 0) {
           setVencedor(i);
-          setCodigo(estado.codigo ?? "");
+          setCodigo(estado.codigo ?? local.codigo ?? "");
           aplicar(-i * PASSO);
         }
         setPodeGirar(estado.podeGirar);
@@ -277,7 +330,12 @@ export default function RoletaClient() {
 
     let estado: Resultado;
     try {
-      const r = await fetch("/api/roleta", { method: "POST", cache: "no-store" });
+      const r = await fetch("/api/roleta", {
+        method: "POST",
+        cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ giros: girosRef.current }),
+      });
       estado = (await r.json()) as Resultado;
     } catch {
       girandoRef.current = false;
@@ -299,6 +357,12 @@ export default function RoletaClient() {
 
     animarAte(i, () => {
       girandoRef.current = false;
+      girosRef.current = estado.giros ?? girosRef.current + 1;
+      gravarPercurso({
+        giros: girosRef.current,
+        premio: premio.id,
+        codigo: estado.codigo ?? null,
+      });
       setVencedor(i);
       setCodigo(estado.codigo ?? "");
       setPodeGirar(estado.podeGirar);
