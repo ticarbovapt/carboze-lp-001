@@ -10,7 +10,6 @@ import DepoimentosJean from "@/components/lovable/influencer/jean/DepoimentosJea
 import CTAFinalInfluencer from "@/components/lovable/influencer/CTAFinalInfluencer";
 import FAQInstitucional from "@/components/lovable/institucional/FAQInstitucional";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
-import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 import ExitOfferGate from "@/components/lovable/ExitOfferGate";
 import ProblemHome from "@/components/lovable/home/ProblemHome";
 import BeneficiosHome from "@/components/lovable/home/BeneficiosHome";
@@ -50,6 +49,7 @@ export default function HomePage() {
 
       {/* Hero — gancho de economia + carrossel de produto */}
       <HeroInfluencer
+        hideLogo
         bgImage="/hero-bg.webp"
         mobileBgImage="/LP_SACHE_MOBILE.webp"
         carousel={heroCarousel}
@@ -103,14 +103,14 @@ export default function HomePage() {
         />
       </div>
 
+      {/* Sticky de compra — o frete grátis mora dentro dela (sem pill separado) */}
       <StickyPriceBar variant="ambos" motoHref={CHECKOUT_MOTO} carroHref={CHECKOUT_CARRO} />
 
-      {/* Pill de frete grátis — bottom-28 p/ não colidir com o sticky */}
-      <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
-
+      {/* Some via CSS enquanto a sticky está na tela */}
       <FloatingWhatsApp />
 
-      {/* Oferta de saída: 1º voltar (mobile), exit intent (desktop), 45s parado.
+      {/* Oferta de saída: 1º voltar (mobile), exit intent (desktop), 45s parado
+          (só desktop, e desliga quando a VSL começa).
           Manda direto ao SKU com desconto, sem passar pelo upsell: quem está
           saindo já levou uma interrupção — a segunda derruba a venda. */}
       <ExitOfferGate />

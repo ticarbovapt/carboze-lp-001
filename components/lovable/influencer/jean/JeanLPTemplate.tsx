@@ -9,7 +9,6 @@ import UnboxingJean from "./UnboxingJean";
 import DepoimentosJean from "./DepoimentosJean";
 import ParceriaCarPower from "./ParceriaCarPower";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
-import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 import ExitOfferGate from "@/components/lovable/ExitOfferGate";
 
 interface JeanLPTemplateProps {
@@ -110,11 +109,9 @@ export default function JeanLPTemplate({
         />
       </div>
 
-      {/* Botão flutuante = CTA de compra (aparece no scroll, some na CTA final) */}
+      {/* Botão flutuante = CTA de compra (aparece no scroll, some na CTA final).
+          O selo de frete grátis fica dentro dela — o pill separado saiu. */}
       <StickyPriceBar variant="ambos" motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
-
-      {/* Pill de frete grátis — entra 2s após o load, verbo girando (empilha acima da sticky bar) */}
-      <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
 
       {/* Oferta de saída — leva o utm da campanha para não perder a atribuição */}
       <ExitOfferGate utmSource={utmSource} />

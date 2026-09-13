@@ -115,7 +115,12 @@ export default function VturbPlayer({
           // <button> de verdade — foco por teclado e leitor de tela funcionam.
           <button
             type="button"
-            onClick={() => setAtivo(true)}
+            onClick={() => {
+              // Avisa o useExitIntent: quem está assistindo fica minutos sem
+              // mexer no mouse, e o gatilho de inatividade não pode interromper.
+              window.dispatchEvent(new CustomEvent("cz:vsl-play"));
+              setAtivo(true);
+            }}
             aria-label={`${rotulo} — vídeo sobre a ciência do CarboZé`}
             className="group w-full h-full flex flex-col items-center justify-center gap-3 bg-black
                        cursor-pointer transition-colors hover:bg-black/90

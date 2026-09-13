@@ -27,6 +27,8 @@ export default function ExitOfferGate({ utmSource }: ExitOfferGateProps = {}) {
   // Desligado = nenhum gatilho é instalado. Em especial o backButton: se ele
   // continuasse ativo, o guarda no histórico seria empilhado do mesmo jeito e
   // o 1º "voltar" não faria nada — o usuário ficaria preso sem ver oferta.
+  // Os 45s de inatividade valem só no desktop e param quando a VSL começa
+  // (regras dentro do useExitIntent).
   const { open, close } = useExitIntent({
     backButton: EXIT_OFFER.enabled,
     desktopExitIntent: EXIT_OFFER.enabled,

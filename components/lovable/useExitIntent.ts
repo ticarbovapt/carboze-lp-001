@@ -7,7 +7,10 @@ interface UseExitIntentOptions {
   backButton?: boolean;
   /** Mouse subindo para a barra de endereço (desktop). */
   desktopExitIntent?: boolean;
-  /** Segundos de inatividade até disparar. 0 = desligado. */
+  /**
+   * Segundos de inatividade até disparar. 0 = desligado.
+   * Nunca arma em tela de toque, e é cancelado pelo evento `cz:vsl-play`.
+   */
   inactivitySeconds?: number;
   /** Não repetir na mesma sessão. */
   oncePerSession?: boolean;
@@ -78,8 +81,13 @@ export function useExitIntent({
       cleanups.push(() => document.removeEventListener("mouseout", onMouseOut));
     }
 
-    // ── Inatividade ───────────────────────────────────────────────────────
-    if (inactivitySeconds > 0) {
+    // ── Inatividade (só com mouse) ────────────────────────────────────────
+    // "Parado" não quer dizer "saindo". No celular quem fica 45s sem tocar
+    // está lendo ou assistindo a VSL — o popup interrompia justamente o lead
+    // mais engajado. Em tela de toque sobra só o gatilho do "voltar", que é
+    // intenção real de sair.
+    const toque = window.matchMedia?.("(pointer: coarse)").matches ?? false;
+    if (inactivitySeconds > 0 && !toque) {
       let timer: ReturnType<typeof setTimeout>;
       const reset = () => {
         clearTimeout(timer);
@@ -91,11 +99,22 @@ export function useExitIntent({
         "keydown",
         "touchstart",
       ];
-      events.forEach((ev) => document.addEventListener(ev, reset, { passive: true }));
-      reset();
-      cleanups.push(() => {
+      const desliga = () => {
         clearTimeout(timer);
         events.forEach((ev) => document.removeEventListener(ev, reset));
+      };
+      events.forEach((ev) => document.addEventListener(ev, reset, { passive: true }));
+      reset();
+
+      // Quem deu play na VSL (VturbPlayer dispara `cz:vsl-play`) vai ficar
+      // minutos sem mexer no mouse. A inatividade é desligada para o resto da
+      // visita; exit intent e "voltar" continuam valendo.
+      const onVslPlay = () => desliga();
+      window.addEventListener("cz:vsl-play", onVslPlay, { once: true });
+
+      cleanups.push(() => {
+        desliga();
+        window.removeEventListener("cz:vsl-play", onVslPlay);
       });
     }
 

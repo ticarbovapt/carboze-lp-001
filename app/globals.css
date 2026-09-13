@@ -37,6 +37,10 @@
 @theme {
   --color-verde-escuro: #093a30;
   --color-verde-medio: #83ce0d;
+  /* Verde da marca escurecido só para TEXTO sobre fundo claro: o #83ce0d dá
+     1,9:1 no branco e reprova no contraste (inclusive em título). #4a8000 dá
+     ~4,8:1. Ícones e fundos seguem com o verde-medio. */
+  --color-verde-texto: #4a8000;
   --color-limao: #a9da00;
   --color-off-white: #f5f5f0;
   --color-conceitual: #ede8e3;
@@ -128,14 +132,52 @@ details[open] .faq-content {
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 
-/* Selo de frete grátis — pulse suave (chama o olho sem exagero) */
+/* Selo de frete grátis — pulse suave (chama o olho sem exagero).
+   Poucas repetições, não infinito: o pill tem backdrop-blur, e um scale
+   eterno por cima dele obrigava o navegador a recompor o blur sem parar. */
 @keyframes frete-pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.06); }
 }
 .animate-frete-pulse {
-  animation: frete-pulse 1.8s ease-in-out infinite;
+  animation: frete-pulse 1.8s ease-in-out 3;
   transform-origin: center;
+}
+
+/* Pill de frete grátis — verbo girando só com CSS.
+   Os 5 verbos ficam empilhados no DOM; cada um tem a mesma animação com
+   atraso de 3,5s × índice (duração total 17,5s, vinda do style inline).
+   Cada verbo ocupa 20% do ciclo: entra, fica, sai. Antes era setInterval +
+   setState, e cada troca de texto fazia o UTMify reprocessar a página. */
+@keyframes frete-verbo {
+  0%       { opacity: 0; transform: translateY(4px); }
+  3%, 17%  { opacity: 1; transform: translateY(0); }
+  20%, 100% { opacity: 0; transform: translateY(-4px); }
+}
+.frete-verbo {
+  opacity: 0;
+  animation-name: frete-verbo;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+/* Pausa no hover/foco (congela o verbo que está sendo lido) e enquanto o pill
+   está escondido — não há por que animar o que ninguém vê. */
+.frete-pill:hover .frete-verbo,
+.frete-pill:focus-within .frete-verbo,
+.frete-pill[data-show="false"] .frete-verbo {
+  animation-play-state: paused;
+}
+
+/* WhatsApp flutuante some enquanto a StickyPriceBar está na tela.
+   A barra marca <html data-cz-sticky>; aqui é só CSS — nenhum re-render.
+   A transição vem do `transition-all` do próprio botão (opacity, translate e
+   visibility; visibility só vira hidden no fim do fade). */
+html[data-cz-sticky] .cz-whatsapp-float {
+  opacity: 0;
+  translate: 0 12px;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* Acessibilidade — respeita usuários que pedem menos movimento */
@@ -150,6 +192,14 @@ details[open] .faq-content {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  /* Sem rotação: fica no primeiro verbo. Precisa desligar a animação de vez —
+     com a regra acima ela "terminaria" no 100% (opacity 0) e sumiria tudo. */
+  .frete-verbo {
+    animation: none !important;
+  }
+  .frete-verbo:first-child {
+    opacity: 1;
   }
 }
 

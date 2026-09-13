@@ -7,7 +7,6 @@ import FAQInfluencer from "./FAQInfluencer";
 import CTAFinalInfluencer from "./CTAFinalInfluencer";
 import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
-import FreteGratisPill from "@/components/lovable/FreteGratisPill";
 import ExitOfferGate from "@/components/lovable/ExitOfferGate";
 
 interface InfluencerLPTemplateProps {
@@ -40,8 +39,8 @@ export default function InfluencerLPTemplate({
       <div id="cta-final-section">
         <CTAFinalInfluencer motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
       </div>
+      {/* Frete grátis vive dentro da sticky; o WhatsApp some enquanto ela aparece */}
       <StickyPriceBar variant="ambos" motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
-      <FreteGratisPill href="#escolha-produto" bottomClass="bottom-28" />
       <FloatingWhatsApp />
 
       {/* Oferta de saída — leva o utm da campanha para não perder a atribuição */}
