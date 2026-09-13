@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { marcarProduto, produtoDaUrl } from "@/lib/funnelState";
-import { track, VALOR } from "@/lib/metaPixel";
+import { trackGarantido, VALOR } from "@/lib/metaPixel";
 
 /**
  * Anota qual produto o cliente escolheu, para o /upsell oferecer o mesmo
@@ -28,7 +28,13 @@ export default function FunnelTracker() {
 
       // Saiu da LP para a loja: é o início de checkout do ponto de vista do
       // Meta. O Purchase em si acontece no domínio da loja, não aqui.
-      track("InitiateCheckout", {
+      //
+      // `trackGarantido` e não `track`: o fbevents.js só carrega alguns
+      // segundos depois do `load`, e quem clica antes disso sairia da página
+      // com o evento preso na fila do stub. Síncrono de propósito — adiar para
+      // um setTimeout arriscaria a navegação matar o envio; o custo aqui é
+      // montar uma URL e um fetch keepalive, bem abaixo de 1ms.
+      trackGarantido("InitiateCheckout", {
         content_name: p === "sache" ? "Kit 10 Sachês 10ml" : "Kit 5 Frascos 100ml",
         content_type: "product",
         value: VALOR[p],
@@ -36,7 +42,10 @@ export default function FunnelTracker() {
       });
     }
     // Captura: registra mesmo que o handler do componente pare a propagação.
-    document.addEventListener("click", onClick, { capture: true });
+    // `passive` só documenta o contrato (em clique o navegador não ganha nada
+    // com isso, ao contrário de toque/rolagem): este handler nunca chama
+    // preventDefault nem segura a navegação.
+    document.addEventListener("click", onClick, { capture: true, passive: true });
     return () => document.removeEventListener("click", onClick, { capture: true });
   }, []);
 
