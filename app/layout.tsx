@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
+import { preload } from "react-dom";
 import FunnelTracker from "@/components/lovable/FunnelTracker";
 import MetaPixel from "@/components/lovable/MetaPixel";
 import Utmify from "@/components/lovable/Utmify";
@@ -65,29 +66,36 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  /*
+    Só a Black. É o peso do H1 do hero (font-extrabold → 800/900), que é
+    o único texto grande acima da dobra.
+
+    A Regular saiu daqui: nenhum elemento acima da dobra usa Basement 400
+    — as tags e o H1 são Black, os botões são Bold, e o subtítulo é
+    Archivo. Preload dela custava 22 KB de banda em prioridade alta
+    disputando com a imagem do hero, que é o elemento de LCP.
+
+    A Bold (700, dos botões de CTA) segue sem preload, entrando pelo CSS.
+    Preloadá-la gastaria de novo os 22 KB que acabamos de liberar; se o
+    flash no texto do CTA incomodar, é aqui que se resolve.
+
+    Por que `preload()` e não `<link rel="preload">` no <head>: no React 19.2
+    o renderizador de Server Components transforma todo `<link rel="preload">`
+    em hint (`:HL[...]` no payload RSC), e o SSR ainda imprime o próprio
+    <link> do JSX. Resultado: a fonte saía com preload DUAS vezes no HTML
+    (conferido no build: um com atributos `as,crossorigin,type` vindo do hint
+    e outro `as,type,crossorigin` vindo do JSX). Com `preload()` só existe o
+    hint, e o React deduplica por href.
+  */
+  preload("/fonts/BasementGrotesque-Black.woff2", {
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "anonymous",
+  });
+
   return (
     <html lang="pt-BR" className={`${archivo.variable}`}>
       <head>
-        {/*
-          Só a Black. É o peso do H1 do hero (font-extrabold → 800/900), que é
-          o único texto grande acima da dobra.
-
-          A Regular saiu daqui: nenhum elemento acima da dobra usa Basement 400
-          — as tags e o H1 são Black, os botões são Bold, e o subtítulo é
-          Archivo. Preload dela custava 22 KB de banda em prioridade alta
-          disputando com a imagem do hero, que é o elemento de LCP.
-
-          A Bold (700, dos botões de CTA) segue sem preload, entrando pelo CSS.
-          Preloadá-la gastaria de novo os 22 KB que acabamos de liberar; se o
-          flash no texto do CTA incomodar, é aqui que se resolve.
-        */}
-        <link
-          rel="preload"
-          href="/fonts/BasementGrotesque-Black.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}

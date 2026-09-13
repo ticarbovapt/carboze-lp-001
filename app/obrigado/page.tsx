@@ -54,7 +54,7 @@ export default function ObrigadoPage() {
           <span className="text-limao">confirmado.</span>
         </h1>
 
-        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/60 text-sm md:text-base leading-relaxed max-w-md">
+        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/70 text-sm md:text-base leading-relaxed max-w-md">
           Já estamos preparando o envio. Os detalhes do pedido e o rastreio
           chegam no seu e-mail.
         </p>
@@ -73,7 +73,7 @@ export default function ObrigadoPage() {
                 <p className="font-[family-name:var(--font-basement)] font-bold text-white text-sm">
                   {p.titulo}
                 </p>
-                <p className="mt-1 font-[family-name:var(--font-archivo)] text-white/55 text-xs leading-relaxed">
+                <p className="mt-1 font-[family-name:var(--font-archivo)] text-white/70 text-xs leading-relaxed">
                   {p.body}
                 </p>
               </div>
@@ -97,7 +97,7 @@ export default function ObrigadoPage() {
           href={SOCIAL_LINKS.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 font-[family-name:var(--font-archivo)] text-white/35 text-xs hover:text-limao transition-colors"
+          className="mt-5 font-[family-name:var(--font-archivo)] text-white/70 text-xs hover:text-limao transition-colors"
         >
           Acompanhe @ocarboze
         </a>

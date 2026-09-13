@@ -46,11 +46,11 @@ export default function BeneficiosHome() {
 
         <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-5">
           Não é aditivo de posto.{" "}
-          <span className="text-verde-medio">É a vacina que otimiza o seu bolso.</span>
+          <span className="text-verde-texto">É a vacina que otimiza o seu bolso.</span>
         </h2>
 
         {/* Conceito — uma linha */}
-        <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-base md:text-lg leading-relaxed max-w-2xl mb-10">
+        <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-base md:text-lg leading-relaxed max-w-2xl mb-10">
           Assim como a vacina age antes da doença, o CarboZé trata o combustível antes do dano
           acontecer — a cada tanque, sem esforço nenhum da sua parte.
         </p>
@@ -64,7 +64,7 @@ export default function BeneficiosHome() {
                   <path d="M2 6.5L4.5 9L10 3" stroke="#093a30" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
-              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/75 text-base md:text-lg leading-relaxed">
+              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-base md:text-lg leading-relaxed">
                 {bullet}
               </p>
             </li>
@@ -88,7 +88,7 @@ export default function BeneficiosHome() {
                   <h4 className="font-[family-name:var(--font-basement)] font-bold text-white text-base mb-1">
                     {m.title}
                   </h4>
-                  <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
+                  <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">
                     {m.body}
                   </p>
                 </div>

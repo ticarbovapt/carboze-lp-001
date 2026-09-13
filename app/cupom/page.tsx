@@ -39,7 +39,7 @@ export default function CupomPage() {
             Seu combustível tratado por{" "}
             <span className="text-limao">{EXIT_OFFER.percent}% menos.</span>
           </h1>
-          <p className="font-[family-name:var(--font-archivo)] text-white/60 text-base md:text-lg leading-relaxed max-w-xl mx-auto text-center mb-10">
+          <p className="font-[family-name:var(--font-archivo)] text-white/70 text-base md:text-lg leading-relaxed max-w-xl mx-auto text-center mb-10">
             Vale para o sachê de 10ml e para o frasco de 100ml — somado ao frete grátis
             que já está incluso.
           </p>

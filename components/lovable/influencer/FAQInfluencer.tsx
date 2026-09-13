@@ -20,7 +20,7 @@ export default function FAQInfluencer() {
     <section className="bg-white py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
 
-        <p className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.18em] text-verde-escuro/40 mb-3">
+        <p className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.18em] text-verde-escuro/80 mb-3">
           Dúvidas frequentes
         </p>
 
@@ -43,7 +43,7 @@ export default function FAQInfluencer() {
                 </span>
               </summary>
               <div className="pb-6 -mt-1">
-                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-sm md:text-base leading-relaxed">
+                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-sm md:text-base leading-relaxed">
                   {faq.a}
                 </p>
               </div>
@@ -54,7 +54,7 @@ export default function FAQInfluencer() {
         {/* CTA — quem chegou ao fim do FAQ tem uma dúvida que a lista não cobriu */}
         <div className="flex flex-col items-center gap-3 mt-10">
           <WhatsAppButton label="Ainda tenho dúvidas" />
-          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/45 text-xs text-center">
+          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-xs text-center">
             Atendimento direto com a equipe CarboZé
           </p>
         </div>

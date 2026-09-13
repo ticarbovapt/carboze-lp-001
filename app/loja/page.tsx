@@ -75,14 +75,14 @@ export default function LojaPage() {
 
         {/* Label + headline */}
         <div className="text-center">
-          <p className="font-[family-name:var(--font-archivo)] text-white/30 text-[11px] tracking-[0.18em] uppercase mb-2">
+          <p className="font-[family-name:var(--font-archivo)] text-white/70 text-[11px] tracking-[0.18em] uppercase mb-2">
             Onde Encontrar
           </p>
           <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl leading-tight">
             Disponível em{" "}
             <span className="text-limao">vários canais.</span>
           </h1>
-          <p className="font-[family-name:var(--font-archivo)] text-white/40 text-sm mt-2">
+          <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm mt-2">
             Escolha a plataforma de sua preferência e garanta o seu pack.
           </p>
         </div>
@@ -115,7 +115,7 @@ export default function LojaPage() {
               </div>
 
               {/* Description */}
-              <p className="font-[family-name:var(--font-archivo)] text-white/40 text-xs text-center leading-snug">
+              <p className="font-[family-name:var(--font-archivo)] text-white/70 text-xs text-center leading-snug">
                 {store.desc}
               </p>
             </a>
@@ -123,7 +123,7 @@ export default function LojaPage() {
         </div>
 
         {/* WhatsApp inline */}
-        <p className="font-[family-name:var(--font-archivo)] text-white/30 text-xs">
+        <p className="font-[family-name:var(--font-archivo)] text-white/70 text-xs">
           Dúvidas?{" "}
           <a
             href={WHATSAPP_URL}
@@ -146,7 +146,7 @@ export default function LojaPage() {
             height={198}
             className="h-6 w-auto opacity-60"
           />
-          <p className="font-[family-name:var(--font-archivo)] text-white/20 text-xs">
+          <p className="font-[family-name:var(--font-archivo)] text-white/70 text-xs">
             © 2025 CarboZé. Todos os direitos reservados.
           </p>
         </div>

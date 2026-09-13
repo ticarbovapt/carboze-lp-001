@@ -54,6 +54,7 @@ export default function OfferPopup({ onClose }: { onClose: () => void }) {
       }}
       role="dialog"
       aria-modal="true"
+      aria-labelledby="nps-offer-title"
     >
       <div className="popup-in relative w-full max-w-sm rounded-3xl bg-verde-escuro border border-limao/30 shadow-[0_0_60px_rgba(169,218,0,0.25)] overflow-hidden">
         {/* Brilho de fundo */}
@@ -82,13 +83,13 @@ export default function OfferPopup({ onClose }: { onClose: () => void }) {
           <p className="mt-4 font-[family-name:var(--font-archivo)] text-limao text-[10px] tracking-[0.18em] uppercase font-bold">
             Presente exclusivo pra quem avaliou
           </p>
-          <h2 className="mt-1 font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl leading-tight">
+          <h2 id="nps-offer-title" className="mt-1 font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl leading-tight">
             Você ganhou um <span className="text-limao">presente!</span>
           </h2>
 
           {/* Bloco da oferta */}
           <div className="mt-5 w-full rounded-2xl bg-white/[0.06] border border-white/15 p-5">
-            <p className="font-[family-name:var(--font-archivo)] text-white/45 text-[10px] tracking-[0.16em] uppercase mb-1">
+            <p className="font-[family-name:var(--font-archivo)] text-white/70 text-[10px] tracking-[0.16em] uppercase mb-1">
               Oferta especial
             </p>
             <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-xl leading-tight">
@@ -110,7 +111,7 @@ export default function OfferPopup({ onClose }: { onClose: () => void }) {
               </div>
             </div>
 
-            <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/55 text-xs leading-relaxed">
+            <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/70 text-xs leading-relaxed">
               Garanta 6 meses de motor protegido — com frete grátis e parcelado em 6x sem juros.
             </p>
           </div>
@@ -129,7 +130,7 @@ export default function OfferPopup({ onClose }: { onClose: () => void }) {
           </a>
 
           {/* Urgência */}
-          <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/45 text-[11px]">
+          <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/70 text-[11px]">
             Oferta exclusiva, válida só agora ·{" "}
             <span className="text-limao font-bold tabular-nums">{fmt(left)}</span>
           </p>
@@ -137,7 +138,7 @@ export default function OfferPopup({ onClose }: { onClose: () => void }) {
           {/* Saída discreta */}
           <button
             onClick={onClose}
-            className="mt-3 font-[family-name:var(--font-archivo)] text-white/35 text-xs hover:text-white/60 transition-colors"
+            className="mt-3 font-[family-name:var(--font-archivo)] text-white/70 text-xs hover:text-white transition-colors"
           >
             Agora não, obrigado
           </button>

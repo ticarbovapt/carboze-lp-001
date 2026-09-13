@@ -11,7 +11,7 @@ export default function MoneyBurn() {
 
         <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight mb-10">
           Não é aditivo de posto.{" "}
-          <span className="text-verde-medio">É a vacina que otimiza o seu bolso.</span>
+          <span className="text-verde-texto">É a vacina que otimiza o seu bolso.</span>
         </h2>
 
         <ul className="space-y-5">
@@ -23,7 +23,7 @@ export default function MoneyBurn() {
                   <path d="M2 6.5L4.5 9L10 3" stroke="#093a30" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
-              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/75 text-base md:text-lg leading-relaxed">
+              <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-base md:text-lg leading-relaxed">
                 {bullet}
               </p>
             </li>

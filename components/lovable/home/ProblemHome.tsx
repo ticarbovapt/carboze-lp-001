@@ -33,7 +33,7 @@ export default function ProblemHome() {
         </h2>
 
         {/* Intro — uma linha */}
-        <p className="font-[family-name:var(--font-archivo)] text-white/60 text-base md:text-lg leading-relaxed max-w-2xl mb-10">
+        <p className="font-[family-name:var(--font-archivo)] text-white/70 text-base md:text-lg leading-relaxed max-w-2xl mb-10">
           O combustível brasileiro absorve água do ar. Não é defeito do motor — é o etanol e o
           biodiesel que chegam na bomba. E acontece a cada abastecimento.
         </p>
@@ -51,7 +51,7 @@ export default function ProblemHome() {
               <h3 className="font-[family-name:var(--font-basement)] font-bold text-white text-xl mb-2">
                 {p.title}
               </h3>
-              <p className="font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
+              <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">
                 {p.body}
               </p>
             </div>

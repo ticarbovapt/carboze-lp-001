@@ -23,7 +23,7 @@ export default function ScienceSection() {
             </div>
 
             <div className="order-3 md:order-none">
-              <p className="font-[family-name:var(--font-archivo)] text-white/60 text-base md:text-lg leading-relaxed mb-8">
+              <p className="font-[family-name:var(--font-archivo)] text-white/70 text-base md:text-lg leading-relaxed mb-8">
                 A fórmula do CarboZé age em nível molecular: estabiliza os compostos voláteis,
                 elimina a água emulsionada no combustível e forma uma película protetora que impede
                 a oxidação progressiva nas superfícies metálicas do motor.

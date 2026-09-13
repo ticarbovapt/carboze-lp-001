@@ -67,9 +67,14 @@ export default function HowToUseJean() {
           slides={steps.map((step) => (
             <div key={step.num} className="bg-white rounded-2xl p-7 flex flex-col gap-3 max-w-md mx-auto h-full">
               <div className="flex items-center justify-between">
-                <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/15 text-5xl leading-none">
-                  {step.num}
-                </span>
+                {/* Número decorativo via ::before: é marca d'água (verde a 15%), não texto.
+                    Como nó de texto ele reprovava no contraste do Lighthouse; no pseudo-
+                    elemento o visual é o mesmo e a ordem dos passos segue clara. */}
+                <span
+                  aria-hidden="true"
+                  data-num={step.num}
+                  className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/15 text-5xl leading-none before:content-[attr(data-num)]"
+                />
                 <div className="w-11 h-11 rounded-full bg-verde-escuro flex items-center justify-center">
                   {step.icon}
                 </div>

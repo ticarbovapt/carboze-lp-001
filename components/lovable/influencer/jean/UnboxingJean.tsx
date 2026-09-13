@@ -8,12 +8,12 @@ export default function UnboxingJean() {
 
           {/* Copy — apenas headline */}
           <div>
-            <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-verde-medio text-xs tracking-widest mb-4">
+            <p className="font-[family-name:var(--font-basement)] font-bold uppercase text-verde-texto text-xs tracking-widest mb-4">
               Na prática
             </p>
             <h2 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-verde-escuro text-3xl sm:text-4xl md:text-5xl leading-tight">
               Do envelope ao tanque{" "}
-              <span className="text-verde-medio">em segundos.</span>
+              <span className="text-verde-texto">em segundos.</span>
             </h2>
           </div>
 

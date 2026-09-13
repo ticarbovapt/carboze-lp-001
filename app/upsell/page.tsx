@@ -39,7 +39,7 @@ export default function UpsellPage() {
           <span className="text-limao">20% off agora.</span>
         </h1>
 
-        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed max-w-sm">
+        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed max-w-sm">
           Seu pedido já está garantido. Aproveite para reforçar o estoque com
           desconto — este preço não aparece na loja.
         </p>

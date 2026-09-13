@@ -21,7 +21,7 @@ function Label({
   return (
     <label
       htmlFor={htmlFor}
-      className="font-[family-name:var(--font-archivo)] text-white/50 text-xs uppercase tracking-widest flex items-center gap-1"
+      className="font-[family-name:var(--font-archivo)] text-white/70 text-xs uppercase tracking-widest flex items-center gap-1"
     >
       {children}
       {required && <span className="text-limao">*</span>}
@@ -119,7 +119,7 @@ export default function NpsForm() {
               <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-2xl">
                 Obrigado pela sua avaliação!
               </h1>
-              <p className="font-[family-name:var(--font-archivo)] text-white/55 text-sm mt-2 leading-relaxed">
+              <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm mt-2 leading-relaxed">
                 Sua opinião ajuda a melhorar o CarboZé a cada tanque. 💚
               </p>
             </div>
@@ -143,14 +143,14 @@ export default function NpsForm() {
           <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-6">
             {/* Cabeçalho */}
             <div className="text-center">
-              <p className="font-[family-name:var(--font-archivo)] text-white/40 text-[11px] tracking-[0.18em] uppercase mb-2">
+              <p className="font-[family-name:var(--font-archivo)] text-white/70 text-[11px] tracking-[0.18em] uppercase mb-2">
                 Sua opinião vale muito
               </p>
               <h1 className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-white text-3xl leading-tight">
                 Como foi sua experiência com o{" "}
                 <span className="text-limao">CarboZé?</span>
               </h1>
-              <p className="font-[family-name:var(--font-archivo)] text-white/50 text-sm mt-2">
+              <p className="font-[family-name:var(--font-archivo)] text-white/70 text-sm mt-2">
                 Leva menos de 1 minuto e ajuda a melhorar o produto.
               </p>
             </div>
@@ -176,7 +176,7 @@ export default function NpsForm() {
                   </button>
                 ))}
               </div>
-              <div className="flex justify-between font-[family-name:var(--font-archivo)] text-white/35 text-[10px] mt-0.5">
+              <div className="flex justify-between font-[family-name:var(--font-archivo)] text-white/70 text-[10px] mt-0.5">
                 <span>Não recomendaria</span>
                 <span>Recomendaria com certeza</span>
               </div>
@@ -272,7 +272,7 @@ export default function NpsForm() {
                 onChange={(e) => setAutoriza(e.target.checked)}
                 className="mt-0.5 w-4 h-4 accent-limao shrink-0"
               />
-              <span className="font-[family-name:var(--font-archivo)] text-white/50 text-xs leading-snug">
+              <span className="font-[family-name:var(--font-archivo)] text-white/70 text-xs leading-snug">
                 Autorizo o CarboZé a usar meu comentário como depoimento (sem expor meus dados pessoais).
               </span>
             </label>
@@ -319,7 +319,7 @@ export default function NpsForm() {
             height={198}
             className="h-6 w-auto opacity-60"
           />
-          <p className="font-[family-name:var(--font-archivo)] text-white/20 text-xs">
+          <p className="font-[family-name:var(--font-archivo)] text-white/70 text-xs">
             © 2025 CarboZé.
           </p>
         </div>

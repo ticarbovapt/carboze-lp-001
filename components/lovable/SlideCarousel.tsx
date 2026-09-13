@@ -76,15 +76,24 @@ export default function SlideCarousel({
             </svg>
           </button>
 
-          <div className="flex items-center gap-2">
+          {/* Área de toque de 24px por dot (mínimo do Lighthouse/WCAG 2.5.8).
+              O dot visível continua com 8px: ele é o <span> de dentro. Por isso
+              o gap sai — o espaço entre os dots agora vem do próprio botão. */}
+          <div className="flex items-center">
             {slides.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 aria-label={`Ir para o slide ${i + 1}`}
+                aria-current={i === index ? "true" : undefined}
                 onClick={() => go(i)}
-                className={`h-2 rounded-full transition-all ${i === index ? `w-6 ${dotOn}` : `w-2 ${dotOff}`}`}
-              />
+                className="h-6 min-w-6 px-1 flex items-center justify-center"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`block h-2 rounded-full transition-all ${i === index ? `w-6 ${dotOn}` : `w-2 ${dotOff}`}`}
+                />
+              </button>
             ))}
           </div>
 

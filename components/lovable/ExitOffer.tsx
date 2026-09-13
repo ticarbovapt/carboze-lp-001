@@ -91,7 +91,7 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
             <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-xl leading-none">
               {EXIT_OFFER.percent}% off
             </p>
-            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[11px] leading-tight">
+            <p className="font-[family-name:var(--font-archivo)] text-white/70 text-[11px] leading-tight">
               direto no preço
             </p>
           </div>
@@ -100,13 +100,13 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
             <p className="font-[family-name:var(--font-basement)] font-extrabold uppercase text-limao text-xl leading-none">
               Frete grátis
             </p>
-            <p className="font-[family-name:var(--font-archivo)] text-white/60 text-[11px] leading-tight">
+            <p className="font-[family-name:var(--font-archivo)] text-white/70 text-[11px] leading-tight">
               para todo o Brasil
             </p>
           </div>
         </div>
 
-        <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/60 text-sm leading-relaxed">
+        <p className="mt-4 font-[family-name:var(--font-archivo)] text-white/70 text-sm leading-relaxed">
           Os dois já estão no preço abaixo. Acumulam.
         </p>
 
@@ -132,7 +132,7 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
                   {p.titulo}
                 </span>
                 <span className="mt-0.5 flex items-baseline gap-1.5">
-                  <span className="font-[family-name:var(--font-archivo)] text-verde-escuro/55 text-xs line-through">
+                  <span className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-xs line-through">
                     {p.de}
                   </span>
                   <span className="font-[family-name:var(--font-basement)] font-extrabold text-xl leading-none">
@@ -150,14 +150,14 @@ export default function ExitOffer({ variant = "modal", onClose, utmSource }: Exi
         {/* Sem "válida só agora" nem contador: enquanto o mesmo preço puder ser
             alcançado fora do popup, a escassez não é verdadeira. Só volta se a
             oferta passar a ser de fato exclusiva deste fluxo. */}
-        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/45 text-[11px]">
+        <p className="mt-3 font-[family-name:var(--font-archivo)] text-white/70 text-[11px]">
           Frete grátis e {EXIT_OFFER.percent}% já inclusos.
         </p>
 
         {variant === "modal" && onClose && (
           <button
             onClick={onClose}
-            className="mt-3 font-[family-name:var(--font-archivo)] text-white/35 text-xs hover:text-white/60 transition-colors"
+            className="mt-3 font-[family-name:var(--font-archivo)] text-white/70 text-xs hover:text-white transition-colors"
           >
             Agora não, obrigado
           </button>

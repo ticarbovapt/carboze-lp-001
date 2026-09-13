@@ -116,11 +116,11 @@ export default function UpsellClient() {
               <span className="block font-[family-name:var(--font-basement)] font-extrabold uppercase text-base leading-tight">
                 {p.titulo}
               </span>
-              <span className="block font-[family-name:var(--font-archivo)] text-verde-escuro/60 text-xs mt-0.5">
+              <span className="block font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-xs mt-0.5">
                 {p.subtitulo}
               </span>
               <span className="mt-1.5 flex items-baseline gap-2">
-                <span className="font-[family-name:var(--font-archivo)] text-verde-escuro/50 text-sm line-through">
+                <span className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-sm line-through">
                   {p.de}
                 </span>
                 <span className="font-[family-name:var(--font-basement)] font-extrabold text-2xl leading-none">
@@ -144,7 +144,7 @@ export default function UpsellClient() {
         ))}
       </div>
 
-      <p className="mt-5 font-[family-name:var(--font-archivo)] text-white/45 text-xs text-center">
+      <p className="mt-5 font-[family-name:var(--font-archivo)] text-white/70 text-xs text-center">
         Frete grátis · desconto já aplicado no preço ·{" "}
         <span className="text-limao font-bold tabular-nums">{fmt(left)}</span>
       </p>
@@ -154,8 +154,8 @@ export default function UpsellClient() {
       <a
         href={UPSELL.declineHref}
         onClick={marcarUpsellResolvido}
-        className="mt-6 font-[family-name:var(--font-archivo)] text-white/30 text-xs underline underline-offset-4
-                   hover:text-white/60 transition-colors"
+        className="mt-6 font-[family-name:var(--font-archivo)] text-white/70 text-xs underline underline-offset-4
+                   hover:text-white transition-colors"
       >
         Não quero agora, desistir do meu desconto
       </a>

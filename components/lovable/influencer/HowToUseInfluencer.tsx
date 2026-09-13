@@ -60,9 +60,14 @@ export default function HowToUseInfluencer() {
             >
               {/* Number + icon row */}
               <div className="flex items-center justify-between">
-                <span className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/15 text-5xl leading-none">
-                  {step.num}
-                </span>
+                {/* Número decorativo via ::before: é marca d'água (verde a 15%), não texto.
+                    Como nó de texto ele reprovava no contraste do Lighthouse; no pseudo-
+                    elemento o visual é o mesmo e a ordem dos passos segue clara. */}
+                <span
+                  aria-hidden="true"
+                  data-num={step.num}
+                  className="font-[family-name:var(--font-basement)] font-extrabold text-verde-escuro/15 text-5xl leading-none before:content-[attr(data-num)]"
+                />
                 <div className="w-11 h-11 rounded-full bg-verde-escuro flex items-center justify-center">
                   {step.icon}
                 </div>
@@ -75,7 +80,7 @@ export default function HowToUseInfluencer() {
 
               {/* Body or split */}
               {step.body && (
-                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/55 text-sm leading-relaxed">
+                <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-sm leading-relaxed">
                   {step.body}
                 </p>
               )}
@@ -86,7 +91,7 @@ export default function HowToUseInfluencer() {
                       <p className="font-[family-name:var(--font-basement)] font-bold text-verde-escuro text-xs uppercase tracking-widest mb-1">
                         {s.label}
                       </p>
-                      <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/55 text-sm leading-relaxed">
+                      <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-sm leading-relaxed">
                         {s.desc}
                       </p>
                     </div>
