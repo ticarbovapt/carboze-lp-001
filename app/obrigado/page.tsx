@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { WHATSAPP_URL, SOCIAL_LINKS } from "@/lib/constants";
+import { SOCIAL_LINKS } from "@/lib/constants";
 import { TruckIcon } from "@/components/lovable/Icons";
 
 export const metadata: Metadata = {
@@ -81,17 +81,6 @@ export default function ObrigadoPage() {
           ))}
         </div>
 
-        {/* Suporte */}
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-8 w-full border border-limao/40 text-limao font-[family-name:var(--font-basement)]
-                     font-extrabold uppercase text-sm py-3.5 rounded-xl hover:bg-limao/10
-                     active:scale-[0.98] transition-all flex items-center justify-center"
-        >
-          Falar com o suporte
-        </a>
 
         <a
           href={SOCIAL_LINKS.instagram}
