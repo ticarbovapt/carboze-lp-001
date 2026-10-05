@@ -1,6 +1,6 @@
 import Image from "next/image";
 import CTAButton from "@/components/lovable/CTAButton";
-import { WHATSAPP_URL, SOCIAL_LINKS } from "@/lib/constants";
+import { SOCIAL_LINKS } from "@/lib/constants";
 
 interface CTAFinalInfluencerProps {
   motoHref?: string;
@@ -48,12 +48,6 @@ export default function CTAFinalInfluencer({
         {/* Footer */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
           <div className="flex flex-col gap-3 font-[family-name:var(--font-archivo)]">
-            <p className="text-white/70 text-sm">
-              Dúvidas?{" "}
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-limao hover:underline">
-                WhatsApp 11 4000-2112
-              </a>
-            </p>
             <div className="flex gap-5 text-sm">
               <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-limao transition-colors">@ocarboze</a>
               <a href={SOCIAL_LINKS.website} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-limao transition-colors">carboze.com.br</a>

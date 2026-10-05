@@ -5,7 +5,6 @@ import MoneyBurn from "./MoneyBurn";
 import HowToUseInfluencer from "./HowToUseInfluencer";
 import FAQInfluencer from "./FAQInfluencer";
 import CTAFinalInfluencer from "./CTAFinalInfluencer";
-import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 import ExitOfferGate from "@/components/lovable/ExitOfferGate";
 
@@ -39,9 +38,8 @@ export default function InfluencerLPTemplate({
       <div id="cta-final-section">
         <CTAFinalInfluencer motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
       </div>
-      {/* Frete grátis vive dentro da sticky; o WhatsApp some enquanto ela aparece */}
+      {/* Frete grátis vive dentro da sticky — sem pill flutuante separado */}
       <StickyPriceBar variant="ambos" motoHref={checkoutMotoHref} carroHref={checkoutCarroHref} />
-      <FloatingWhatsApp />
 
       {/* Oferta de saída — leva o utm da campanha para não perder a atribuição */}
       <ExitOfferGate utmSource={utmSource} />

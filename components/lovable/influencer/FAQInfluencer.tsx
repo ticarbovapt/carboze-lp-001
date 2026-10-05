@@ -1,4 +1,3 @@
-import WhatsAppButton from "@/components/lovable/WhatsAppButton";
 
 const faqs = [
   {
@@ -51,13 +50,6 @@ export default function FAQInfluencer() {
           ))}
         </div>
 
-        {/* CTA — quem chegou ao fim do FAQ tem uma dúvida que a lista não cobriu */}
-        <div className="flex flex-col items-center gap-3 mt-10">
-          <WhatsAppButton label="Ainda tenho dúvidas" />
-          <p className="font-[family-name:var(--font-archivo)] text-verde-escuro/80 text-xs text-center">
-            Atendimento direto com a equipe CarboZé
-          </p>
-        </div>
 
       </div>
     </section>

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import LovableHeader from "@/components/LovableHeader";
-import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
 import HeroInfluencer from "@/components/lovable/influencer/HeroInfluencer";
 import ProductPickerJean from "@/components/lovable/influencer/jean/ProductPickerJean";
 import ScienceSectionJean from "@/components/lovable/influencer/jean/ScienceSectionJean";
@@ -13,7 +12,6 @@ import StickyPriceBar from "@/components/lovable/StickyPriceBar";
 import ExitOfferGate from "@/components/lovable/ExitOfferGate";
 import ProblemHome from "@/components/lovable/home/ProblemHome";
 import BeneficiosHome from "@/components/lovable/home/BeneficiosHome";
-import { WHATSAPP_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "CarboZé — O único otimizador molecular para o combustível brasileiro",
@@ -43,7 +41,6 @@ export default function HomePage() {
           escolhe a arte certa por breakpoint e marca a 1ª com fetchPriority. */}
       <LovableHeader
         checkoutHref="#escolha-produto"
-        suporteHref={WHATSAPP_URL}
         ctaLabel="Escolher Produto"
       />
 
@@ -107,7 +104,6 @@ export default function HomePage() {
       <StickyPriceBar variant="ambos" motoHref={CHECKOUT_MOTO} carroHref={CHECKOUT_CARRO} />
 
       {/* Some via CSS enquanto a sticky está na tela */}
-      <FloatingWhatsApp />
 
       {/* Oferta de saída: 1º voltar (mobile), exit intent (desktop), 45s parado
           (só desktop, e desliga quando a VSL começa).

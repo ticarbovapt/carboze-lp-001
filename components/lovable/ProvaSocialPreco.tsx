@@ -1,4 +1,4 @@
-import { TruckIcon, CheckCircleIcon, WhatsAppIcon } from "@/components/lovable/Icons";
+import { TruckIcon, CheckCircleIcon } from "@/components/lovable/Icons";
 
 /**
  * Prova social compacta logo abaixo dos cards de preço.
@@ -49,11 +49,6 @@ const CONFIANCA = [
     // app/obrigado/page.tsx ("o código de rastreio chega no mesmo e-mail")
     Icone: CheckCircleIcon,
     texto: "Código de rastreio por e-mail",
-  },
-  {
-    // FAQInstitucional.tsx / FAQInfluencer.tsx ("Atendimento direto com a equipe CarboZé")
-    Icone: WhatsAppIcon,
-    texto: "Atendimento direto com a equipe CarboZé",
   },
 ];
 

@@ -4,8 +4,7 @@ import LovableHeader from "@/components/LovableHeader";
 import ExitOffer from "@/components/lovable/ExitOffer";
 import DepoimentosJean from "@/components/lovable/influencer/jean/DepoimentosJean";
 import FAQInstitucional from "@/components/lovable/institucional/FAQInstitucional";
-import FloatingWhatsApp from "@/components/lovable/FloatingWhatsApp";
-import { WHATSAPP_URL, EXIT_OFFER } from "@/lib/constants";
+import { EXIT_OFFER } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `CarboZé — ${EXIT_OFFER.percent}% de desconto no seu primeiro pedido`,
@@ -26,7 +25,6 @@ export default function CupomPage() {
     <main>
       <LovableHeader
         checkoutHref="#oferta"
-        suporteHref={WHATSAPP_URL}
         ctaLabel="Pegar desconto"
       />
 
@@ -50,7 +48,6 @@ export default function CupomPage() {
 
       <DepoimentosJean />
       <FAQInstitucional />
-      <FloatingWhatsApp />
     </main>
   );
 }
