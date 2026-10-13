@@ -225,7 +225,7 @@ export default function ParadaCertaForm() {
   /* ─── Confirmação ──────────────────────────────────────────── */
   if (status === "success" && confirmado) {
     return (
-      <main className="min-h-dvh bg-carbo-fundo flex flex-col">
+      <main className="min-h-dvh bg-[#e9edf1] flex flex-col">
         <Header />
         <section className="flex-1 flex items-center justify-center px-5 py-10">
           <div className="w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-sm p-7 sm:p-8">
@@ -303,27 +303,27 @@ export default function ParadaCertaForm() {
 
   /* ─── Formulário ───────────────────────────────────────────── */
   return (
-    <main className="min-h-dvh bg-carbo-fundo flex flex-col">
+    <main className="min-h-dvh bg-[#e9edf1] flex flex-col">
       <Header />
 
       {/* Hero */}
-      <section className="px-5 pt-10 pb-6 text-center">
-        <span
-          className="inline-block rounded-full px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white"
-          style={{ backgroundImage: GRAD }}
-        >
+      <section
+        className="rounded-b-[2rem] px-5 pt-12 pb-20 text-center text-white"
+        style={{ backgroundImage: "linear-gradient(135deg, #2b7fe4 0%, #1fae4d 100%)" }}
+      >
+        <span className="inline-block rounded-full bg-white/15 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white ring-1 ring-white/25">
           Agendamento gratuito
         </span>
-        <h1 className="mx-auto mt-4 max-w-2xl font-[family-name:var(--font-basement)] text-4xl font-extrabold uppercase leading-[1.05] text-carbo-grafite sm:text-5xl">
+        <h1 className="mx-auto mt-4 max-w-2xl font-[family-name:var(--font-basement)] text-4xl font-extrabold uppercase leading-[1.05] sm:text-5xl">
           Ação Parada Certa
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-carbo-grafite/60">
+        <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/85">
           Reserve seu horário para o check-up do seu veículo. O atendimento é
           individual e cada vaga tem tempo reservado só para você.
         </p>
 
         {/* Informações do evento */}
-        <div className="mx-auto mt-6 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-carbo-grafite/70">
+        <div className="mx-auto mt-6 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/90">
           <span className="inline-flex items-center gap-1.5">
             <IconeData /> {DATA_CURTA} · 9h às 13h
           </span>
@@ -331,7 +331,7 @@ export default function ParadaCertaForm() {
             href={MAPS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 font-medium text-carbo-azul hover:underline"
+            className="inline-flex items-center gap-1.5 font-semibold text-white hover:underline"
           >
             <IconeLocal /> {LOCAL_TITULO}
           </a>
@@ -339,7 +339,7 @@ export default function ParadaCertaForm() {
       </section>
 
       {/* Card do formulário */}
-      <section className="px-5 pb-12">
+      <section className="-mt-12 px-5 pb-12">
         <form
           onSubmit={handleSubmit}
           className="mx-auto w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-7"
@@ -612,7 +612,7 @@ function Linha({
 /* ─── Ícones ─────────────────────────────────────────────────── */
 function IconeData() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-carbo-grafite/50">
+    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
       <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.8" />
       <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
