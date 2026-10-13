@@ -45,6 +45,13 @@
   --color-off-white: #f5f5f0;
   --color-conceitual: #ede8e3;
 
+  /* Grupo Carbo — usado na Ação Parada Certa (/parada-certa). Identidade
+     azul→verde da marca-mãe, sobre fundo claro. */
+  --color-carbo-azul: #2b7fe4;
+  --color-carbo-verde: #1fae4d;
+  --color-carbo-grafite: #2d3338;
+  --color-carbo-fundo: #f3f6f5;
+
   --font-basement: 'BasementGrotesque', sans-serif;
   --font-titulo: var(--font-basement);
   --font-corpo: var(--font-archivo);

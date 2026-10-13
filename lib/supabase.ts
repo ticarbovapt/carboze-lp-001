@@ -20,3 +20,23 @@ export async function insertRow(table: string, payload: Record<string, unknown>)
     throw new Error(`Supabase insert falhou (${res.status})`);
   }
 }
+
+/** Chama uma função RPC (PostgREST /rpc) e devolve o JSON retornado. */
+export async function callRpc<T = unknown>(
+  fn: string,
+  args: Record<string, unknown>,
+): Promise<T> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_ANON,
+      Authorization: `Bearer ${SUPABASE_ANON}`,
+    },
+    body: JSON.stringify(args),
+  });
+  if (!res.ok) {
+    throw new Error(`Supabase RPC ${fn} falhou (${res.status})`);
+  }
+  return (await res.json()) as T;
+}
