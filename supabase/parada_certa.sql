@@ -73,7 +73,7 @@ security definer
 set search_path = public
 as $$
 declare
-  v_horarios_validos text[] := array['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30'];
+  v_horarios_validos text[] := array['09:00','09:25','09:50','10:15','10:40','11:05','11:30','11:55','12:20','12:45','13:10','13:35'];
   v_tel  text := regexp_replace(coalesce(p_telefone,''), '\D', '', 'g');
   v_nome text := btrim(coalesce(p_nome,''));
   v_count integer;

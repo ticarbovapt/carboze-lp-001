@@ -20,10 +20,11 @@ const MAPS_URL =
   encodeURIComponent("Marginal Arena das Dunas, Lagoa Nova, Natal - RN, 59075-000");
 
 const HORARIOS = [
-  "09:00", "09:30", "10:00", "10:30",
-  "11:00", "11:30", "12:00", "12:30",
+  "09:00", "09:25", "09:50", "10:15",
+  "10:40", "11:05", "11:30", "11:55",
+  "12:20", "12:45", "13:10", "13:35",
 ];
-const CAPACIDADE = 2; // atendimentos simultâneos por horário
+const CAPACIDADE = 2; // atendimentos simultâneos por horário (25 min cada, 9h–14h)
 
 const GRAD = "linear-gradient(100deg, #2b7fe4, #1fae4d)";
 
@@ -455,7 +456,7 @@ export default function ParadaCertaForm() {
         {/* Informações do evento */}
         <div className="mx-auto mt-6 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/90">
           <span className="inline-flex items-center gap-1.5">
-            <IconeData /> {DATA_CURTA} · 9h às 13h
+            <IconeData /> {DATA_CURTA} · 9h às 14h
           </span>
           <a
             href={MAPS_URL}
@@ -478,7 +479,7 @@ export default function ParadaCertaForm() {
           <SecaoTitulo n={1}>Escolha seu horário</SecaoTitulo>
 
           {carregando ? (
-            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <div className="mt-4 grid grid-cols-3 gap-2.5 sm:grid-cols-4">
               {HORARIOS.map((h) => (
                 <div key={h} className="h-16 animate-pulse rounded-xl bg-gray-100" />
               ))}
@@ -488,7 +489,7 @@ export default function ParadaCertaForm() {
               Todos os horários deste dia já foram preenchidos.
             </p>
           ) : (
-            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <div className="mt-4 grid grid-cols-3 gap-2.5 sm:grid-cols-4">
               {HORARIOS.map((h) => {
                 const v = vagas(h);
                 const esgotado = v <= 0;

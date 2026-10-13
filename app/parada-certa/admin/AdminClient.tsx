@@ -6,8 +6,9 @@ import { callRpc } from "@/lib/supabase";
 
 const DATA_ACAO = "2026-10-31";
 const HORARIOS = [
-  "09:00", "09:30", "10:00", "10:30",
-  "11:00", "11:30", "12:00", "12:30",
+  "09:00", "09:25", "09:50", "10:15",
+  "10:40", "11:05", "11:30", "11:55",
+  "12:20", "12:45", "13:10", "13:35",
 ];
 const CAPACIDADE = 2;
 const GRAD = "linear-gradient(100deg, #2b7fe4, #1fae4d)";
@@ -210,7 +211,7 @@ export default function AdminClient() {
         </div>
 
         {/* Resumo de ocupação */}
-        <div className="mt-5 grid grid-cols-4 gap-2 sm:grid-cols-8">
+        <div className="mt-5 grid grid-cols-4 gap-2 sm:grid-cols-6">
           {porHorario.map(({ horario, itens }) => {
             const cheio = itens.length >= CAPACIDADE;
             return (
