@@ -222,13 +222,137 @@ export default function ParadaCertaForm() {
     carregarDisponibilidade();
   }
 
+  async function baixarComprovante() {
+    const c = confirmado;
+    if (!c) return;
+    const W = 620;
+    const H = 900;
+    const escala = 2;
+    const canvas = document.createElement("canvas");
+    canvas.width = W * escala;
+    canvas.height = H * escala;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.scale(escala, escala);
+    try {
+      await document.fonts.ready;
+    } catch {
+      /* segue com a fonte do sistema */
+    }
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, W, H);
+
+    const grad = ctx.createLinearGradient(0, 0, W, 150);
+    grad.addColorStop(0, "#2b7fe4");
+    grad.addColorStop(1, "#1fae4d");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, 150);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "800 22px BasementGrotesque, Arial, sans-serif";
+    ctx.fillText("GRUPO CARBO", 40, 58);
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.font = "600 13px Arial, sans-serif";
+    ctx.fillText("COMPROVANTE DE AGENDAMENTO", 40, 82);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "700 16px Arial, sans-serif";
+    ctx.fillText("Ação Parada Certa", 40, 112);
+
+    ctx.beginPath();
+    ctx.arc(W - 66, 75, 32, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255,0.2)";
+    ctx.fill();
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(W - 80, 75);
+    ctx.lineTo(W - 70, 86);
+    ctx.lineTo(W - 52, 64);
+    ctx.stroke();
+
+    ctx.fillStyle = "#2d3338";
+    ctx.font = "800 27px BasementGrotesque, Arial, sans-serif";
+    ctx.fillText("AGENDAMENTO CONFIRMADO", 40, 210);
+
+    let y = 262;
+    const linha = (rotulo: string, valor: string, grande?: boolean) => {
+      ctx.fillStyle = "#8a9099";
+      ctx.font = "700 12px Arial, sans-serif";
+      ctx.fillText(rotulo.toUpperCase(), 40, y);
+      ctx.fillStyle = "#2d3338";
+      ctx.font = grande
+        ? "800 30px BasementGrotesque, Arial, sans-serif"
+        : "600 18px Arial, sans-serif";
+      ctx.fillText(valor, 40, y + (grande ? 34 : 26));
+      y += grande ? 78 : 64;
+      ctx.strokeStyle = "#eef1f3";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, y - 22);
+      ctx.lineTo(W - 40, y - 22);
+      ctx.stroke();
+    };
+    linha("Nome", c.nome);
+    linha("Veículo", c.veiculo);
+    linha("Data", DATA_EXTENSO);
+    linha("Horário", c.horario, true);
+
+    ctx.fillStyle = "#8a9099";
+    ctx.font = "700 12px Arial, sans-serif";
+    ctx.fillText("LOCAL", 40, y);
+    ctx.fillStyle = "#2d3338";
+    ctx.font = "600 16px Arial, sans-serif";
+    desenharLinhas(ctx, `${LOCAL_TITULO} · ${LOCAL_ENDERECO}`, 40, y + 24, W - 80, 22);
+
+    const by = H - 170;
+    desenharRetanguloArredondado(ctx, 40, by, W - 80, 94, 12);
+    ctx.fillStyle = "#fef2f2";
+    ctx.fill();
+    ctx.fillStyle = "#dc2626";
+    ctx.fillRect(40, by, 6, 94);
+    ctx.fillStyle = "#b91c1c";
+    ctx.font = "800 15px Arial, sans-serif";
+    ctx.fillText("ATENÇÃO — CHEGUE 10 MIN ANTES", 64, by + 34);
+    ctx.fillStyle = "#c0352f";
+    ctx.font = "500 13px Arial, sans-serif";
+    desenharLinhas(
+      ctx,
+      "Esse tempo é usado para a preparação do veículo antes do atendimento.",
+      64,
+      by + 58,
+      W - 128,
+      18,
+    );
+
+    ctx.fillStyle = "#9aa0a6";
+    ctx.font = "400 11px Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Apresente este comprovante no dia do atendimento.", W / 2, H - 44);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "parada-certa-agendamento.png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }, "image/png");
+  }
+
   /* ─── Confirmação ──────────────────────────────────────────── */
   if (status === "success" && confirmado) {
     return (
-      <main className="min-h-dvh bg-[#e9edf1] flex flex-col">
+      <main className="min-h-dvh bg-[#dce2e9] flex flex-col">
         <Header />
         <section className="flex-1 flex items-center justify-center px-5 py-10">
-          <div className="w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-sm p-7 sm:p-8">
+          <div className="w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-[0_14px_44px_-16px_rgba(20,40,70,0.28)] p-7 sm:p-8">
             <div
               className="mx-auto flex h-16 w-16 items-center justify-center rounded-full"
               style={{ backgroundImage: GRAD }}
@@ -258,18 +382,24 @@ export default function ParadaCertaForm() {
               <Linha rotulo="Local" valor={`${LOCAL_TITULO} · ${LOCAL_ENDERECO}`} />
             </div>
 
-            <div className="mt-5 rounded-xl border border-carbo-azul/20 bg-carbo-azul/5 p-4">
-              <p className="text-sm font-semibold text-carbo-grafite">
-                Chegue 10 minutos antes do seu horário.
-              </p>
-              <p className="mt-1 text-[13px] leading-relaxed text-carbo-grafite/60">
-                Esse tempo é usado para a preparação do veículo antes do atendimento.
-              </p>
-            </div>
+            <AvisoChegada className="mt-5" />
 
             <p className="mt-4 text-center text-[13px] text-carbo-grafite/55">
               Você vai receber a confirmação e um lembrete pelo WhatsApp.
             </p>
+
+            <p className="mt-5 text-center text-[13px] font-medium text-carbo-grafite/70">
+              Baixe o comprovante ou tire um print desta tela para não esquecer.
+            </p>
+
+            <button
+              type="button"
+              onClick={baixarComprovante}
+              style={{ backgroundImage: GRAD }}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-[family-name:var(--font-basement)] text-sm font-extrabold uppercase tracking-wide text-white shadow-sm transition hover:brightness-105 active:scale-[0.99]"
+            >
+              <IconeDownload /> Baixar comprovante
+            </button>
 
             <a
               href={MAPS_URL}
@@ -303,7 +433,7 @@ export default function ParadaCertaForm() {
 
   /* ─── Formulário ───────────────────────────────────────────── */
   return (
-    <main className="min-h-dvh bg-[#e9edf1] flex flex-col">
+    <main className="min-h-dvh bg-[#dce2e9] flex flex-col">
       <Header />
 
       {/* Hero */}
@@ -342,7 +472,7 @@ export default function ParadaCertaForm() {
       <section className="-mt-12 px-5 pb-12">
         <form
           onSubmit={handleSubmit}
-          className="mx-auto w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-7"
+          className="mx-auto w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_14px_44px_-16px_rgba(20,40,70,0.28)] sm:p-7"
         >
           {/* 1 · Horário */}
           <SecaoTitulo n={1}>Escolha seu horário</SecaoTitulo>
@@ -504,12 +634,7 @@ export default function ParadaCertaForm() {
           </div>
 
           {/* Aviso */}
-          <div className="mt-6 rounded-xl border border-carbo-azul/20 bg-carbo-azul/5 px-4 py-3">
-            <p className="text-[13px] leading-relaxed text-carbo-grafite/70">
-              <span className="font-semibold text-carbo-grafite">Importante:</span>{" "}
-              chegue 10 minutos antes do horário escolhido para a preparação do veículo.
-            </p>
-          </div>
+          <AvisoChegada className="mt-6" />
 
           {erro && (
             <p className="mt-4 text-center text-sm font-medium text-red-600">{erro}</p>
@@ -609,7 +734,92 @@ function Linha({
   );
 }
 
+/* ─── Aviso em destaque (tarja vermelha) ─────────────────────── */
+function AvisoChegada({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`flex items-start gap-3 rounded-xl border border-red-200 border-l-4 border-l-red-500 bg-red-50 px-4 py-3.5 ${className}`}
+    >
+      <svg viewBox="0 0 24 24" fill="none" className="mt-0.5 h-5 w-5 shrink-0 text-red-600">
+        <path
+          d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M12 9v4m0 4h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+      <div>
+        <p className="text-sm font-bold uppercase tracking-wide text-red-700">
+          Atenção — chegue 10 min antes
+        </p>
+        <p className="mt-0.5 text-[13px] leading-relaxed text-red-600/90">
+          Esse tempo é usado para a preparação do veículo. Quem chega em cima da
+          hora pode perder a vaga.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Helpers de canvas (comprovante) ────────────────────────── */
+function desenharLinhas(
+  ctx: CanvasRenderingContext2D,
+  texto: string,
+  x: number,
+  y: number,
+  larguraMax: number,
+  alturaLinha: number,
+) {
+  const palavras = texto.split(" ");
+  let linha = "";
+  let yy = y;
+  for (const p of palavras) {
+    const teste = linha ? `${linha} ${p}` : p;
+    if (ctx.measureText(teste).width > larguraMax && linha) {
+      ctx.fillText(linha, x, yy);
+      linha = p;
+      yy += alturaLinha;
+    } else {
+      linha = teste;
+    }
+  }
+  if (linha) ctx.fillText(linha, x, yy);
+}
+
+function desenharRetanguloArredondado(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
 /* ─── Ícones ─────────────────────────────────────────────────── */
+function IconeDownload() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+      <path
+        d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function IconeData() {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
