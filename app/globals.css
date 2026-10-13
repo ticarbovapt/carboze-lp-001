@@ -71,6 +71,13 @@ body {
   color: #093a30;
 }
 
+/* Painel admin — impressão / "Salvar como PDF" */
+@media print {
+  .pc-no-print { display: none !important; }
+  .pc-print-only { display: block !important; }
+  .pc-card { break-inside: avoid; }
+}
+
 /* FAQ accordion animation */
 details summary {
   list-style: none;
