@@ -2,37 +2,57 @@
 // Usados pelas rotas de servidor (confirmação e lembretes).
 // *texto* entre asteriscos vira negrito no WhatsApp.
 
-const LOCAL =
-  "Container Parada Certa — Marginal Arena das Dunas, Lagoa Nova, Natal/RN";
-const DATA = "sábado, 31/10";
+const LOCAL = "Container Parada Certa – Arena das Dunas, Natal/RN.";
 
 function primeiroNome(nome: string) {
   const limpo = nome.trim();
   return limpo.split(/\s+/)[0] || limpo;
 }
 
+// 1) Confirmação — logo após o agendamento.
 export function msgConfirmacao(nome: string, horario: string) {
-  return `Olá, ${primeiroNome(nome)}! Seu agendamento na *Ação Parada Certa* está confirmado ✅
+  return `✅ Agendamento confirmado!
 
-📅 ${DATA} às ${horario}
+Olá, ${primeiroNome(nome)}! Sua participação na Ação Parada Certa do Grupo Carbo está confirmada!
+
+Prepare-se para viver uma experiência exclusiva com a tecnologia de descarbonização CarboVapt! 🚗
+
+📅 31/10, às ${horario}
 📍 ${LOCAL}
 
-Chegue 10 minutos antes do horário para a preparação do veículo. Qualquer imprevisto, é só responder esta mensagem.`;
+Pedimos que chegue com 10 minutos de antecedência para a preparação do veículo.
+
+Até lá! 💙`;
 }
 
+// 2) Lembrete — 1 dia antes (24h).
 export function msgLembrete1Dia(nome: string, horario: string) {
-  return `Oi, ${primeiroNome(nome)}! Passando pra lembrar: *amanhã* é o seu horário na Ação Parada Certa.
+  return `📅 Seu atendimento no Grupo Carbo é amanhã!
 
-📅 ${DATA} às ${horario}
-📍 ${LOCAL}
+Olá, ${primeiroNome(nome)}! Passando para lembrar que amanhã é o seu horário na Ação Parada Certa, onde você vai conhecer na prática a tecnologia de descarbonização CarboVapt! 🚗
 
-Chegue 10 minutos antes. Te esperamos!`;
+🕘 Horário: ${horario} — 31/10
+📍 Local: ${LOCAL}
+
+Pedimos que chegue com 10 minutos de antecedência para a preparação do veículo.
+
+Caso tenha algum imprevisto e não possa comparecer, responda a esta mensagem nos avisando.
+
+Esperamos você! 💙`;
 }
 
+// 3) Lembrete — 1 hora antes.
 export function msgLembrete1Hora(nome: string, horario: string) {
-  return `${primeiroNome(nome)}, falta pouco! ⏰ Seu horário na Ação Parada Certa é hoje às ${horario}.
+  return `🚗 Sua experiência com o Grupo Carbo está chegando!
 
-📍 ${LOCAL}
+Olá, ${primeiroNome(nome)}! Falta apenas 1 hora para seu atendimento na Ação Parada Certa, onde você vai conhecer na prática a tecnologia CarboVapt!
 
-Saia com antecedência e chegue 10 minutos antes para a preparação do veículo.`;
+🕘 Horário: ${horario}
+📍 Local: ${LOCAL}
+
+Pedimos que chegue com 10 minutos de antecedência para a preparação do veículo.
+
+Caso tenha algum imprevisto e não possa comparecer, responda a esta mensagem nos avisando.
+
+Esperamos você! 🚀`;
 }
