@@ -5,33 +5,10 @@ import Image from "next/image";
 import LovableHeader from "@/components/LovableHeader";
 
 /* ─── Instagram ──────────────────────────────────────────────── */
-const IG_USER = "ocarboze";
-const IG_WEB = `https://instagram.com/${IG_USER}`;
-
-// Abre o perfil no APP do Instagram quando possível (no celular a pessoa
-// costuma estar logada no app, não no navegador). Se o app não abrir
-// (não instalado) ou for desktop, cai para o navegador.
-function abrirInstagram(e?: React.MouseEvent) {
-  if (e) e.preventDefault();
-  if (typeof navigator === "undefined") return;
-  const ehMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-  if (!ehMobile) {
-    window.open(IG_WEB, "_blank", "noopener,noreferrer");
-    return;
-  }
-  let saiu = false;
-  const aoSair = () => {
-    saiu = true;
-  };
-  document.addEventListener("visibilitychange", aoSair, { once: true });
-  window.location.href = `instagram://user?username=${IG_USER}`;
-  window.setTimeout(() => {
-    document.removeEventListener("visibilitychange", aoSair);
-    if (!saiu && document.visibilityState === "visible") {
-      window.location.href = IG_WEB;
-    }
-  }, 1500);
-}
+// Sempre em NOVA ABA (target="_blank"): no celular o link universal do
+// Instagram abre o app quando instalado; senão abre uma aba nova do
+// navegador. Em nenhum caso a pessoa perde o formulário.
+const IG_WEB = "https://instagram.com/ocarboze";
 
 /* ─── Helpers de estilo (padrão CarboZé) ─────────────────────── */
 function Label({
@@ -219,13 +196,14 @@ export default function QueroTestarForm() {
               <p className="font-[family-name:var(--font-archivo)] text-sm text-white/70">
                 Já segue a gente? Os melhores relatos vão pro nosso Instagram 👀
               </p>
-              <button
-                type="button"
-                onClick={abrirInstagram}
+              <a
+                href={IG_WEB}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-limao px-6 py-3.5 font-[family-name:var(--font-basement)] text-sm font-extrabold uppercase tracking-wide text-verde-escuro transition-all hover:brightness-110 active:scale-[0.98]"
               >
                 <IconeInstagram /> Seguir o @ocarboze
-              </button>
+              </a>
             </div>
           </div>
         ) : (
@@ -245,7 +223,8 @@ export default function QueroTestarForm() {
                 a moto ficou. Os melhores relatos vão pro{" "}
                 <a
                   href={IG_WEB}
-                  onClick={abrirInstagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="font-semibold text-limao hover:underline"
                 >
                   @ocarboze
