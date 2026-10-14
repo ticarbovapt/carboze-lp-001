@@ -4,6 +4,35 @@ import { useState, useEffect, useCallback, FormEvent } from "react";
 import Image from "next/image";
 import LovableHeader from "@/components/LovableHeader";
 
+/* ─── Instagram ──────────────────────────────────────────────── */
+const IG_USER = "ocarboze";
+const IG_WEB = `https://instagram.com/${IG_USER}`;
+
+// Abre o perfil no APP do Instagram quando possível (no celular a pessoa
+// costuma estar logada no app, não no navegador). Se o app não abrir
+// (não instalado) ou for desktop, cai para o navegador.
+function abrirInstagram(e?: React.MouseEvent) {
+  if (e) e.preventDefault();
+  if (typeof navigator === "undefined") return;
+  const ehMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (!ehMobile) {
+    window.open(IG_WEB, "_blank", "noopener,noreferrer");
+    return;
+  }
+  let saiu = false;
+  const aoSair = () => {
+    saiu = true;
+  };
+  document.addEventListener("visibilitychange", aoSair, { once: true });
+  window.location.href = `instagram://user?username=${IG_USER}`;
+  window.setTimeout(() => {
+    document.removeEventListener("visibilitychange", aoSair);
+    if (!saiu && document.visibilityState === "visible") {
+      window.location.href = IG_WEB;
+    }
+  }, 1500);
+}
+
 /* ─── Helpers de estilo (padrão CarboZé) ─────────────────────── */
 function Label({
   htmlFor,
@@ -185,6 +214,19 @@ export default function QueroTestarForm() {
                 logo a gente se fala!
               </p>
             </div>
+
+            <div className="w-full border-t border-white/10 pt-5">
+              <p className="font-[family-name:var(--font-archivo)] text-sm text-white/70">
+                Já segue a gente? Os melhores relatos vão pro nosso Instagram 👀
+              </p>
+              <button
+                type="button"
+                onClick={abrirInstagram}
+                className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-limao px-6 py-3.5 font-[family-name:var(--font-basement)] text-sm font-extrabold uppercase tracking-wide text-verde-escuro transition-all hover:brightness-110 active:scale-[0.98]"
+              >
+                <IconeInstagram /> Seguir o @ocarboze
+              </button>
+            </div>
           </div>
         ) : (
           /* ─── Formulário ──────────────────────────────────── */
@@ -202,9 +244,8 @@ export default function QueroTestarForm() {
                 Deixa seu contato aqui. A gente te chama no WhatsApp pra saber como
                 a moto ficou. Os melhores relatos vão pro{" "}
                 <a
-                  href="https://instagram.com/ocarboze"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={IG_WEB}
+                  onClick={abrirInstagram}
                   className="font-semibold text-limao hover:underline"
                 >
                   @ocarboze
@@ -278,7 +319,8 @@ export default function QueroTestarForm() {
                 className="mt-0.5 h-4 w-4 shrink-0 accent-limao"
               />
               <span className="font-[family-name:var(--font-archivo)] text-xs leading-snug text-white/70">
-                Autorizo o uso da minha imagem e do meu relato nas redes do CarboZé.{" "}
+                Autorizo o uso da minha imagem e do meu relato nas redes do CarboZé.
+                <span className="text-limao"> *</span>{" "}
                 <button
                   type="button"
                   onClick={() => setTermosAberto(true)}
@@ -341,5 +383,15 @@ export default function QueroTestarForm() {
 
       {termosAberto && <TermosModal onClose={() => setTermosAberto(false)} />}
     </main>
+  );
+}
+
+function IconeInstagram() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+    </svg>
   );
 }
