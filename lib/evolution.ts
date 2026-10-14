@@ -17,6 +17,37 @@ export function evolutionConfigurado() {
   return Boolean(URL_BASE && INSTANCIA && APIKEY);
 }
 
+/** Dados não-sensíveis para diagnóstico (nunca inclui a apikey). */
+export function evolutionInfo() {
+  return {
+    configurado: evolutionConfigurado(),
+    versao: VERSAO,
+    url: URL_BASE ? URL_BASE.replace(/\/+$/, "") : null,
+    instancia: INSTANCIA ?? null,
+  };
+}
+
+/** Consulta o estado da conexão da instância (não envia mensagem). */
+export async function estadoConexao(): Promise<{
+  ok: boolean;
+  status?: number;
+  body?: string;
+  erro?: string;
+}> {
+  if (!evolutionConfigurado()) return { ok: false, erro: "evolution_nao_configurado" };
+  const url = `${URL_BASE!.replace(/\/+$/, "")}/instance/connectionState/${INSTANCIA}`;
+  try {
+    const res = await fetch(url, {
+      headers: { apikey: APIKEY! },
+      signal: AbortSignal.timeout(8000),
+    });
+    const body = await res.text().catch(() => "");
+    return { ok: res.ok, status: res.status, body: body.slice(0, 500) };
+  } catch (e) {
+    return { ok: false, erro: e instanceof Error ? e.message : "falha_conexao" };
+  }
+}
+
 export type EnvioResultado = {
   ok: boolean;
   status?: number;

@@ -52,9 +52,17 @@ export async function POST(req: Request) {
   //    ainda não estiver configurado, o agendamento continua válido.
   if (r?.ok) {
     try {
-      await enviarWhatsApp(telefone, msgConfirmacao(b.nome ?? "", b.horario ?? ""));
-    } catch {
-      /* ignora: o agendamento já está salvo */
+      const envio = await enviarWhatsApp(
+        telefone,
+        msgConfirmacao(b.nome ?? "", b.horario ?? ""),
+      );
+      if (envio.ok) {
+        console.log("[parada-certa] confirmação enviada", { status: envio.status });
+      } else {
+        console.error("[parada-certa] confirmação NÃO enviada", envio);
+      }
+    } catch (e) {
+      console.error("[parada-certa] erro ao enviar confirmação", e);
     }
   }
 
