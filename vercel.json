@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/parada-certa/lembretes",
+      "schedule": "*/10 * * * *"
+    }
+  ]
+}
