@@ -178,11 +178,11 @@ export default function QueroTestarForm() {
             </div>
             <div>
               <h1 className="font-[family-name:var(--font-basement)] text-2xl font-extrabold uppercase text-white">
-                Cadastro confirmado!
+                Valeu, {nome.trim().split(/\s+/)[0] || "você"}! 😎
               </h1>
               <p className="mt-2 font-[family-name:var(--font-archivo)] text-sm leading-relaxed text-white/70">
-                Recebemos seus dados. Em breve a gente entra em contato pelo
-                WhatsApp com os próximos passos do seu teste com o CarboZé. 🚀
+                Salva nosso número no WhatsApp pra não perder a mensagem. Logo,
+                logo a gente se fala!
               </p>
             </div>
           </div>
@@ -192,15 +192,24 @@ export default function QueroTestarForm() {
             {/* Cabeçalho */}
             <div className="text-center">
               <span className="font-[family-name:var(--font-archivo)] text-[11px] uppercase tracking-[0.18em] text-limao">
-                Teste gratuito
+                Ação Grupo Carbo + Parada Certa
               </span>
               <h1 className="mt-2 font-[family-name:var(--font-basement)] text-3xl font-extrabold uppercase leading-tight text-white sm:text-4xl">
-                Teste o CarboZé na{" "}
-                <span className="text-limao">sua moto</span>
+                Seu motor protegido com o{" "}
+                <span className="text-limao">CarboZé</span>
               </h1>
               <p className="mt-3 font-[family-name:var(--font-archivo)] text-sm leading-relaxed text-white/70">
-                Cadastre-se para receber o CarboZé e testar no seu veículo. Depois
-                a gente entra em contato pra saber como foi a sua experiência.
+                Deixa seu contato aqui. A gente te chama no WhatsApp pra saber como
+                a moto ficou. Os melhores relatos vão pro{" "}
+                <a
+                  href="https://instagram.com/ocarboze"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-limao hover:underline"
+                >
+                  @ocarboze
+                </a>
+                . Cuida!
               </p>
             </div>
 
@@ -302,12 +311,13 @@ export default function QueroTestarForm() {
                   Enviando…
                 </span>
               ) : (
-                "Quero testar o CarboZé →"
+                "Receber meu CarboZé →"
               )}
             </button>
 
             <p className="text-center font-[family-name:var(--font-archivo)] text-xs text-white/25">
-              Seus dados são usados apenas para contato sobre o teste.
+              Seus dados estão protegidos e serão usados apenas para entrarmos em
+              contato sobre o CarboZé.
             </p>
           </form>
         )}
