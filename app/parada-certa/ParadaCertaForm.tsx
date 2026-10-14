@@ -453,10 +453,22 @@ export default function ParadaCertaForm() {
         <h1 className="mx-auto mt-4 max-w-2xl font-[family-name:var(--font-basement)] text-4xl font-extrabold uppercase leading-[1.05] sm:text-5xl">
           Ação Parada Certa
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/85">
-          Reserve seu horário para o check-up do seu veículo. O atendimento é
-          individual e cada vaga tem tempo reservado só para você.
-        </p>
+        <div className="mx-auto mt-4 max-w-xl space-y-3 text-[15px] leading-relaxed text-white/90">
+          <p>
+            A <strong className="font-semibold">Ação Parada Certa</strong> é uma
+            oportunidade exclusiva para você cuidar do seu veículo gratuitamente!
+          </p>
+          <p>
+            Em parceria com o <strong className="font-semibold">Grupo Carbo</strong>,
+            você terá a chance de realizar a descarbonização do seu motor com a{" "}
+            <strong className="font-semibold">CarboVapt</strong> — uma tecnologia única
+            e exclusiva no Brasil, que realiza a limpeza interna do motor sem
+            desmontagem e em até 1 hora.
+          </p>
+          <p className="font-semibold text-white">
+            Aproveite essa oportunidade! As vagas são limitadas.
+          </p>
+        </div>
 
         {/* Informações do evento */}
         <div className="mx-auto mt-6 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/90">
