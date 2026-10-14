@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, FormEvent } from "react";
 import Image from "next/image";
-import { insertRow } from "@/lib/supabase";
 import LovableHeader from "@/components/LovableHeader";
 
 /* ─── Helpers de estilo (padrão CarboZé) ─────────────────────── */
@@ -140,19 +139,26 @@ export default function QueroTestarForm() {
     if (!autoriza)
       return setErro("É preciso autorizar o uso de imagem e relato para participar.");
 
-    const ig = instagram.trim();
-    const igNorm = ig ? (ig.startsWith("@") ? ig : `@${ig}`) : null;
-
     setStatus("loading");
     try {
-      await insertRow("teste_carboze", {
-        nome: nome.trim(),
-        telefone: "55" + digits,
-        modelo_moto: modelo.trim(),
-        instagram: igNorm,
-        autoriza_imagem: true,
+      const resp = await fetch("/api/recebermeucarboze/cadastrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: nome.trim(),
+          telefone: digits,
+          modelo_moto: modelo.trim(),
+          instagram: instagram.trim() || null,
+          autoriza_imagem: true,
+        }),
       });
-      setStatus("success");
+      const r = (await resp.json()) as { ok?: boolean };
+      if (r?.ok) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+        setErro("Não foi possível enviar agora. Tente novamente em instantes.");
+      }
     } catch {
       setStatus("error");
       setErro("Não foi possível enviar agora. Tente novamente em instantes.");
