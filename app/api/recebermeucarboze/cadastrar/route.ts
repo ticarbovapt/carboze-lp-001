@@ -14,11 +14,7 @@ type Corpo = {
 
 function msgCadastro(nome: string) {
   const pn = nome.trim().split(/\s+/)[0] || nome.trim();
-  return `Olá, ${pn}! ✅ Recebemos o seu cadastro para testar o *CarboZé* na sua moto.
-
-Em breve a nossa equipe entra em contato por aqui com os próximos passos.
-
-Obrigado por participar! 💚`;
+  return `Oi, ${pn}! Aqui é do CarboZé, salva nosso número que daqui a 3 dias a gente te chama. Até lá! 😎`;
 }
 
 export async function POST(req: Request) {
