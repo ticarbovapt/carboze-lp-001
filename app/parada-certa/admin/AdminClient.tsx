@@ -18,6 +18,7 @@ const GRAD = "linear-gradient(100deg, #2b7fe4, #1fae4d)";
 const CHAVE_SESSAO = "pc_admin_senha";
 
 type Agendamento = {
+  id: string;
   nome: string;
   telefone: string;
   veiculo: string;
@@ -132,6 +133,21 @@ export default function AdminClient() {
   const confEnviadas = dados.filter((a) => a.confirmacao_enviada).length;
   const env24h = dados.filter((a) => a.lembrete_24h_enviado).length;
   const env1h = dados.filter((a) => a.lembrete_1h_enviado).length;
+
+  async function cancelar(a: Agendamento) {
+    if (
+      !window.confirm(
+        `Cancelar o agendamento de ${a.nome} (${a.horario})?\nA vaga ficará livre para outra pessoa.`,
+      )
+    )
+      return;
+    try {
+      await callRpc("parada_certa_cancelar", { p_id: a.id, p_senha: senha });
+      buscar(senha);
+    } catch {
+      window.alert("Não foi possível cancelar agora. Tente novamente.");
+    }
+  }
 
   function exportarCsv() {
     const cab = [
@@ -441,17 +457,25 @@ export default function AdminClient() {
                             <ChipStatus label="1h" ok={a.lembrete_1h_enviado} />
                           </div>
                         </div>
-                        <a
-                          href={`https://wa.me/${a.telefone.replace(/\D/g, "")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="pc-no-print flex shrink-0 items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-carbo-grafite transition hover:border-carbo-verde hover:text-carbo-verde"
-                        >
-                          <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                            <path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3A2.9 2.9 0 007 9.3c0 1.7 1.3 3.4 1.5 3.6s2.5 3.8 6 5c.8.3 1.5.5 2 .7.8.2 1.6.2 2.2.1.7-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.2-.2-.3-.4-.4z" />
-                          </svg>
-                          WhatsApp
-                        </a>
+                        <div className="pc-no-print flex shrink-0 flex-col items-end gap-1.5">
+                          <a
+                            href={`https://wa.me/${a.telefone.replace(/\D/g, "")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-carbo-grafite transition hover:border-carbo-verde hover:text-carbo-verde"
+                          >
+                            <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                              <path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3A2.9 2.9 0 007 9.3c0 1.7 1.3 3.4 1.5 3.6s2.5 3.8 6 5c.8.3 1.5.5 2 .7.8.2 1.6.2 2.2.1.7-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.2-.2-.3-.4-.4z" />
+                            </svg>
+                            WhatsApp
+                          </a>
+                          <button
+                            onClick={() => cancelar(a)}
+                            className="text-[11px] font-semibold text-red-500 transition hover:text-red-600"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
