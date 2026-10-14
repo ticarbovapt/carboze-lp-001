@@ -156,11 +156,31 @@ export default function ParadaCertaForm() {
     }
   }, []);
 
+  // Atualização ao vivo: busca as contagens a cada 8s (silencioso, sem
+  // recarregar a página) e também assim que a aba volta ao foco.
   useEffect(() => {
     carregarDisponibilidade();
+    const id = setInterval(() => {
+      if (!document.hidden) carregarDisponibilidade();
+    }, 8000);
+    const aoVoltar = () => {
+      if (!document.hidden) carregarDisponibilidade();
+    };
+    document.addEventListener("visibilitychange", aoVoltar);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", aoVoltar);
+    };
   }, [carregarDisponibilidade]);
 
   const vagas = (h: string) => CAPACIDADE - (ocupacao[h] ?? 0);
+
+  // Se o horário escolhido lotar enquanto a pessoa preenche, solta a seleção.
+  useEffect(() => {
+    if (horario && CAPACIDADE - (ocupacao[horario] ?? 0) <= 0) {
+      setHorario("");
+    }
+  }, [ocupacao, horario]);
   const tudoLotado = HORARIOS.every((h) => vagas(h) <= 0);
 
   async function handleSubmit(e: FormEvent) {
@@ -494,6 +514,13 @@ export default function ParadaCertaForm() {
         >
           {/* 1 · Horário */}
           <SecaoTitulo n={1}>Escolha seu horário</SecaoTitulo>
+          <p className="mt-1.5 flex items-center gap-1.5 text-[11px] text-carbo-grafite/45">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-carbo-verde opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-carbo-verde" />
+            </span>
+            Vagas atualizadas em tempo real
+          </p>
 
           {carregando ? (
             <div className="mt-4 grid grid-cols-3 gap-2.5 sm:grid-cols-4">
