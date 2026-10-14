@@ -185,15 +185,20 @@ export default function ParadaCertaForm() {
 
     setStatus("loading");
     try {
-      const r = await callRpc<AgendarResp>("parada_certa_agendar", {
-        p_nome: nome.trim(),
-        p_telefone: "55" + digits,
-        p_veiculo: veiculo.trim(),
-        p_ano: ano,
-        p_km: km.trim(),
-        p_data: DATA_ACAO,
-        p_horario: horario,
+      const resp = await fetch("/api/parada-certa/agendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: nome.trim(),
+          telefone: digits,
+          veiculo: veiculo.trim(),
+          ano,
+          km: km.trim(),
+          data: DATA_ACAO,
+          horario,
+        }),
       });
+      const r = (await resp.json()) as AgendarResp;
 
       if (r?.ok) {
         setConfirmado({ nome: nome.trim(), veiculo: veiculo.trim(), horario });
