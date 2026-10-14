@@ -26,6 +26,9 @@ type Agendamento = {
   data: string;
   horario: string;
   criado_em: string;
+  confirmacao_enviada: boolean;
+  lembrete_24h_enviado: boolean;
+  lembrete_1h_enviado: boolean;
 };
 type AdminResp = { ok: boolean; agendamentos?: Agendamento[] };
 
@@ -126,9 +129,16 @@ export default function AdminClient() {
   const esgotados = HORARIOS.filter(
     (h) => dados.filter((a) => a.horario === h).length >= CAPACIDADE,
   ).length;
+  const confEnviadas = dados.filter((a) => a.confirmacao_enviada).length;
+  const env24h = dados.filter((a) => a.lembrete_24h_enviado).length;
+  const env1h = dados.filter((a) => a.lembrete_1h_enviado).length;
 
   function exportarCsv() {
-    const cab = ["Nome", "Telefone", "WhatsApp", "Veículo", "Ano", "KM", "Data", "Horário", "Agendado em"];
+    const cab = [
+      "Nome", "Telefone", "WhatsApp", "Veículo", "Ano", "KM", "Data", "Horário",
+      "Agendado em", "Confirmação", "Lembrete 24h", "Lembrete 1h",
+    ];
+    const simNao = (v: boolean) => (v ? "Sim" : "Não");
     const linhas = dados.map((a) => [
       a.nome,
       a.telefone,
@@ -139,6 +149,9 @@ export default function AdminClient() {
       a.data,
       a.horario,
       a.criado_em,
+      simNao(a.confirmacao_enviada),
+      simNao(a.lembrete_24h_enviado),
+      simNao(a.lembrete_1h_enviado),
     ]);
     const esc = (c: string) => `"${String(c).replace(/"/g, '""')}"`;
     const csv = [cab, ...linhas].map((l) => l.map(esc).join(";")).join("\n");
@@ -303,6 +316,30 @@ export default function AdminClient() {
           </div>
         </div>
 
+        {/* Disparos de WhatsApp */}
+        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-carbo-grafite/60">
+            Mensagens enviadas
+          </p>
+          <div className="mt-2 grid grid-cols-3 gap-2 text-center">
+            {[
+              { rot: "Confirmação", n: confEnviadas },
+              { rot: "Lembrete 24h", n: env24h },
+              { rot: "Lembrete 1h", n: env1h },
+            ].map(({ rot, n }) => (
+              <div key={rot} className="rounded-lg bg-carbo-fundo/60 py-2">
+                <p className="font-[family-name:var(--font-basement)] text-xl font-extrabold text-carbo-verde">
+                  {n}
+                </p>
+                <p className="text-[11px] text-carbo-grafite/55">
+                  {rot}
+                  <span className="text-carbo-grafite/35"> / {total}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Ocupação por horário */}
         <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-6">
           {porHorario.map(({ horario, todos }) => {
@@ -398,6 +435,11 @@ export default function AdminClient() {
                           <p className="mt-0.5 text-[11px] text-carbo-grafite/40">
                             Agendado em {a.criado_em}
                           </p>
+                          <div className="mt-1.5 flex flex-wrap gap-1.5">
+                            <ChipStatus label="Confirmação" ok={a.confirmacao_enviada} />
+                            <ChipStatus label="24h" ok={a.lembrete_24h_enviado} />
+                            <ChipStatus label="1h" ok={a.lembrete_1h_enviado} />
+                          </div>
                         </div>
                         <a
                           href={`https://wa.me/${a.telefone.replace(/\D/g, "")}`}
@@ -446,6 +488,19 @@ function Tile({
       </p>
       {sub && <p className="text-xs text-carbo-grafite/45">{sub}</p>}
     </div>
+  );
+}
+
+function ChipStatus({ label, ok }: { label: string; ok: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
+        ok ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-400"
+      }`}
+    >
+      <span className={`h-1.5 w-1.5 rounded-full ${ok ? "bg-green-500" : "bg-gray-300"}`} />
+      {label}
+    </span>
   );
 }
 

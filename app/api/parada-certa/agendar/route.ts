@@ -58,6 +58,19 @@ export async function POST(req: Request) {
       );
       if (envio.ok) {
         console.log("[parada-certa] confirmação enviada", { status: envio.status });
+        // Marca no banco (para o painel admin). Best-effort.
+        if (process.env.CRON_SECRET) {
+          try {
+            await callRpc("parada_certa_marcar_confirmacao", {
+              p_telefone: telefone,
+              p_data: b.data ?? "",
+              p_horario: b.horario ?? "",
+              p_secret: process.env.CRON_SECRET,
+            });
+          } catch {
+            /* monitoramento best-effort */
+          }
+        }
       } else {
         console.error("[parada-certa] confirmação NÃO enviada", envio);
       }
