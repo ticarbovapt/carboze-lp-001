@@ -54,36 +54,29 @@ export type EnvioResultado = {
   erro?: string;
 };
 
-/** Envia uma mensagem de texto via Evolution. Best-effort: nunca lança. */
-export async function enviarWhatsApp(
-  telefone: string,
+// O corpo do sendText muda entre versões do Evolution: v2 é "plano",
+// v1 é aninhado em textMessage/options.
+function corpoPara(numero: string, texto: string, versao: string) {
+  return versao === "v1"
+    ? {
+        number: numero,
+        textMessage: { text: texto },
+        options: { delay: 1200, presence: "composing" },
+      }
+    : { number: numero, text: texto, delay: 1200 };
+}
+
+async function enviarUma(
+  numero: string,
   texto: string,
+  versao: string,
 ): Promise<EnvioResultado> {
-  if (!evolutionConfigurado()) {
-    return { ok: false, erro: "evolution_nao_configurado" };
-  }
-
-  const numero = telefone.replace(/\D/g, "");
   const url = `${URL_BASE!.replace(/\/+$/, "")}/message/sendText/${INSTANCIA}`;
-
-  // O corpo muda entre versões do Evolution.
-  const corpo =
-    VERSAO === "v1"
-      ? {
-          number: numero,
-          textMessage: { text: texto },
-          options: { delay: 1200, presence: "composing" },
-        }
-      : { number: numero, text: texto, delay: 1200 };
-
   try {
     const res = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: APIKEY!,
-      },
-      body: JSON.stringify(corpo),
+      headers: { "Content-Type": "application/json", apikey: APIKEY! },
+      body: JSON.stringify(corpoPara(numero, texto, versao)),
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) {
@@ -94,4 +87,28 @@ export async function enviarWhatsApp(
   } catch (e) {
     return { ok: false, erro: e instanceof Error ? e.message : "falha_envio" };
   }
+}
+
+/**
+ * Envia uma mensagem de texto via Evolution. Best-effort: nunca lança.
+ * Tenta o formato da versão configurada e, se tomar 400 (formato errado
+ * para esta versão do Evolution), tenta automaticamente o outro formato.
+ */
+export async function enviarWhatsApp(
+  telefone: string,
+  texto: string,
+): Promise<EnvioResultado> {
+  if (!evolutionConfigurado()) {
+    return { ok: false, erro: "evolution_nao_configurado" };
+  }
+
+  const numero = telefone.replace(/\D/g, "");
+  const primeira = VERSAO === "v1" ? "v1" : "v2";
+
+  const r = await enviarUma(numero, texto, primeira);
+  if (r.ok || r.status !== 400) return r;
+
+  // 400 costuma ser formato incompatível com a versão do servidor.
+  const alternativa = primeira === "v1" ? "v2" : "v1";
+  return enviarUma(numero, texto, alternativa);
 }
