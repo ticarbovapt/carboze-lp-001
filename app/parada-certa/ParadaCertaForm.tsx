@@ -467,26 +467,31 @@ export default function ParadaCertaForm() {
         className="rounded-b-[2rem] px-5 pt-12 pb-20 text-center text-white"
         style={{ backgroundImage: "linear-gradient(135deg, #2b7fe4 0%, #1fae4d 100%)" }}
       >
-        <span className="inline-block rounded-full bg-white/15 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white ring-1 ring-white/25">
-          Agendamento gratuito
+        <span className="inline-block rounded-full bg-white/15 px-3.5 py-1 text-[11px] font-bold uppercase leading-tight tracking-[0.12em] text-white ring-1 ring-white/25">
+          Ei, você, motorista de aplicativo!
         </span>
         <h1 className="mx-auto mt-4 max-w-2xl font-[family-name:var(--font-basement)] text-4xl font-extrabold uppercase leading-[1.05] sm:text-5xl">
-          Ação Parada Certa
+          Grupo Carbo com o Parada Certa
         </h1>
         <div className="mx-auto mt-4 max-w-xl space-y-3 text-[15px] leading-relaxed text-white/90">
-          <p>
-            A <strong className="font-semibold">Ação Parada Certa</strong> é uma
-            oportunidade exclusiva para você cuidar do seu veículo gratuitamente!
+          <p className="text-base font-semibold text-white">
+            Carro parado é dia perdido, né?
           </p>
           <p>
-            Em parceria com o <strong className="font-semibold">Grupo Carbo</strong>,
-            você terá a chance de realizar a descarbonização do seu motor com a{" "}
-            <strong className="font-semibold">CarboVapt</strong> — uma tecnologia única
-            e exclusiva no Brasil, que realiza a limpeza interna do motor sem
-            desmontagem e em até 1 hora.
+            Na Ação Parada Certa,{" "}
+            <strong className="font-semibold">24 motoristas de aplicativo</strong> vão
+            poder fazer a descarbonização do carro com a{" "}
+            <strong className="font-semibold">CarboVapt</strong>, uma tecnologia
+            exclusiva no Brasil que limpa o motor por dentro, sem desmonte e em até 1
+            hora. E totalmente gratuito!
+          </p>
+          <p>
+            E você ainda sai com o cadastro no nosso{" "}
+            <strong className="font-semibold">Sistema de Alerta de Manutenção</strong>,
+            pra saber a hora certa de trocar cada peça do carro.
           </p>
           <p className="font-semibold text-white">
-            Aproveite essa oportunidade! As vagas são limitadas.
+            Só 24 vagas. Garanta a sua agora.
           </p>
         </div>
 
