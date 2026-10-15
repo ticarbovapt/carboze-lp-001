@@ -1,6 +1,7 @@
-// ─── URLs base da loja (domínio oficial: loja.carboze.com.br) ─────────────────
-const NS_MOTOS  = "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-moto-10ml-tratamento-de-combustivel-e-protecao-do-motor/";
-const NS_CARROS = "https://loja.carboze.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor/";
+// ─── URLs base do checkout (Payt) ─────────────────────────────────────────────
+// Cada produto tem um link de checkout próprio na Payt.
+const NS_MOTOS  = "https://checkout.payt.com.br/f9bbfe6aa571aedc3df0948e1d7fe240"; // Kit 10 sachês 10ml — R$ 59,00
+const NS_CARROS = "https://checkout.payt.com.br/77c69cb83752706defb1594a36777a0a"; // Kit 5 frascos 100ml — R$ 149,00
 
 // ─── VSL hospedada no VTurb ──────────────────────────────────────────────────
 // Mesma VSL na seção "A ciência" de todas as LPs. Trocar o vídeo é editar
@@ -41,8 +42,8 @@ export const CHECKOUT_URL    = CHECKOUT_MOTOS;
 //   sachê  R$ 59,90 → R$ 56,90      frascos  R$ 149,50 → R$ 142,00
 // Preço conferido em nuvemshop:price. Como o desconto vem do produto, o
 // usuário não digita cupom nenhum — é o que tira a fricção do popup.
-const NS_BACK_MOTOS  = "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-10ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1lk26/";
-const NS_BACK_CARROS = "https://loja.carboze.com.br/produtos/upsell-carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1wgnb/";
+const NS_BACK_MOTOS  = "https://checkout.payt.com.br/0f4fb0228e55d442189db1860a27d1e0"; // Kit 10 sachês — 5% OFF — R$ 56,00
+const NS_BACK_CARROS = "https://checkout.payt.com.br/99de2ae7099fdcc9c35fa89a9308cd28"; // Kit 5 frascos — 5% OFF — R$ 142,00
 
 /**
  * Link do desconto de saída. `utm_source=rotaC` marca o pedido como vindo do
@@ -62,9 +63,9 @@ export function backCheckout(produto: "motos" | "carros", campanha?: string) {
 // ticket. Os mesmos preços antes do checkout seriam desconto, não upsell —
 // o carrinho estaria vazio e o cliente pagaria o menor valor no lugar do cheio.
 const NS_UPSELL_MOTOS =
-  "https://loja.carboze.com.br/produtos/kit-10-saches-carboze-10ml-tratamento-de-combustivel-e-protecao-do-motor-copia-fovns/";
+  "https://checkout.payt.com.br/2c6863132637ca56cee2ee5d4c7b0923"; // Kit 10 sachês — 20% OFF — R$ 47,00
 const NS_UPSELL_CARROS =
-  "https://loja.carboze.com.br/produtos/carboze-kit-5-frascos-100ml-tratamento-de-combustivel-e-protecao-do-motor-copia-1p5z3/";
+  "https://checkout.payt.com.br/16568b8e0a940230b03b59de97531746"; // Kit 5 frascos — 20% OFF — R$ 119,00
 
 export const UPSELL = {
   /** Minutos do contador de urgência. */
@@ -79,15 +80,15 @@ export const UPSELL = {
     moto: {
       titulo: "Kit 10 sachês 10ml",
       subtitulo: "Ideal para moto · trata 100 litros",
-      de: "R$ 59,90",
-      por: "R$ 47,90",
+      de: "R$ 59,00",
+      por: "R$ 47,00",
       href: comUtm(NS_UPSELL_MOTOS, ROTA.upsell),
     },
     carro: {
       titulo: "Kit 5 frascos 100ml",
       subtitulo: "Ideal para carro · trata 500 litros",
-      de: "R$ 149,50",
-      por: "R$ 119,60",
+      de: "R$ 149,00",
+      por: "R$ 119,00",
       href: comUtm(NS_UPSELL_CARROS, ROTA.upsell),
     },
   },
@@ -159,12 +160,12 @@ export const EXIT_OFFER = {
   produtos: {
     moto: {
       titulo: "Moto · Kit 10 sachês",
-      de: "R$ 59,90",
-      por: "R$ 56,90",
+      de: "R$ 59,00",
+      por: "R$ 56,00",
     },
     carro: {
       titulo: "Carro · Kit 5 frascos",
-      de: "R$ 149,50",
+      de: "R$ 149,00",
       por: "R$ 142,00",
     },
   },
@@ -335,15 +336,15 @@ export const ROLETA = {
     carro: {
       titulo: "Kit 5 frascos 100ml",
       subtitulo: "Ideal para carro · trata 500 litros",
-      de: "R$ 149,50",
-      por: "R$ 119,60",
+      de: "R$ 149,00",
+      por: "R$ 119,00",
       href: comUtm(NS_UPSELL_CARROS, ROTA.upsell, "roleta"),
     },
     moto: {
       titulo: "Kit 10 sachês 10ml",
       subtitulo: "Ideal para moto · trata 100 litros",
-      de: "R$ 59,90",
-      por: "R$ 47,90",
+      de: "R$ 59,00",
+      por: "R$ 47,00",
       href: comUtm(NS_UPSELL_MOTOS, ROTA.upsell, "roleta"),
     },
   },
