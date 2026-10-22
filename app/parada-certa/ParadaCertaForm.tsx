@@ -142,6 +142,7 @@ export default function ParadaCertaForm() {
     veiculo: string;
     horario: string;
   } | null>(null);
+  const [esperaConfirmada, setEsperaConfirmada] = useState(false);
 
   const carregarDisponibilidade = useCallback(async () => {
     try {
@@ -250,6 +251,40 @@ export default function ParadaCertaForm() {
     setConfirmado(null);
     setStatus("idle");
     carregarDisponibilidade();
+  }
+
+  async function handleEspera(e: FormEvent) {
+    e.preventDefault();
+    setErro("");
+    const digits = celular.replace(/\D/g, "");
+    if (nome.trim().length < 3) return setErro("Informe seu nome completo.");
+    if (digits.length < 10 || digits.length > 11)
+      return setErro("Informe um celular válido com DDD.");
+    if (!veiculo.trim()) return setErro("Informe o modelo do veículo.");
+
+    setStatus("loading");
+    try {
+      const resp = await fetch("/api/parada-certa/lista-espera", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: nome.trim(),
+          telefone: digits,
+          veiculo: veiculo.trim(),
+        }),
+      });
+      const r = (await resp.json()) as { ok?: boolean };
+      if (r?.ok) {
+        setEsperaConfirmada(true);
+        setStatus("idle");
+      } else {
+        setStatus("idle");
+        setErro("Não foi possível entrar na lista agora. Tente novamente.");
+      }
+    } catch {
+      setStatus("idle");
+      setErro("Não foi possível entrar na lista agora. Tente novamente.");
+    }
   }
 
   async function baixarComprovante() {
@@ -374,6 +409,35 @@ export default function ParadaCertaForm() {
       a.remove();
       URL.revokeObjectURL(url);
     }, "image/png");
+  }
+
+  /* ─── Sucesso: lista de espera ─────────────────────────────── */
+  if (esperaConfirmada) {
+    return (
+      <main className="min-h-dvh bg-[#dce2e9] flex flex-col">
+        <Header />
+        <section className="flex-1 flex items-center justify-center px-5 py-10">
+          <div className="w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-[0_14px_44px_-16px_rgba(20,40,70,0.28)] p-7 sm:p-8 text-center">
+            <div
+              className="mx-auto flex h-16 w-16 items-center justify-center rounded-full"
+              style={{ backgroundImage: GRAD }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" className="h-8 w-8 text-white">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <h1 className="mt-5 font-[family-name:var(--font-basement)] text-2xl font-extrabold uppercase text-carbo-grafite">
+              Você está na lista de espera
+            </h1>
+            <p className="mt-2 text-sm leading-relaxed text-carbo-grafite/60">
+              As vagas deste dia já encerraram. Se abrir uma vaga, a gente te chama
+              no WhatsApp — fica de olho! 💙
+            </p>
+          </div>
+        </section>
+        <Footer />
+      </main>
+    );
   }
 
   /* ─── Confirmação ──────────────────────────────────────────── */
@@ -515,7 +579,80 @@ export default function ParadaCertaForm() {
         </div>
       </section>
 
-      {/* Card do formulário */}
+      {/* Card: lista de espera (quando tudo lotado) ou agendamento */}
+      {!carregando && tudoLotado ? (
+        <section className="-mt-12 px-5 pb-12">
+          <form
+            onSubmit={handleEspera}
+            className="mx-auto w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_14px_44px_-16px_rgba(20,40,70,0.28)] sm:p-7"
+          >
+            <div className="rounded-xl border border-amber-200 border-l-4 border-l-amber-500 bg-amber-50 px-4 py-3.5">
+              <p className="text-sm font-bold text-amber-800">
+                As 24 vagas já foram preenchidas.
+              </p>
+              <p className="mt-0.5 text-[13px] leading-relaxed text-amber-700/90">
+                Entre na lista de espera. Se abrir uma vaga, a gente te chama no WhatsApp.
+              </p>
+            </div>
+
+            <div className="mt-6">
+              <SecaoTitulo n={1}>Lista de espera</SecaoTitulo>
+            </div>
+
+            <div className="mt-4 flex flex-col gap-4">
+              <Campo htmlFor="e-nome" label="Nome completo">
+                <input
+                  id="e-nome"
+                  type="text"
+                  autoComplete="name"
+                  value={nome}
+                  onChange={(ev) => setNome(ev.target.value)}
+                  placeholder="Seu nome e sobrenome"
+                  className={inputClass}
+                />
+              </Campo>
+              <Campo htmlFor="e-celular" label="Celular / WhatsApp">
+                <input
+                  id="e-celular"
+                  type="tel"
+                  inputMode="numeric"
+                  autoComplete="tel"
+                  value={celular}
+                  onChange={(ev) => setCelular(mascararCelular(ev.target.value))}
+                  placeholder="(84) 99999-9999"
+                  className={inputClass}
+                />
+                <p className="text-[11px] text-carbo-grafite/45">
+                  Apenas DDD + número (não precisa do 55).
+                </p>
+              </Campo>
+              <Campo htmlFor="e-veiculo" label="Carro / modelo">
+                <input
+                  id="e-veiculo"
+                  type="text"
+                  value={veiculo}
+                  onChange={(ev) => setVeiculo(ev.target.value)}
+                  placeholder="Ex.: Fiat Argo, Honda Civic…"
+                  className={inputClass}
+                />
+              </Campo>
+            </div>
+
+            {erro && (
+              <p className="mt-4 text-center text-sm font-medium text-red-600">{erro}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              style={{ backgroundImage: GRAD }}
+              className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-4 font-[family-name:var(--font-basement)] text-base font-extrabold uppercase tracking-wide text-white shadow-sm transition hover:brightness-105 active:scale-[0.99] disabled:opacity-60"
+            >
+              {status === "loading" ? "Enviando…" : "Entrar na lista de espera"}
+            </button>
+          </form>
+        </section>
+      ) : (
       <section className="-mt-12 px-5 pb-12">
         <form
           onSubmit={handleSubmit}
@@ -721,6 +858,7 @@ export default function ParadaCertaForm() {
           </p>
         </form>
       </section>
+      )}
 
       <Footer />
     </main>

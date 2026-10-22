@@ -41,6 +41,13 @@ Caso tenha algum imprevisto e não possa comparecer, responda a esta mensagem no
 Esperamos você! 💙`;
 }
 
+// Lista de espera — quando as vagas já encerraram.
+export function msgListaEspera(nome: string) {
+  return `Oi, ${primeiroNome(nome)}! As vagas da Ação Parada Certa já encerraram, mas você entrou na nossa *lista de espera*. ✅
+
+Se abrir uma vaga, a gente te chama por aqui pelo WhatsApp. Fica de olho! 💙`;
+}
+
 // 3) Lembrete — 1 hora antes.
 export function msgLembrete1Hora(nome: string, horario: string) {
   return `🚗 Sua experiência com o Grupo Carbo está chegando!

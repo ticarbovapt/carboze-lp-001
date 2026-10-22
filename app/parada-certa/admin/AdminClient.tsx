@@ -31,7 +31,19 @@ type Agendamento = {
   lembrete_24h_enviado: boolean;
   lembrete_1h_enviado: boolean;
 };
-type AdminResp = { ok: boolean; agendamentos?: Agendamento[] };
+type ListaEspera = {
+  id: string;
+  nome: string;
+  telefone: string;
+  veiculo: string;
+  contatado: boolean;
+  criado_em: string;
+};
+type AdminResp = {
+  ok: boolean;
+  agendamentos?: Agendamento[];
+  lista_espera?: ListaEspera[];
+};
 
 function formatarTelefone(t: string) {
   const d = t.replace(/\D/g, "");
@@ -59,6 +71,7 @@ export default function AdminClient() {
   const [senha, setSenha] = useState("");
   const [autenticado, setAutenticado] = useState(false);
   const [dados, setDados] = useState<Agendamento[]>([]);
+  const [espera, setEspera] = useState<ListaEspera[]>([]);
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
   const [busca, setBusca] = useState("");
@@ -71,6 +84,7 @@ export default function AdminClient() {
       const r = await callRpc<AdminResp>("parada_certa_admin", { p_senha: senhaUsada });
       if (r?.ok) {
         setDados(r.agendamentos ?? []);
+        setEspera(r.lista_espera ?? []);
         setAutenticado(true);
         try {
           sessionStorage.setItem(CHAVE_SESSAO, senhaUsada);
@@ -109,7 +123,21 @@ export default function AdminClient() {
     }
     setAutenticado(false);
     setDados([]);
+    setEspera([]);
     setSenha("");
+  }
+
+  async function marcarContatado(item: ListaEspera, contatado: boolean) {
+    try {
+      await callRpc("parada_certa_espera_contatar", {
+        p_id: item.id,
+        p_contatado: contatado,
+        p_senha: senha,
+      });
+      buscar(senha);
+    } catch {
+      window.alert("Não foi possível atualizar agora. Tente novamente.");
+    }
   }
 
   const dadosFiltrados = useMemo(() => {
@@ -483,6 +511,61 @@ export default function AdminClient() {
               ))
           )}
         </div>
+
+        {/* Lista de espera */}
+        {espera.length > 0 && (
+          <div className="mt-8 pb-10">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="rounded-md bg-amber-500 px-2 py-0.5 font-[family-name:var(--font-basement)] text-sm font-bold text-white">
+                Lista de espera
+              </span>
+              <span className="text-xs font-semibold uppercase tracking-wide text-carbo-grafite/45">
+                {espera.length} {espera.length === 1 ? "pessoa" : "pessoas"}
+              </span>
+            </div>
+            <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_-16px_rgba(20,40,70,0.25)]">
+              {espera.map((p, i) => (
+                <div
+                  key={p.id}
+                  className={`flex items-start justify-between gap-3 px-4 py-3 ${
+                    i > 0 ? "border-t border-gray-100" : ""
+                  } ${p.contatado ? "opacity-55" : ""}`}
+                >
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-carbo-grafite">{p.nome}</p>
+                    <p className="mt-0.5 truncate text-[13px] text-carbo-grafite/60">{p.veiculo}</p>
+                    <p className="mt-0.5 text-[13px] font-medium text-carbo-grafite/80">
+                      {formatarTelefone(p.telefone)}
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-carbo-grafite/40">
+                      Entrou em {p.criado_em}
+                      {p.contatado ? " · contatado" : ""}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <a
+                      href={`https://wa.me/${p.telefone.replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-carbo-grafite transition hover:border-carbo-verde hover:text-carbo-verde"
+                    >
+                      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                        <path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3A2.9 2.9 0 007 9.3c0 1.7 1.3 3.4 1.5 3.6s2.5 3.8 6 5c.8.3 1.5.5 2 .7.8.2 1.6.2 2.2.1.7-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.2-.2-.3-.4-.4z" />
+                      </svg>
+                      WhatsApp
+                    </a>
+                    <button
+                      onClick={() => marcarContatado(p, !p.contatado)}
+                      className="text-[11px] font-semibold text-carbo-azul transition hover:brightness-110"
+                    >
+                      {p.contatado ? "Desmarcar" : "Marcar contatado"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     </main>
   );
