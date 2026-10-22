@@ -513,16 +513,21 @@ export default function AdminClient() {
         </div>
 
         {/* Lista de espera */}
-        {espera.length > 0 && (
-          <div className="mt-8 pb-10">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="rounded-md bg-amber-500 px-2 py-0.5 font-[family-name:var(--font-basement)] text-sm font-bold text-white">
-                Lista de espera
-              </span>
-              <span className="text-xs font-semibold uppercase tracking-wide text-carbo-grafite/45">
-                {espera.length} {espera.length === 1 ? "pessoa" : "pessoas"}
-              </span>
-            </div>
+        <div className="mt-8 pb-10">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="rounded-md bg-amber-500 px-2 py-0.5 font-[family-name:var(--font-basement)] text-sm font-bold text-white">
+              Lista de espera
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-wide text-carbo-grafite/45">
+              {espera.length} {espera.length === 1 ? "pessoa" : "pessoas"}
+            </span>
+          </div>
+          {espera.length === 0 ? (
+            <p className="rounded-xl border border-gray-100 bg-white p-5 text-center text-sm text-carbo-grafite/55">
+              Ninguém na lista de espera ainda. Ela aparece aqui automaticamente
+              quando as 24 vagas acabam.
+            </p>
+          ) : (
             <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_-16px_rgba(20,40,70,0.25)]">
               {espera.map((p, i) => (
                 <div
@@ -564,8 +569,8 @@ export default function AdminClient() {
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
     </main>
   );
