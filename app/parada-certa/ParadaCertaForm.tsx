@@ -49,7 +49,11 @@ const DATA_CURTA = dataObj.toLocaleDateString("pt-BR", {
 });
 
 function mascararCelular(v: string) {
-  const d = v.replace(/\D/g, "").slice(0, 11);
+  let d = v.replace(/\D/g, "");
+  // Se a pessoa digitou o DDI (55) na frente, remove — senão o 55 vira DDD
+  // e os últimos dígitos do número se perdem.
+  if (d.length > 11 && d.startsWith("55")) d = d.slice(2);
+  d = d.slice(0, 11);
   if (d.length <= 2) return d;
   if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
@@ -607,6 +611,9 @@ export default function ParadaCertaForm() {
                 placeholder="(84) 99999-9999"
                 className={inputClass}
               />
+              <p className="text-[11px] text-carbo-grafite/45">
+                Apenas DDD + número (não precisa do 55).
+              </p>
             </Campo>
 
             <Campo htmlFor="veiculo" label="Carro / modelo">

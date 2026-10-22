@@ -38,7 +38,11 @@ const inputClass =
   "w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3.5 text-white placeholder-white/25 font-[family-name:var(--font-archivo)] text-sm focus:outline-none focus:border-limao focus:bg-white/8 transition-all";
 
 function mascararCelular(v: string) {
-  const d = v.replace(/\D/g, "").slice(0, 11);
+  let d = v.replace(/\D/g, "");
+  // Se a pessoa digitou o DDI (55) na frente, remove — senão o 55 vira DDD
+  // e os últimos dígitos do número se perdem.
+  if (d.length > 11 && d.startsWith("55")) d = d.slice(2);
+  d = d.slice(0, 11);
   if (d.length <= 2) return d;
   if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
@@ -260,6 +264,9 @@ export default function QueroTestarForm() {
                 placeholder="(84) 99999-9999"
                 className={inputClass}
               />
+              <p className="font-[family-name:var(--font-archivo)] text-[11px] text-white/35">
+                Apenas DDD + número (não precisa do 55).
+              </p>
             </div>
 
             {/* Modelo da moto */}
