@@ -45,6 +45,40 @@ function baixar(blob: Blob, nome: string) {
   URL.revokeObjectURL(url);
 }
 
+function emitirCsv(cab: string[], linhas: string[][], arquivo: string) {
+  const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+  const csv = [cab, ...linhas].map((l) => l.map(esc).join(";")).join("\n");
+  baixar(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" }), arquivo);
+}
+
+async function emitirPdf(
+  titulo: string,
+  subtitulo: string,
+  cab: string[],
+  linhas: string[][],
+  arquivo: string,
+  paisagem = false,
+) {
+  const { jsPDF } = await import("jspdf");
+  const autoTable = (await import("jspdf-autotable")).default;
+  const doc = new jsPDF({ orientation: paisagem ? "landscape" : "portrait" });
+  doc.setFontSize(14);
+  doc.text(titulo, 14, 16);
+  if (subtitulo) {
+    doc.setFontSize(10);
+    doc.setTextColor(120);
+    doc.text(subtitulo, 14, 22);
+  }
+  autoTable(doc, {
+    head: [cab],
+    body: linhas,
+    startY: subtitulo ? 27 : 20,
+    styles: { fontSize: 8, cellPadding: 2 },
+    headStyles: { fillColor: [9, 58, 48] },
+  });
+  doc.save(arquivo);
+}
+
 export default function AdminClient() {
   const [senha, setSenha] = useState("");
   const [autenticado, setAutenticado] = useState(false);
@@ -118,7 +152,7 @@ export default function AdminClient() {
     );
   }, [dados, busca]);
 
-  function exportarCsv() {
+  function dadosGeral() {
     const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Placa", "Instagram", "Autoriza imagem", "Vale combustível", "Código", "Retirado", "Cadastrado em"];
     const linhas = dados.map((c) => [
       c.nome,
@@ -133,9 +167,23 @@ export default function AdminClient() {
       c.retirado ? "Sim" : "Não",
       c.criado_em,
     ]);
-    const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
-    const csv = [cab, ...linhas].map((l) => l.map(esc).join(";")).join("\n");
-    baixar(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" }), "teste-carboze-cadastros.csv");
+    return { cab, linhas };
+  }
+
+  function exportarGeral(formato: "csv" | "pdf") {
+    const { cab, linhas } = dadosGeral();
+    if (formato === "pdf") {
+      emitirPdf(
+        "Cadastros — Receba meu CarboZé",
+        `${dados.length} cadastro${dados.length === 1 ? "" : "s"}`,
+        cab,
+        linhas,
+        "teste-carboze-cadastros.pdf",
+        true,
+      );
+    } else {
+      emitirCsv(cab, linhas, "teste-carboze-cadastros.csv");
+    }
   }
 
   async function marcarVale(c: Cadastro, vale: boolean) {
@@ -171,7 +219,7 @@ export default function AdminClient() {
     }
   }
 
-  function exportarVale() {
+  function dadosVale() {
     const ganhadores = dados.filter((c) => c.vale_combustivel);
     const cab = ["Nome", "Telefone", "Placa", "Modelo da moto", "Código", "Retirado", "Retirado em"];
     const linhas = ganhadores.map((c) => [
@@ -183,12 +231,22 @@ export default function AdminClient() {
       c.retirado ? "Sim" : "Não",
       c.retirado_em ?? "",
     ]);
-    const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
-    const csv = [cab, ...linhas].map((l) => l.map(esc).join(";")).join("\n");
-    baixar(
-      new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" }),
-      "vale-combustivel-posto.csv",
-    );
+    return { cab, linhas };
+  }
+
+  function exportarVale(formato: "csv" | "pdf") {
+    const { cab, linhas } = dadosVale();
+    if (formato === "pdf") {
+      emitirPdf(
+        "Vale-combustível — Posto RCM Nova Parnamirim",
+        `Ação Parada Certa · ${linhas.length} vale${linhas.length === 1 ? "" : "s"}`,
+        cab,
+        linhas,
+        "vale-combustivel-posto.pdf",
+      );
+    } else {
+      emitirCsv(cab, linhas, "vale-combustivel-posto.csv");
+    }
   }
 
   async function copiarTelefones() {
@@ -273,12 +331,8 @@ export default function AdminClient() {
             <BotaoAcao onClick={() => buscar(senha)} disabled={carregando}>
               {carregando ? "Atualizando…" : "Atualizar"}
             </BotaoAcao>
-            <BotaoAcao onClick={exportarCsv} disabled={dados.length === 0}>
-              CSV
-            </BotaoAcao>
-            <BotaoAcao onClick={exportarVale} disabled={ganharamVale === 0}>
-              Vale (posto)
-            </BotaoAcao>
+            <ExportMenu label="Exportar" onFormato={exportarGeral} disabled={dados.length === 0} />
+            <ExportMenu label="Vale (posto)" onFormato={exportarVale} disabled={ganharamVale === 0} />
             <button
               onClick={sair}
               className="rounded-lg px-3 py-2 font-[family-name:var(--font-archivo)] text-sm font-semibold text-white/50 transition hover:text-white"
@@ -466,6 +520,54 @@ export default function AdminClient() {
         />
       )}
     </main>
+  );
+}
+
+function ExportMenu({
+  label,
+  onFormato,
+  disabled,
+}: {
+  label: string;
+  onFormato: (f: "csv" | "pdf") => void;
+  disabled?: boolean;
+}) {
+  const [aberto, setAberto] = useState(false);
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setAberto((v) => !v)}
+        disabled={disabled}
+        className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 font-[family-name:var(--font-archivo)] text-sm font-semibold text-white transition hover:border-limao disabled:opacity-40"
+      >
+        {label} ▾
+      </button>
+      {aberto && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setAberto(false)} />
+          <div className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-lg border border-white/15 bg-verde-escuro shadow-xl">
+            <button
+              onClick={() => {
+                onFormato("csv");
+                setAberto(false);
+              }}
+              className="block w-full px-4 py-2.5 text-left font-[family-name:var(--font-archivo)] text-sm text-white transition hover:bg-white/10"
+            >
+              📊 Planilha (Excel)
+            </button>
+            <button
+              onClick={() => {
+                onFormato("pdf");
+                setAberto(false);
+              }}
+              className="block w-full border-t border-white/10 px-4 py-2.5 text-left font-[family-name:var(--font-archivo)] text-sm text-white transition hover:bg-white/10"
+            >
+              📄 PDF
+            </button>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
