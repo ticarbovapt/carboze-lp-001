@@ -30,7 +30,6 @@ export async function POST(req: Request) {
   const digits = String(b.telefone ?? "").replace(/\D/g, "");
   const telefone = digits.length === 10 || digits.length === 11 ? "55" + digits : digits;
   const modelo = String(b.modelo_moto ?? "").trim();
-  const placa = String(b.placa ?? "").trim().toUpperCase();
   const ig = b.instagram ? String(b.instagram).trim() : "";
   const instagram = ig ? (ig.startsWith("@") ? ig : `@${ig}`) : null;
 
@@ -39,7 +38,6 @@ export async function POST(req: Request) {
     telefone.length < 12 ||
     telefone.length > 13 ||
     !modelo ||
-    !placa ||
     !b.autoriza_imagem
   ) {
     return NextResponse.json({ ok: false, erro: "dados" }, { status: 400 });
@@ -51,7 +49,6 @@ export async function POST(req: Request) {
       nome,
       telefone,
       modelo_moto: modelo,
-      placa,
       instagram,
       autoriza_imagem: true,
     });

@@ -12,7 +12,6 @@ type Cadastro = {
   nome: string;
   telefone: string;
   modelo_moto: string;
-  placa: string | null;
   instagram: string | null;
   autoriza_imagem: boolean;
   vale_combustivel: boolean;
@@ -172,20 +171,18 @@ export default function AdminClient() {
       (c) =>
         c.nome.toLowerCase().includes(q) ||
         c.modelo_moto.toLowerCase().includes(q) ||
-        (c.placa ?? "").toLowerCase().includes(q) ||
         (c.instagram ?? "").toLowerCase().includes(q) ||
         (qDigitos && c.telefone.includes(qDigitos)),
     );
   }, [dados, busca]);
 
   function dadosGeral() {
-    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Placa", "Instagram", "Autoriza imagem", "Vale combustível", "Código", "Retirado", "Cadastrado em"];
+    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Instagram", "Autoriza imagem", "Vale combustível", "Código", "Retirado", "Cadastrado em"];
     const linhas = dados.map((c) => [
       c.nome,
       c.telefone,
       `https://wa.me/${c.telefone.replace(/\D/g, "")}`,
       c.modelo_moto,
-      c.placa ?? "",
       c.instagram ?? "",
       c.autoriza_imagem ? "Sim" : "Não",
       c.vale_combustivel ? "Sim" : "Não",
@@ -247,11 +244,10 @@ export default function AdminClient() {
 
   function dadosVale() {
     const ganhadores = dados.filter((c) => c.vale_combustivel);
-    const cab = ["Nome", "Telefone", "Placa", "Modelo da moto", "Código", "Retirado", "Retirado em"];
+    const cab = ["Nome", "Telefone", "Modelo da moto", "Código", "Retirado", "Retirado em"];
     const linhas = ganhadores.map((c) => [
       c.nome,
       formatarTelefone(c.telefone),
-      c.placa ?? "",
       c.modelo_moto,
       c.codigo ?? "",
       c.retirado ? "Sim" : "Não",
@@ -420,7 +416,6 @@ export default function AdminClient() {
                 </p>
                 <p className="font-[family-name:var(--font-archivo)] text-[13px] text-white/70">
                   🏍️ {achado.modelo_moto}
-                  {achado.placa ? ` · ${achado.placa}` : ""}
                 </p>
                 <p className="mt-1 font-[family-name:var(--font-archivo)] text-[12px] text-white/60">
                   {achado.retirado
@@ -473,7 +468,6 @@ export default function AdminClient() {
                   </p>
                   <p className="mt-0.5 truncate font-[family-name:var(--font-archivo)] text-[13px] text-white/60">
                     🏍️ {c.modelo_moto}
-                    {c.placa ? ` · ${c.placa}` : ""}
                   </p>
                   <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[13px] text-white/80">
                     {formatarTelefone(c.telefone)}

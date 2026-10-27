@@ -131,7 +131,6 @@ export default function QueroTestarForm() {
   const [nome, setNome] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [modelo, setModelo] = useState("");
-  const [placa, setPlaca] = useState("");
   const [instagram, setInstagram] = useState("");
   const [autoriza, setAutoriza] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -147,7 +146,6 @@ export default function QueroTestarForm() {
     if (digits.length < 10 || digits.length > 11)
       return setErro("Informe um WhatsApp válido com DDD.");
     if (!modelo.trim()) return setErro("Informe o modelo da sua moto.");
-    if (!placa.trim()) return setErro("Informe a placa da sua moto.");
     if (!autoriza)
       return setErro("É preciso autorizar o uso de imagem e relato para participar.");
 
@@ -160,7 +158,6 @@ export default function QueroTestarForm() {
           nome: nome.trim(),
           telefone: digits,
           modelo_moto: modelo.trim(),
-          placa: placa.trim(),
           instagram: instagram.trim() || null,
           autoriza_imagem: true,
         }),
@@ -282,20 +279,6 @@ export default function QueroTestarForm() {
                 onChange={(e) => setModelo(e.target.value)}
                 placeholder="Ex.: Honda CG 160, Yamaha Fazer…"
                 className={inputClass}
-              />
-            </div>
-
-            {/* Placa */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="placa" required>Placa</Label>
-              <input
-                id="placa"
-                type="text"
-                autoCapitalize="characters"
-                value={placa}
-                onChange={(e) => setPlaca(e.target.value.toUpperCase().slice(0, 8))}
-                placeholder="ABC-1234 ou ABC1D23"
-                className={`${inputClass} uppercase`}
               />
             </div>
 
