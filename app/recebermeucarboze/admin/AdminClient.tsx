@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo, FormEvent } from "react";
 import { callRpc } from "@/lib/supabase";
 import LovableHeader from "@/components/LovableHeader";
+import LeitorQR from "./LeitorQR";
 
 const CHAVE_SESSAO = "rc_admin_senha";
 
@@ -53,6 +54,7 @@ export default function AdminClient() {
   const [busca, setBusca] = useState("");
   const [copiado, setCopiado] = useState(false);
   const [codigoValidar, setCodigoValidar] = useState("");
+  const [scannerAberto, setScannerAberto] = useState(false);
 
   const buscar = useCallback(async (senhaUsada: string) => {
     setCarregando(true);
@@ -311,12 +313,21 @@ export default function AdminClient() {
           <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[12px] text-white/50">
             Digite o código do voucher para conferir e dar baixa na retirada.
           </p>
-          <input
-            value={codigoValidar}
-            onChange={(e) => setCodigoValidar(e.target.value.toUpperCase().slice(0, 12))}
-            placeholder="Ex.: 1DEC8A36"
-            className={`mt-3 uppercase ${inputClass}`}
-          />
+          <div className="mt-3 flex gap-2">
+            <input
+              value={codigoValidar}
+              onChange={(e) => setCodigoValidar(e.target.value.toUpperCase().slice(0, 12))}
+              placeholder="Ex.: 1DEC8A36"
+              className={`flex-1 uppercase ${inputClass}`}
+            />
+            <button
+              type="button"
+              onClick={() => setScannerAberto(true)}
+              className="shrink-0 rounded-xl border border-limao/40 bg-limao/10 px-4 font-[family-name:var(--font-archivo)] text-sm font-semibold text-limao transition hover:bg-limao/20"
+            >
+              📷 Ler QR
+            </button>
+          </div>
           {codigoValidar.trim() && (
             achado ? (
               <div className="mt-3 rounded-lg border border-limao/40 bg-limao/10 p-3">
@@ -444,6 +455,16 @@ export default function AdminClient() {
           )}
         </div>
       </section>
+
+      {scannerAberto && (
+        <LeitorQR
+          onLer={(t) => {
+            setCodigoValidar(t.toUpperCase().slice(0, 12));
+            setScannerAberto(false);
+          }}
+          onFechar={() => setScannerAberto(false)}
+        />
+      )}
     </main>
   );
 }
