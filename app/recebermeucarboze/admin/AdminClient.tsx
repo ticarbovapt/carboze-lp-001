@@ -7,11 +7,14 @@ import LovableHeader from "@/components/LovableHeader";
 const CHAVE_SESSAO = "rc_admin_senha";
 
 type Cadastro = {
+  id: string;
   nome: string;
   telefone: string;
   modelo_moto: string;
+  placa: string | null;
   instagram: string | null;
   autoriza_imagem: boolean;
+  vale_combustivel: boolean;
   criado_em: string;
 };
 type AdminResp = { ok: boolean; cadastros?: Cadastro[] };
@@ -103,25 +106,54 @@ export default function AdminClient() {
       (c) =>
         c.nome.toLowerCase().includes(q) ||
         c.modelo_moto.toLowerCase().includes(q) ||
+        (c.placa ?? "").toLowerCase().includes(q) ||
         (c.instagram ?? "").toLowerCase().includes(q) ||
         (qDigitos && c.telefone.includes(qDigitos)),
     );
   }, [dados, busca]);
 
   function exportarCsv() {
-    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Instagram", "Autoriza imagem", "Cadastrado em"];
+    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Placa", "Instagram", "Autoriza imagem", "Vale combustível", "Cadastrado em"];
     const linhas = dados.map((c) => [
       c.nome,
       c.telefone,
       `https://wa.me/${c.telefone.replace(/\D/g, "")}`,
       c.modelo_moto,
+      c.placa ?? "",
       c.instagram ?? "",
       c.autoriza_imagem ? "Sim" : "Não",
+      c.vale_combustivel ? "Sim" : "Não",
       c.criado_em,
     ]);
     const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
     const csv = [cab, ...linhas].map((l) => l.map(esc).join(";")).join("\n");
     baixar(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" }), "teste-carboze-cadastros.csv");
+  }
+
+  async function marcarVale(c: Cadastro, vale: boolean) {
+    try {
+      await callRpc("teste_carboze_vale", { p_id: c.id, p_vale: vale, p_senha: senha });
+      buscar(senha);
+    } catch {
+      window.alert("Não foi possível atualizar agora. Tente novamente.");
+    }
+  }
+
+  function exportarVale() {
+    const ganhadores = dados.filter((c) => c.vale_combustivel);
+    const cab = ["Nome", "Telefone", "Placa", "Modelo da moto"];
+    const linhas = ganhadores.map((c) => [
+      c.nome,
+      formatarTelefone(c.telefone),
+      c.placa ?? "",
+      c.modelo_moto,
+    ]);
+    const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+    const csv = [cab, ...linhas].map((l) => l.map(esc).join(";")).join("\n");
+    baixar(
+      new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" }),
+      "vale-combustivel-posto.csv",
+    );
   }
 
   async function copiarTelefones() {
@@ -180,7 +212,7 @@ export default function AdminClient() {
   }
 
   /* ─── Painel ───────────────────────────────────────────────── */
-  const autorizam = dados.filter((c) => c.autoriza_imagem).length;
+  const ganharamVale = dados.filter((c) => c.vale_combustivel).length;
 
   return (
     <main className="flex min-h-dvh flex-col bg-verde-escuro">
@@ -194,7 +226,7 @@ export default function AdminClient() {
               Cadastros
             </h1>
             <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-sm text-white/60">
-              {dados.length} cadastro{dados.length === 1 ? "" : "s"} · {autorizam} autorizam imagem
+              {dados.length} cadastro{dados.length === 1 ? "" : "s"} · {ganharamVale} com vale-combustível
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -203,6 +235,9 @@ export default function AdminClient() {
             </BotaoAcao>
             <BotaoAcao onClick={exportarCsv} disabled={dados.length === 0}>
               CSV
+            </BotaoAcao>
+            <BotaoAcao onClick={exportarVale} disabled={ganharamVale === 0}>
+              Vale (posto)
             </BotaoAcao>
             <button
               onClick={sair}
@@ -241,10 +276,14 @@ export default function AdminClient() {
               Nenhum resultado para “{busca}”.
             </p>
           ) : (
-            dadosFiltrados.map((c, i) => (
+            dadosFiltrados.map((c) => (
               <div
-                key={c.telefone + i}
-                className="flex items-start justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3"
+                key={c.id}
+                className={`flex items-start justify-between gap-3 rounded-xl border px-4 py-3 ${
+                  c.vale_combustivel
+                    ? "border-limao/60 bg-limao/10"
+                    : "border-white/10 bg-white/5"
+                }`}
               >
                 <div className="min-w-0">
                   <p className="truncate font-[family-name:var(--font-archivo)] font-semibold text-white">
@@ -252,6 +291,7 @@ export default function AdminClient() {
                   </p>
                   <p className="mt-0.5 truncate font-[family-name:var(--font-archivo)] text-[13px] text-white/60">
                     🏍️ {c.modelo_moto}
+                    {c.placa ? ` · ${c.placa}` : ""}
                   </p>
                   <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[13px] text-white/80">
                     {formatarTelefone(c.telefone)}
@@ -271,17 +311,29 @@ export default function AdminClient() {
                     {c.autoriza_imagem ? " · autoriza imagem" : " · NÃO autoriza"}
                   </p>
                 </div>
-                <a
-                  href={`https://wa.me/${c.telefone.replace(/\D/g, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 font-[family-name:var(--font-archivo)] text-xs font-semibold text-white transition hover:border-limao hover:text-limao"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                    <path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3A2.9 2.9 0 007 9.3c0 1.7 1.3 3.4 1.5 3.6s2.5 3.8 6 5c.8.3 1.5.5 2 .7.8.2 1.6.2 2.2.1.7-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.2-.2-.3-.4-.4z" />
-                  </svg>
-                  WhatsApp
-                </a>
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <a
+                    href={`https://wa.me/${c.telefone.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-2 font-[family-name:var(--font-archivo)] text-xs font-semibold text-white transition hover:border-limao hover:text-limao"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                      <path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3A2.9 2.9 0 007 9.3c0 1.7 1.3 3.4 1.5 3.6s2.5 3.8 6 5c.8.3 1.5.5 2 .7.8.2 1.6.2 2.2.1.7-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.2-.2-.3-.4-.4z" />
+                    </svg>
+                    WhatsApp
+                  </a>
+                  <button
+                    onClick={() => marcarVale(c, !c.vale_combustivel)}
+                    className={`rounded-lg px-3 py-1.5 font-[family-name:var(--font-archivo)] text-[11px] font-bold uppercase tracking-wide transition ${
+                      c.vale_combustivel
+                        ? "bg-limao text-verde-escuro hover:brightness-110"
+                        : "border border-white/15 text-white/70 hover:border-limao hover:text-limao"
+                    }`}
+                  >
+                    {c.vale_combustivel ? "✓ Ganhou vale" : "Dar vale"}
+                  </button>
+                </div>
               </div>
             ))
           )}
