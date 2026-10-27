@@ -57,23 +57,46 @@ async function emitirPdf(
   linhas: string[][],
   arquivo: string,
   paisagem = false,
+  checkbox = false,
 ) {
   const { jsPDF } = await import("jspdf");
   const autoTable = (await import("jspdf-autotable")).default;
   const doc = new jsPDF({ orientation: paisagem ? "landscape" : "portrait" });
   doc.setFontSize(14);
+  doc.setTextColor(20);
   doc.text(titulo, 14, 16);
   if (subtitulo) {
     doc.setFontSize(10);
     doc.setTextColor(120);
     doc.text(subtitulo, 14, 22);
   }
+
+  // Com checkbox: coluna extra no início com um quadradinho para marcar à mão.
+  const head = checkbox ? ["Retirou", ...cab] : cab;
+  const body = checkbox ? linhas.map((l) => ["", ...l]) : linhas;
+
   autoTable(doc, {
-    head: [cab],
-    body: linhas,
+    head: [head],
+    body,
     startY: subtitulo ? 27 : 20,
     styles: { fontSize: 8, cellPadding: 2 },
-    headStyles: { fillColor: [9, 58, 48] },
+    headStyles: { fillColor: [9, 58, 48], halign: "left" },
+    columnStyles: checkbox ? { 0: { cellWidth: 16, halign: "center" } } : undefined,
+    didDrawCell: checkbox
+      ? (data: {
+          section: string;
+          column: { index: number };
+          cell: { x: number; y: number; width: number; height: number };
+        }) => {
+          if (data.section === "body" && data.column.index === 0) {
+            const { x, y, width, height } = data.cell;
+            const s = 4.5;
+            doc.setDrawColor(70);
+            doc.setLineWidth(0.3);
+            doc.rect(x + width / 2 - s / 2, y + height / 2 - s / 2, s, s);
+          }
+        }
+      : undefined,
   });
   doc.save(arquivo);
 }
@@ -177,7 +200,7 @@ export default function AdminClient() {
   }, [dados, busca]);
 
   function dadosGeral() {
-    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Instagram", "Autoriza imagem", "Vale combustível", "Código", "Retirado", "Cadastrado em"];
+    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo do veículo", "Instagram", "Autoriza imagem", "Vale combustível", "Código", "Retirado", "Cadastrado em"];
     const linhas = dados.map((c) => [
       c.nome,
       c.telefone,
@@ -202,6 +225,7 @@ export default function AdminClient() {
         cab,
         linhas,
         "teste-carboze-cadastros.pdf",
+        true,
         true,
       );
     } else {
@@ -244,7 +268,7 @@ export default function AdminClient() {
 
   function dadosVale() {
     const ganhadores = dados.filter((c) => c.vale_combustivel);
-    const cab = ["Nome", "Telefone", "Modelo da moto", "Código", "Retirado", "Retirado em"];
+    const cab = ["Nome", "Telefone", "Modelo do veículo", "Código", "Retirado", "Retirado em"];
     const linhas = ganhadores.map((c) => [
       c.nome,
       formatarTelefone(c.telefone),
@@ -265,6 +289,8 @@ export default function AdminClient() {
         cab,
         linhas,
         "vale-combustivel-posto.pdf",
+        false,
+        true,
       );
     } else {
       emitirCsv(cab, linhas, "vale-combustivel-posto.csv");
