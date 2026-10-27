@@ -15,6 +15,9 @@ type Cadastro = {
   instagram: string | null;
   autoriza_imagem: boolean;
   vale_combustivel: boolean;
+  codigo: string | null;
+  retirado: boolean;
+  retirado_em: string | null;
   criado_em: string;
 };
 type AdminResp = { ok: boolean; cadastros?: Cadastro[] };
@@ -49,6 +52,7 @@ export default function AdminClient() {
   const [erro, setErro] = useState("");
   const [busca, setBusca] = useState("");
   const [copiado, setCopiado] = useState(false);
+  const [codigoValidar, setCodigoValidar] = useState("");
 
   const buscar = useCallback(async (senhaUsada: string) => {
     setCarregando(true);
@@ -113,7 +117,7 @@ export default function AdminClient() {
   }, [dados, busca]);
 
   function exportarCsv() {
-    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Placa", "Instagram", "Autoriza imagem", "Vale combustível", "Cadastrado em"];
+    const cab = ["Nome", "Telefone", "WhatsApp", "Modelo da moto", "Placa", "Instagram", "Autoriza imagem", "Vale combustível", "Código", "Retirado", "Cadastrado em"];
     const linhas = dados.map((c) => [
       c.nome,
       c.telefone,
@@ -123,6 +127,8 @@ export default function AdminClient() {
       c.instagram ?? "",
       c.autoriza_imagem ? "Sim" : "Não",
       c.vale_combustivel ? "Sim" : "Não",
+      c.codigo ?? "",
+      c.retirado ? "Sim" : "Não",
       c.criado_em,
     ]);
     const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
@@ -132,7 +138,31 @@ export default function AdminClient() {
 
   async function marcarVale(c: Cadastro, vale: boolean) {
     try {
-      await callRpc("teste_carboze_vale", { p_id: c.id, p_vale: vale, p_senha: senha });
+      const resp = await fetch("/api/recebermeucarboze/vale", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: c.id, vale, senha }),
+      });
+      const r = (await resp.json()) as { ok?: boolean; erro?: string };
+      if (r?.ok) {
+        buscar(senha);
+      } else if (r?.erro === "sem_codigos") {
+        window.alert("Acabaram os 40 códigos de vale — nenhum código disponível.");
+      } else {
+        window.alert("Não foi possível atualizar agora. Tente novamente.");
+      }
+    } catch {
+      window.alert("Não foi possível atualizar agora. Tente novamente.");
+    }
+  }
+
+  async function marcarRetirado(c: Cadastro, retirado: boolean) {
+    try {
+      await callRpc("teste_carboze_marcar_retirado", {
+        p_id: c.id,
+        p_retirado: retirado,
+        p_senha: senha,
+      });
       buscar(senha);
     } catch {
       window.alert("Não foi possível atualizar agora. Tente novamente.");
@@ -141,12 +171,15 @@ export default function AdminClient() {
 
   function exportarVale() {
     const ganhadores = dados.filter((c) => c.vale_combustivel);
-    const cab = ["Nome", "Telefone", "Placa", "Modelo da moto"];
+    const cab = ["Nome", "Telefone", "Placa", "Modelo da moto", "Código", "Retirado", "Retirado em"];
     const linhas = ganhadores.map((c) => [
       c.nome,
       formatarTelefone(c.telefone),
       c.placa ?? "",
       c.modelo_moto,
+      c.codigo ?? "",
+      c.retirado ? "Sim" : "Não",
+      c.retirado_em ?? "",
     ]);
     const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
     const csv = [cab, ...linhas].map((l) => l.map(esc).join(";")).join("\n");
@@ -213,6 +246,11 @@ export default function AdminClient() {
 
   /* ─── Painel ───────────────────────────────────────────────── */
   const ganharamVale = dados.filter((c) => c.vale_combustivel).length;
+  const achado = codigoValidar.trim()
+    ? dados.find(
+        (c) => (c.codigo ?? "").toUpperCase() === codigoValidar.trim().toUpperCase(),
+      )
+    : undefined;
 
   return (
     <main className="flex min-h-dvh flex-col bg-verde-escuro">
@@ -265,6 +303,55 @@ export default function AdminClient() {
           </button>
         </div>
 
+        {/* Validar voucher */}
+        <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4">
+          <p className="font-[family-name:var(--font-basement)] text-sm font-bold uppercase text-white">
+            Validar voucher
+          </p>
+          <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[12px] text-white/50">
+            Digite o código do voucher para conferir e dar baixa na retirada.
+          </p>
+          <input
+            value={codigoValidar}
+            onChange={(e) => setCodigoValidar(e.target.value.toUpperCase().slice(0, 12))}
+            placeholder="Ex.: 1DEC8A36"
+            className={`mt-3 uppercase ${inputClass}`}
+          />
+          {codigoValidar.trim() && (
+            achado ? (
+              <div className="mt-3 rounded-lg border border-limao/40 bg-limao/10 p-3">
+                <p className="font-[family-name:var(--font-archivo)] font-semibold text-white">
+                  {achado.nome}
+                </p>
+                <p className="font-[family-name:var(--font-archivo)] text-[13px] text-white/70">
+                  🏍️ {achado.modelo_moto}
+                  {achado.placa ? ` · ${achado.placa}` : ""}
+                </p>
+                <p className="mt-1 font-[family-name:var(--font-archivo)] text-[12px] text-white/60">
+                  {achado.retirado
+                    ? `✅ Já retirado${achado.retirado_em ? ` em ${achado.retirado_em}` : ""}`
+                    : "Ainda não retirado."}
+                </p>
+                {!achado.retirado && (
+                  <button
+                    onClick={() => {
+                      marcarRetirado(achado, true);
+                      setCodigoValidar("");
+                    }}
+                    className="mt-2 rounded-lg bg-limao px-4 py-2 font-[family-name:var(--font-basement)] text-xs font-extrabold uppercase tracking-wide text-verde-escuro transition hover:brightness-110"
+                  >
+                    Confirmar retirada
+                  </button>
+                )}
+              </div>
+            ) : (
+              <p className="mt-3 font-[family-name:var(--font-archivo)] text-sm text-red-400">
+                Código não encontrado. Confira o voucher.
+              </p>
+            )
+          )}
+        </div>
+
         {/* Lista */}
         <div className="mt-5 flex flex-col gap-2.5 pb-10">
           {dados.length === 0 ? (
@@ -310,6 +397,12 @@ export default function AdminClient() {
                     {c.criado_em}
                     {c.autoriza_imagem ? " · autoriza imagem" : " · NÃO autoriza"}
                   </p>
+                  {c.vale_combustivel && c.codigo && (
+                    <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[12px] font-semibold text-limao">
+                      🎟️ {c.codigo}
+                      {c.retirado ? " · retirado" : ""}
+                    </p>
+                  )}
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1.5">
                   <a
@@ -333,6 +426,18 @@ export default function AdminClient() {
                   >
                     {c.vale_combustivel ? "✓ Ganhou vale" : "Dar vale"}
                   </button>
+                  {c.vale_combustivel && (
+                    <button
+                      onClick={() => marcarRetirado(c, !c.retirado)}
+                      className={`rounded-lg px-3 py-1.5 font-[family-name:var(--font-archivo)] text-[11px] font-bold uppercase tracking-wide transition ${
+                        c.retirado
+                          ? "bg-white/10 text-white/50 hover:text-white"
+                          : "border border-white/15 text-white/70 hover:border-limao hover:text-limao"
+                      }`}
+                    >
+                      {c.retirado ? "✓ Retirado" : "Marcar retirado"}
+                    </button>
+                  )}
                 </div>
               </div>
             ))
