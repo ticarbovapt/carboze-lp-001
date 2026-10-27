@@ -127,6 +127,32 @@ export default function AdminClient() {
     }
   }, [buscar]);
 
+  // Atualização ao vivo: refaz a busca a cada 10s (silencioso, sem piscar)
+  // e quando a aba volta ao foco.
+  const refrescarSilencioso = useCallback(async () => {
+    try {
+      const r = await callRpc<AdminResp>("teste_carboze_admin", { p_senha: senha });
+      if (r?.ok) setDados(r.cadastros ?? []);
+    } catch {
+      /* silencioso */
+    }
+  }, [senha]);
+
+  useEffect(() => {
+    if (!autenticado) return;
+    const id = setInterval(() => {
+      if (!document.hidden) refrescarSilencioso();
+    }, 10000);
+    const aoVoltar = () => {
+      if (!document.hidden) refrescarSilencioso();
+    };
+    document.addEventListener("visibilitychange", aoVoltar);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", aoVoltar);
+    };
+  }, [autenticado, refrescarSilencioso]);
+
   function sair() {
     try {
       sessionStorage.removeItem(CHAVE_SESSAO);
@@ -323,7 +349,11 @@ export default function AdminClient() {
             <h1 className="font-[family-name:var(--font-basement)] text-2xl font-extrabold uppercase text-white">
               Cadastros
             </h1>
-            <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-sm text-white/60">
+            <p className="mt-0.5 flex items-center gap-2 font-[family-name:var(--font-archivo)] text-sm text-white/60">
+              <span className="relative flex h-1.5 w-1.5" title="Atualiza ao vivo">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-limao opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-limao" />
+              </span>
               {dados.length} cadastro{dados.length === 1 ? "" : "s"} · {ganharamVale} com vale-combustível
             </p>
           </div>
