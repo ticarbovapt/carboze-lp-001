@@ -145,7 +145,7 @@ export default function QueroTestarForm() {
     if (nome.trim().length < 3) return setErro("Informe seu nome completo.");
     if (digits.length < 10 || digits.length > 11)
       return setErro("Informe um WhatsApp válido com DDD.");
-    if (!modelo.trim()) return setErro("Informe o modelo da sua moto.");
+    if (!modelo.trim()) return setErro("Informe o modelo do seu veículo.");
     if (!autoriza)
       return setErro("É preciso autorizar o uso de imagem e relato para participar.");
 
@@ -271,13 +271,13 @@ export default function QueroTestarForm() {
 
             {/* Modelo da moto */}
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="modelo" required>Modelo da moto</Label>
+              <Label htmlFor="modelo" required>Modelo do veículo</Label>
               <input
                 id="modelo"
                 type="text"
                 value={modelo}
                 onChange={(e) => setModelo(e.target.value)}
-                placeholder="Ex.: Honda CG 160, Yamaha Fazer…"
+                placeholder="Ex.: Fiat Argo, Honda CG 160…"
                 className={inputClass}
               />
             </div>

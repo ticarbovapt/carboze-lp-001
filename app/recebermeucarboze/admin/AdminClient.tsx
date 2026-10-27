@@ -373,7 +373,7 @@ export default function AdminClient() {
           <input
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            placeholder="Buscar por nome, telefone, moto ou @"
+            placeholder="Buscar por nome, telefone, veículo ou @"
             className={`flex-1 ${inputClass}`}
           />
           <button
@@ -415,7 +415,7 @@ export default function AdminClient() {
                   {achado.nome}
                 </p>
                 <p className="font-[family-name:var(--font-archivo)] text-[13px] text-white/70">
-                  🏍️ {achado.modelo_moto}
+                  🚗 {achado.modelo_moto}
                 </p>
                 <p className="mt-1 font-[family-name:var(--font-archivo)] text-[12px] text-white/60">
                   {achado.retirado
@@ -467,7 +467,7 @@ export default function AdminClient() {
                     {c.nome}
                   </p>
                   <p className="mt-0.5 truncate font-[family-name:var(--font-archivo)] text-[13px] text-white/60">
-                    🏍️ {c.modelo_moto}
+                    🚗 {c.modelo_moto}
                   </p>
                   <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[13px] text-white/80">
                     {formatarTelefone(c.telefone)}
@@ -515,6 +515,15 @@ export default function AdminClient() {
                   >
                     {c.vale_combustivel ? "✓ Ganhou vale" : "Dar vale"}
                   </button>
+                  {c.vale_combustivel && c.codigo && (
+                    <a
+                      href={`/vouchers/${c.codigo}.png`}
+                      download={`voucher-${c.codigo}.png`}
+                      className="rounded-lg border border-white/15 px-3 py-1.5 font-[family-name:var(--font-archivo)] text-[11px] font-bold uppercase tracking-wide text-white/70 transition hover:border-limao hover:text-limao"
+                    >
+                      ⬇ Baixar voucher
+                    </a>
+                  )}
                   {c.vale_combustivel && (
                     <button
                       onClick={() => marcarRetirado(c, !c.retirado)}
