@@ -115,6 +115,35 @@ export default function AdminClient() {
     }
   }, [buscar]);
 
+  // Atualização ao vivo: refaz a busca a cada 10s (silencioso, sem piscar)
+  // e quando a aba volta ao foco.
+  const refrescarSilencioso = useCallback(async () => {
+    try {
+      const r = await callRpc<AdminResp>("parada_certa_admin", { p_senha: senha });
+      if (r?.ok) {
+        setDados(r.agendamentos ?? []);
+        setEspera(r.lista_espera ?? []);
+      }
+    } catch {
+      /* silencioso */
+    }
+  }, [senha]);
+
+  useEffect(() => {
+    if (!autenticado) return;
+    const id = setInterval(() => {
+      if (!document.hidden) refrescarSilencioso();
+    }, 10000);
+    const aoVoltar = () => {
+      if (!document.hidden) refrescarSilencioso();
+    };
+    document.addEventListener("visibilitychange", aoVoltar);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", aoVoltar);
+    };
+  }, [autenticado, refrescarSilencioso]);
+
   function sair() {
     try {
       sessionStorage.removeItem(CHAVE_SESSAO);
@@ -313,7 +342,13 @@ export default function AdminClient() {
             <h1 className="font-[family-name:var(--font-basement)] text-2xl font-extrabold uppercase text-carbo-grafite">
               Agendamentos
             </h1>
-            <p className="mt-0.5 text-sm text-carbo-grafite/55">{DATA_LABEL}</p>
+            <p className="mt-0.5 flex items-center gap-2 text-sm text-carbo-grafite/55">
+              <span className="relative flex h-1.5 w-1.5" title="Atualiza ao vivo">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-carbo-verde opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-carbo-verde" />
+              </span>
+              {DATA_LABEL}
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <BotaoAcao onClick={() => buscar(senha)} disabled={carregando}>
