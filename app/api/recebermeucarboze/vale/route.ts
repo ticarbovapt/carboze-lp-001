@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { callRpc } from "@/lib/supabase";
-import { enviarWhatsApp } from "@/lib/evolution";
+import { enviarWhatsApp, enviarImagemWhatsApp } from "@/lib/evolution";
 
 export const dynamic = "force-dynamic";
 
@@ -15,11 +15,11 @@ type ValeResp = {
 
 function msgVale(nome: string, codigo: string) {
   const pn = nome.trim().split(/\s+/)[0] || nome.trim();
-  return `🎉 Parabéns, ${pn}! Você ganhou um VALE-COMBUSTÍVEL do CarboZé!
+  return `🎉 Parabéns, ${pn}! Você ganhou um *VALE-COMBUSTÍVEL de 5 litros* do CarboZé!
 
-Seu código do voucher: *${codigo}*
+Seu código: *${codigo}*
 
-Guarde este código e apresente no posto para retirar. 💙`;
+Apresente este voucher (imagem acima, com o QR Code) no posto para retirar. 💙`;
 }
 
 export async function POST(req: Request) {
@@ -44,17 +44,26 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, erro: "banco" }, { status: 502 });
   }
 
-  // Ao DAR o vale, envia o código por WhatsApp (best-effort).
+  // Ao DAR o vale, envia a IMAGEM do voucher (com o código + QR) por WhatsApp.
+  // Best-effort: se a imagem falhar, manda ao menos o texto com o código.
   if (r?.ok && b.vale && r.codigo && r.telefone) {
+    const legenda = msgVale(r.nome ?? "", r.codigo);
+    const urlVoucher = `https://www.carboze.com.br/vouchers/${r.codigo}.png`;
     try {
-      const envio = await enviarWhatsApp(r.telefone, msgVale(r.nome ?? "", r.codigo));
+      const envio = await enviarImagemWhatsApp(r.telefone, urlVoucher, legenda);
       if (envio.ok) {
-        console.log("[recebermeucarboze] vale enviado", { status: envio.status });
+        console.log("[recebermeucarboze] voucher enviado", { status: envio.status });
       } else {
-        console.error("[recebermeucarboze] vale NÃO enviado", envio);
+        console.error("[recebermeucarboze] voucher (imagem) falhou; mandando texto", envio);
+        await enviarWhatsApp(r.telefone, legenda);
       }
     } catch (e) {
-      console.error("[recebermeucarboze] erro ao enviar vale", e);
+      console.error("[recebermeucarboze] erro ao enviar voucher", e);
+      try {
+        await enviarWhatsApp(r.telefone, legenda);
+      } catch {
+        /* ignora */
+      }
     }
   }
 

@@ -112,3 +112,67 @@ export async function enviarWhatsApp(
   const alternativa = primeira === "v1" ? "v2" : "v1";
   return enviarUma(numero, texto, alternativa);
 }
+
+// ─── Envio de imagem (voucher) ───────────────────────────────
+function corpoMediaPara(numero: string, url: string, legenda: string, versao: string) {
+  return versao === "v1"
+    ? {
+        number: numero,
+        options: { delay: 1200, presence: "composing" },
+        mediaMessage: {
+          mediatype: "image",
+          media: url,
+          caption: legenda,
+          fileName: "voucher.png",
+        },
+      }
+    : {
+        number: numero,
+        mediatype: "image",
+        mimetype: "image/png",
+        media: url,
+        caption: legenda,
+        fileName: "voucher.png",
+      };
+}
+
+async function enviarMediaUma(
+  numero: string,
+  url: string,
+  legenda: string,
+  versao: string,
+): Promise<EnvioResultado> {
+  const endpoint = `${URL_BASE!.replace(/\/+$/, "")}/message/sendMedia/${INSTANCIA}`;
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: APIKEY! },
+      body: JSON.stringify(corpoMediaPara(numero, url, legenda, versao)),
+      signal: AbortSignal.timeout(20000),
+    });
+    if (!res.ok) {
+      const detalhe = await res.text().catch(() => "");
+      return { ok: false, status: res.status, erro: detalhe.slice(0, 300) };
+    }
+    return { ok: true, status: res.status };
+  } catch (e) {
+    return { ok: false, erro: e instanceof Error ? e.message : "falha_envio" };
+  }
+}
+
+/** Envia uma imagem (por URL) com legenda. Fallback de formato v1/v2. */
+export async function enviarImagemWhatsApp(
+  telefone: string,
+  url: string,
+  legenda: string,
+): Promise<EnvioResultado> {
+  if (!evolutionConfigurado()) {
+    return { ok: false, erro: "evolution_nao_configurado" };
+  }
+  const numero = telefone.replace(/\D/g, "");
+  const primeira = VERSAO === "v1" ? "v1" : "v2";
+  const r = await enviarMediaUma(numero, url, legenda, primeira);
+  if (r.ok || r.status !== 400) return r;
+  const alternativa = primeira === "v1" ? "v2" : "v1";
+  return enviarMediaUma(numero, url, legenda, alternativa);
+}
