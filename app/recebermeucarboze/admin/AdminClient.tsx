@@ -388,6 +388,12 @@ export default function AdminClient() {
             </BotaoAcao>
             <ExportMenu label="Exportar" onFormato={exportarGeral} disabled={dados.length === 0} />
             <ExportMenu label="Vale (posto)" onFormato={exportarVale} disabled={ganharamVale === 0} />
+            <a
+              href="/recebermeucarboze/roleta"
+              className="rounded-lg border border-limao/40 bg-limao/10 px-3 py-2 font-[family-name:var(--font-archivo)] text-sm font-semibold text-limao transition hover:bg-limao/20"
+            >
+              🎰 Roleta
+            </a>
             <button
               onClick={sair}
               className="rounded-lg px-3 py-2 font-[family-name:var(--font-archivo)] text-sm font-semibold text-white/50 transition hover:text-white"

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef, FormEvent } from "react";
 import { callRpc } from "@/lib/supabase";
-import { calcularChances, bagLiberadas, type PremioEstado } from "@/lib/roletaChances";
+import { calcularChances, bagLiberadas, type PremioEstado, type Modo } from "@/lib/roletaChances";
 
 const VERDE = "#02A81E";
 const CHAVE = "roleta_admin_senha";
@@ -196,7 +196,7 @@ type Cadastro = { id: string; nome: string; telefone: string; ja_girou: boolean;
 type GiroResp = { ok: boolean; erro?: string; slug?: string; tipo?: string; premio?: string; codigo?: string; extra?: boolean };
 type PremioPainel = PremioEstado & { saidos_total: number; saidos_hora: number; ordem: number };
 type Giro = { nome: string; telefone: string; premio_nome: string; premio_tipo: string; giro_extra: boolean; codigo: string | null; hora: string };
-type PainelResp = { ok: boolean; premios?: PremioPainel[]; total_giros?: number; giros?: Giro[] };
+type PainelResp = { ok: boolean; modo?: Modo; premios?: PremioPainel[]; total_giros?: number; giros?: Giro[] };
 
 function horaRecifeAgora() {
   const d = new Date();
@@ -658,9 +658,28 @@ function PainelView({ senha }: { senha: string }) {
 
   const premios = dados?.premios ?? [];
   const giros = dados?.giros ?? [];
+  const totalGiros = dados?.total_giros ?? 0;
+  const modo: Modo = dados?.modo ?? "normal";
   const hora = horaRecifeAgora();
   const bagGanhos = premios.find((p) => p.slug === "bag")?.saidos_total ?? 0;
-  const chances = calcularChances(premios as PremioEstado[], hora, false, bagGanhos);
+  const chances = calcularChances(premios as PremioEstado[], hora, false, bagGanhos, modo);
+
+  // Previsão até as 14h a partir do ritmo atual de giros.
+  const decorrido = Math.max(0.25, Math.min(5, hora - 9));
+  const restam = Math.max(0, 14 - hora);
+  const ritmo = totalGiros / decorrido; // giros por hora
+  const girosFuturos = ritmo * restam;
+  const projPronta = totalGiros >= 5 && restam > 0.1;
+  function sobraPrev(slug: string, estoque: number | null) {
+    const est = estoque ?? 0;
+    const consumo = girosFuturos * (chances[slug] ?? 0);
+    return Math.max(0, Math.round(est - consumo));
+  }
+
+  async function salvarModo(m: Modo) {
+    await callRpc("roleta_set_modo", { p_modo: m, p_senha: senha });
+    carregar();
+  }
 
   async function salvarEstoque(slug: string) {
     const v = parseInt(edit[slug] ?? "", 10);
@@ -727,6 +746,42 @@ function PainelView({ senha }: { senha: string }) {
         </div>
       </div>
 
+      {/* Modo de fluxo */}
+      <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-[family-name:var(--font-basement)] text-sm font-extrabold uppercase text-white">
+              Modo de fluxo
+            </p>
+            <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[12px] text-white/50">
+              Escolha conforme o movimento. Olhe a coluna <b className="text-white/70">Sobra prev.</b> pra decidir.
+            </p>
+          </div>
+          <div className="flex gap-1.5 rounded-full border border-white/10 bg-white/5 p-1">
+            {(
+              [
+                ["baixo", "Fluxo baixo"],
+                ["normal", "Normal"],
+                ["alto", "Fluxo alto"],
+              ] as [Modo, string][]
+            ).map(([m, rotulo]) => (
+              <button
+                key={m}
+                onClick={() => salvarModo(m)}
+                className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${modo === m ? "bg-[#02A81E] text-white shadow" : "text-white/55 hover:text-white"}`}
+              >
+                {rotulo}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="mt-3 font-[family-name:var(--font-archivo)] text-[12px] text-white/55">
+          {modo === "baixo" && "Poucos motoqueiros: a roleta empurra os prêmios bons (vale, bag, guarda-sol) pra não sobrar o que é caro. Quase ninguém sai sem nada."}
+          {modo === "normal" && "Equilíbrio: distribui proporcional ao estoque e protege os prêmios escassos. Bom padrão."}
+          {modo === "alto" && "Fila grande: segura os prêmios caros/escassos pra durarem o dia, puxa mais sachê e CarboZé, e o \"não foi\" fica um pouco maior."}
+        </p>
+      </div>
+
       {/* Prêmios */}
       <div className="mt-4 overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
         <table className="w-full text-left text-sm">
@@ -736,6 +791,7 @@ function PainelView({ senha }: { senha: string }) {
               <th className="px-3 py-2">Estoque</th>
               <th className="px-3 py-2">Saíram (hoje / hora)</th>
               <th className="px-3 py-2">Chance ao vivo</th>
+              <th className="px-3 py-2">Sobra prev.</th>
               <th className="px-3 py-2">Ajustar</th>
             </tr>
           </thead>
@@ -755,6 +811,18 @@ function PainelView({ senha }: { senha: string }) {
                     {bag0 && bagLiberadas(hora) === 0 && (
                       <span className="ml-1 text-[10px] text-white/40">(libera 10h30)</span>
                     )}
+                  </td>
+                  <td className="px-3 py-2">
+                    {(() => {
+                      const temEstoque = (p.estoque ?? 0) > 0;
+                      if (p.tipo !== "premio" && p.tipo !== "vale") return <span className="text-white/30">–</span>;
+                      if (!temEstoque) return <span className="text-white/40">esgotado</span>;
+                      if (!projPronta) return <span className="text-white/40">—</span>;
+                      const s = sobraPrev(p.slug, p.estoque);
+                      if (s <= 0) return <span className="font-semibold" style={{ color: VERDE }}>zera 👍</span>;
+                      const alto = s > (p.estoque ?? 0) * 0.3 && s >= 2;
+                      return <span className={alto ? "font-semibold text-amber-400" : "text-white/70"}>~{s}{alto ? " ⚠" : ""}</span>;
+                    })()}
                   </td>
                   <td className="px-3 py-2">
                     {p.tipo === "premio" || p.tipo === "vale" ? (

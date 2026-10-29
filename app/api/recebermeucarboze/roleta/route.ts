@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { callRpc } from "@/lib/supabase";
 import { enviarWhatsApp, enviarImagemWhatsApp } from "@/lib/evolution";
-import { calcularChances, sortear, type PremioEstado } from "@/lib/roletaChances";
+import { calcularChances, sortear, type PremioEstado, type Modo } from "@/lib/roletaChances";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +11,7 @@ type Prep = {
   extra?: boolean;
   hora?: number;
   bag_ganhos?: number;
+  modo?: Modo;
   premios?: PremioEstado[];
 };
 type Reg = {
@@ -59,6 +60,7 @@ export async function POST(req: Request) {
     prep.hora ?? 9,
     !!prep.extra,
     prep.bag_ganhos ?? 0,
+    prep.modo ?? "normal",
   );
   let slug = sortear(chances);
 

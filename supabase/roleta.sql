@@ -56,6 +56,11 @@ insert into public.parada_certa_config (chave, valor)
 values ('roleta_ignorar_horario', 'false')
 on conflict (chave) do nothing;
 
+-- Modo de fluxo da roleta: baixo | normal | alto (a equipe escolhe no painel)
+insert into public.parada_certa_config (chave, valor)
+values ('roleta_modo', 'normal')
+on conflict (chave) do nothing;
+
 -- Helper interno: confere a senha do admin
 create or replace function public.roleta_auth(p_senha text)
 returns boolean language sql security definer set search_path = public as $$
@@ -127,6 +132,7 @@ begin
     'ok', true,
     'extra', v_extra,
     'hora', round(v_hora::numeric, 3),
+    'modo', coalesce((select valor from public.parada_certa_config where chave = 'roleta_modo'), 'normal'),
     'bag_ganhos', (select count(*) from public.roleta_giros where premio_slug = 'bag'),
     'premios', coalesce((
       select json_agg(row_to_json(p) order by p.ordem)
@@ -204,6 +210,7 @@ begin
   if not roleta_auth(p_senha) then return json_build_object('ok', false); end if;
   return json_build_object(
     'ok', true,
+    'modo', coalesce((select valor from public.parada_certa_config where chave = 'roleta_modo'), 'normal'),
     'premios', coalesce((
       select json_agg(row_to_json(p) order by p.ordem)
       from (
@@ -286,3 +293,19 @@ begin
 end;
 $$;
 grant execute on function public.teste_carboze_admin(text) to anon;
+
+-- 11) Trocar o modo de fluxo da roleta (baixo | normal | alto) ----
+create or replace function public.roleta_set_modo(p_modo text, p_senha text)
+returns json language plpgsql security definer set search_path = public as $$
+begin
+  if not roleta_auth(p_senha) then return json_build_object('ok', false); end if;
+  if p_modo not in ('baixo', 'normal', 'alto') then
+    return json_build_object('ok', false, 'erro', 'modo_invalido');
+  end if;
+  update public.parada_certa_config set valor = p_modo where chave = 'roleta_modo';
+  if not found then
+    insert into public.parada_certa_config (chave, valor) values ('roleta_modo', p_modo);
+  end if;
+  return json_build_object('ok', true, 'modo', p_modo);
+end; $$;
+grant execute on function public.roleta_set_modo(text, text) to anon;
