@@ -12,6 +12,7 @@ type Prep = {
   hora?: number;
   bag_ganhos?: number;
   modo?: Modo;
+  ritmo?: number;
   premios?: PremioEstado[];
 };
 type Reg = {
@@ -60,7 +61,8 @@ export async function POST(req: Request) {
     prep.hora ?? 9,
     !!prep.extra,
     prep.bag_ganhos ?? 0,
-    prep.modo ?? "normal",
+    prep.modo ?? "auto",
+    prep.ritmo ?? 0,
   );
   let slug = sortear(chances);
 

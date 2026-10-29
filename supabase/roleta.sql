@@ -56,9 +56,9 @@ insert into public.parada_certa_config (chave, valor)
 values ('roleta_ignorar_horario', 'false')
 on conflict (chave) do nothing;
 
--- Modo de fluxo da roleta: baixo | normal | alto (a equipe escolhe no painel)
+-- Modo de fluxo da roleta: auto (padrão) | baixo | normal | alto
 insert into public.parada_certa_config (chave, valor)
-values ('roleta_modo', 'normal')
+values ('roleta_modo', 'auto')
 on conflict (chave) do nothing;
 
 -- Helper interno: confere a senha do admin
@@ -109,6 +109,7 @@ declare
   v_ultimo text;
   v_extra boolean := false;
   v_nome text;
+  v_ritmo int := (select count(*) from public.roleta_giros where created_at >= now() - interval '1 hour');
 begin
   if not roleta_auth(p_senha) then return json_build_object('ok', false, 'erro', 'senha'); end if;
 
@@ -132,7 +133,8 @@ begin
     'ok', true,
     'extra', v_extra,
     'hora', round(v_hora::numeric, 3),
-    'modo', coalesce((select valor from public.parada_certa_config where chave = 'roleta_modo'), 'normal'),
+    'modo', coalesce((select valor from public.parada_certa_config where chave = 'roleta_modo'), 'auto'),
+    'ritmo', v_ritmo,
     'bag_ganhos', (select count(*) from public.roleta_giros where premio_slug = 'bag'),
     'premios', coalesce((
       select json_agg(row_to_json(p) order by p.ordem)
@@ -210,7 +212,8 @@ begin
   if not roleta_auth(p_senha) then return json_build_object('ok', false); end if;
   return json_build_object(
     'ok', true,
-    'modo', coalesce((select valor from public.parada_certa_config where chave = 'roleta_modo'), 'normal'),
+    'modo', coalesce((select valor from public.parada_certa_config where chave = 'roleta_modo'), 'auto'),
+    'ritmo', (select count(*) from public.roleta_giros where created_at >= now() - interval '1 hour'),
     'premios', coalesce((
       select json_agg(row_to_json(p) order by p.ordem)
       from (
@@ -299,7 +302,7 @@ create or replace function public.roleta_set_modo(p_modo text, p_senha text)
 returns json language plpgsql security definer set search_path = public as $$
 begin
   if not roleta_auth(p_senha) then return json_build_object('ok', false); end if;
-  if p_modo not in ('baixo', 'normal', 'alto') then
+  if p_modo not in ('auto', 'baixo', 'normal', 'alto') then
     return json_build_object('ok', false, 'erro', 'modo_invalido');
   end if;
   update public.parada_certa_config set valor = p_modo where chave = 'roleta_modo';

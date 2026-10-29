@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef, FormEvent } from "react";
 import { callRpc } from "@/lib/supabase";
-import { calcularChances, bagLiberadas, type PremioEstado, type Modo } from "@/lib/roletaChances";
+import { calcularChances, bagLiberadas, rotuloFluxo, type PremioEstado, type Modo } from "@/lib/roletaChances";
 
 const VERDE = "#02A81E";
 const CHAVE = "roleta_admin_senha";
@@ -196,7 +196,7 @@ type Cadastro = { id: string; nome: string; telefone: string; ja_girou: boolean;
 type GiroResp = { ok: boolean; erro?: string; slug?: string; tipo?: string; premio?: string; codigo?: string; extra?: boolean };
 type PremioPainel = PremioEstado & { saidos_total: number; saidos_hora: number; ordem: number };
 type Giro = { nome: string; telefone: string; premio_nome: string; premio_tipo: string; giro_extra: boolean; codigo: string | null; hora: string };
-type PainelResp = { ok: boolean; modo?: Modo; premios?: PremioPainel[]; total_giros?: number; giros?: Giro[] };
+type PainelResp = { ok: boolean; modo?: Modo; ritmo?: number; premios?: PremioPainel[]; total_giros?: number; giros?: Giro[] };
 
 function horaRecifeAgora() {
   const d = new Date();
@@ -659,15 +659,14 @@ function PainelView({ senha }: { senha: string }) {
   const premios = dados?.premios ?? [];
   const giros = dados?.giros ?? [];
   const totalGiros = dados?.total_giros ?? 0;
-  const modo: Modo = dados?.modo ?? "normal";
+  const modo: Modo = dados?.modo ?? "auto";
+  const ritmo = dados?.ritmo ?? 0; // giros/h (última hora), vindo do banco
   const hora = horaRecifeAgora();
   const bagGanhos = premios.find((p) => p.slug === "bag")?.saidos_total ?? 0;
-  const chances = calcularChances(premios as PremioEstado[], hora, false, bagGanhos, modo);
+  const chances = calcularChances(premios as PremioEstado[], hora, false, bagGanhos, modo, ritmo);
 
   // Previsão até as 14h a partir do ritmo atual de giros.
-  const decorrido = Math.max(0.25, Math.min(5, hora - 9));
   const restam = Math.max(0, 14 - hora);
-  const ritmo = totalGiros / decorrido; // giros por hora
   const girosFuturos = ritmo * restam;
   const projPronta = totalGiros >= 5 && restam > 0.1;
   function sobraPrev(slug: string, estoque: number | null) {
@@ -754,15 +753,16 @@ function PainelView({ senha }: { senha: string }) {
               Modo de fluxo
             </p>
             <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[12px] text-white/50">
-              Escolha conforme o movimento. Olhe a coluna <b className="text-white/70">Sobra prev.</b> pra decidir.
+              No <b className="text-white/70">Automático</b> a roleta se ajusta sozinha ao movimento. Os fixos são override manual.
             </p>
           </div>
           <div className="flex gap-1.5 rounded-full border border-white/10 bg-white/5 p-1">
             {(
               [
-                ["baixo", "Fluxo baixo"],
+                ["auto", "Automático"],
+                ["baixo", "Baixo"],
                 ["normal", "Normal"],
-                ["alto", "Fluxo alto"],
+                ["alto", "Alto"],
               ] as [Modo, string][]
             ).map(([m, rotulo]) => (
               <button
@@ -775,11 +775,23 @@ function PainelView({ senha }: { senha: string }) {
             ))}
           </div>
         </div>
-        <p className="mt-3 font-[family-name:var(--font-archivo)] text-[12px] text-white/55">
-          {modo === "baixo" && "Poucos motoqueiros: a roleta empurra os prêmios bons (vale, bag, guarda-sol) pra não sobrar o que é caro. Quase ninguém sai sem nada."}
-          {modo === "normal" && "Equilíbrio: distribui proporcional ao estoque e protege os prêmios escassos. Bom padrão."}
-          {modo === "alto" && "Fila grande: segura os prêmios caros/escassos pra durarem o dia, puxa mais sachê e CarboZé, e o \"não foi\" fica um pouco maior."}
-        </p>
+        {modo === "auto" ? (
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-[family-name:var(--font-archivo)] text-[13px]">
+            <span className="rounded-md bg-[#02A81E]/15 px-2 py-1 font-semibold text-[#43e07a]">
+              ⚙️ Automático ligado
+            </span>
+            <span className="text-white/60">
+              Fluxo detectado: <b className="text-white">{rotuloFluxo(ritmo)}</b> (~{ritmo} giros/h)
+            </span>
+            <span className="text-white/40">
+              A roleta mira em zerar o estoque até as 14h. Nada a fazer.
+            </span>
+          </div>
+        ) : (
+          <p className="mt-3 font-[family-name:var(--font-archivo)] text-[12px] text-amber-300/80">
+            ⚠ Override manual ativo ({modo}). Volte pro Automático pra deixar a roleta se ajustar sozinha ao movimento.
+          </p>
+        )}
       </div>
 
       {/* Prêmios */}
