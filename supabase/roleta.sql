@@ -249,3 +249,40 @@ begin
   return json_build_object('ok', true);
 end; $$;
 grant execute on function public.roleta_reset(text) to anon;
+
+-- 10) Admin dos cadastros: incluir o resultado da roleta -------
+-- (redefine teste_carboze_admin somando o giro mais recente — prioriza o
+--  prêmio "de verdade" sobre um "tente outra vez" ainda sem giro extra)
+create or replace function public.teste_carboze_admin(p_senha text)
+returns json language plpgsql security definer set search_path = public as $$
+declare v_ok boolean;
+begin
+  select (p_senha is not null and p_senha = valor) into v_ok
+  from public.parada_certa_config where chave = 'admin_senha';
+  if not coalesce(v_ok, false) then return json_build_object('ok', false); end if;
+
+  return json_build_object('ok', true, 'cadastros', coalesce((
+    select json_agg(row_to_json(t))
+    from (
+      select
+        c.id, c.nome, c.telefone, c.modelo_moto, c.placa, c.instagram,
+        c.autoriza_imagem, c.vale_combustivel, c.codigo, c.retirado,
+        to_char(c.retirado_em  at time zone 'America/Recife', 'DD/MM/YYYY HH24:MI') as retirado_em,
+        to_char(c.created_at   at time zone 'America/Recife', 'DD/MM/YYYY HH24:MI') as criado_em,
+        (g.premio_nome is not null)        as roleta_girou,
+        g.premio_nome                      as roleta_premio,
+        g.premio_tipo                      as roleta_tipo
+      from public.teste_carboze c
+      left join lateral (
+        select premio_nome, premio_tipo
+        from public.roleta_giros
+        where cadastro_id = c.id
+        order by (premio_slug <> 'tente') desc, created_at desc
+        limit 1
+      ) g on true
+      order by c.created_at desc
+    ) t
+  ), '[]'::json));
+end;
+$$;
+grant execute on function public.teste_carboze_admin(text) to anon;

@@ -19,6 +19,9 @@ type Cadastro = {
   retirado: boolean;
   retirado_em: string | null;
   criado_em: string;
+  roleta_girou?: boolean;
+  roleta_premio?: string | null;
+  roleta_tipo?: string | null;
 };
 type AdminResp = { ok: boolean; cadastros?: Cadastro[] };
 
@@ -512,6 +515,17 @@ export default function AdminClient() {
                     {c.criado_em}
                     {c.autoriza_imagem ? " · autoriza imagem" : " · NÃO autoriza"}
                   </p>
+                  {c.roleta_girou && (
+                    <p
+                      className={`mt-1 inline-block rounded-md px-2 py-0.5 font-[family-name:var(--font-archivo)] text-[12px] font-semibold ${
+                        c.roleta_tipo === "nada"
+                          ? "bg-white/5 text-white/45"
+                          : "bg-carbo-azul/15 text-carbo-azul"
+                      }`}
+                    >
+                      🎰 Roleta: {c.roleta_tipo === "nada" ? "Não foi dessa vez" : c.roleta_premio}
+                    </p>
+                  )}
                   {c.vale_combustivel && c.codigo && (
                     <p className="mt-0.5 font-[family-name:var(--font-archivo)] text-[12px] font-semibold text-limao">
                       🎟️ {c.codigo}

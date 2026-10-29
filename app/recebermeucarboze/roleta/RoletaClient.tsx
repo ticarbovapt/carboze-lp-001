@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef, FormEvent } from "react";
 import { callRpc } from "@/lib/supabase";
 import { calcularChances, bagLiberadas, type PremioEstado } from "@/lib/roletaChances";
 
-const AZUL = "#2F3B66";
 const VERDE = "#02A81E";
 const CHAVE = "roleta_admin_senha";
 
@@ -23,73 +22,172 @@ const LABEL: Record<string, string> = {
   bone: "BONÉ",
   guardasol: "GUARDA-SOL",
 };
-const CORES: Record<string, string> = {
-  bag: VERDE,
-  guardasol: VERDE,
-  bone: AZUL,
-  carboze100: "#3a4a7a",
-  sache: "#2a3557",
-  vale: "#e0a63a",
-  tente: "#5566a0",
-  nada: "#1a2138",
+
+// Famílias de cor: [centro, borda, texto]
+const PALETA: Record<string, [string, string, string]> = {
+  verde: ["#43e07a", "#0c8f39", "#06331a"],
+  azul: ["#6476ba", "#2f3b66", "#eef2ff"],
+  navy: ["#45568f", "#1b2444", "#e3e9ff"],
+  ouro: ["#ffe08a", "#c6861c", "#4a2e05"],
+  tente: ["#8a98d4", "#49558f", "#ffffff"],
+  nada: ["#2b3558", "#141a30", "#9aa4c8"],
+};
+const FAM: Record<string, keyof typeof PALETA> = {
+  bag: "verde",
+  guardasol: "verde",
+  bone: "verde",
+  carboze100: "azul",
+  sache: "navy",
+  vale: "ouro",
+  tente: "tente",
+  nada: "nada",
 };
 
-/* ─── Roda (SVG) ─────────────────────────────────────────────── */
+/* ─── Roda (SVG premium) ─────────────────────────────────────── */
 function Roda({ rotation }: { rotation: number }) {
-  const cx = 220;
-  const cy = 220;
-  const r = 205;
+  const cx = 230;
+  const cy = 230;
+  const R = 210;
+  const fams = Object.keys(PALETA) as (keyof typeof PALETA)[];
+
   const fatias = SLICES.map((slug, i) => {
     const start = i * 30;
     const end = (i + 1) * 30;
     const mid = start + 15;
     const a0 = ((start - 90) * Math.PI) / 180;
     const a1 = ((end - 90) * Math.PI) / 180;
-    const x0 = cx + r * Math.cos(a0);
-    const y0 = cy + r * Math.sin(a0);
-    const x1 = cx + r * Math.cos(a1);
-    const y1 = cy + r * Math.sin(a1);
-    const d = `M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 0 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z`;
+    const x0 = cx + R * Math.cos(a0);
+    const y0 = cy + R * Math.sin(a0);
+    const x1 = cx + R * Math.cos(a1);
+    const y1 = cy + R * Math.sin(a1);
+    const d = `M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${R},${R} 0 0 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z`;
     const phi = ((mid - 90) * Math.PI) / 180;
-    const rc = r * 0.6;
+    const rc = R * 0.62;
     const tx = cx + rc * Math.cos(phi);
     const ty = cy + rc * Math.sin(phi);
     const rot = mid > 180 ? mid + 90 : mid - 90;
-    return { slug, d, tx, ty, rot, key: i };
+    const fam = FAM[slug];
+    return { slug, d, tx, ty, rot, fam, key: i, txt: PALETA[fam][2] };
+  });
+
+  // studs no aro (12 nas divisas)
+  const studs = Array.from({ length: 12 }, (_, i) => {
+    const ang = ((i * 30 - 90) * Math.PI) / 180;
+    return { x: cx + (R + 11) * Math.cos(ang), y: cy + (R + 11) * Math.sin(ang), key: i };
   });
 
   return (
-    <svg viewBox="-6 -6 452 452" className="h-full w-full">
-      <circle cx={cx} cy={cy} r={r + 5} fill="#0e1424" />
+    <svg viewBox="-12 -16 484 484" className="h-full w-full" style={{ filter: "drop-shadow(0 18px 40px rgba(0,0,0,.55))" }}>
+      <defs>
+        {fams.map((f) => (
+          <radialGradient key={f} id={`g-${f}`} cx="50%" cy="38%" r="75%">
+            <stop offset="0%" stopColor={PALETA[f][0]} />
+            <stop offset="100%" stopColor={PALETA[f][1]} />
+          </radialGradient>
+        ))}
+        <linearGradient id="aro" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffe9a8" />
+          <stop offset="45%" stopColor="#d89a28" />
+          <stop offset="100%" stopColor="#8c5e12" />
+        </linearGradient>
+        <radialGradient id="hub" cx="50%" cy="38%" r="70%">
+          <stop offset="0%" stopColor="#1c2440" />
+          <stop offset="100%" stopColor="#090d18" />
+        </radialGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.2" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* aro externo */}
+      <circle cx={cx} cy={cy} r={R + 16} fill="#0b0f1c" />
+      <circle cx={cx} cy={cy} r={R + 9} fill="none" stroke="url(#aro)" strokeWidth="9" />
+      <circle cx={cx} cy={cy} r={R + 3.5} fill="none" stroke="#0b0f1c" strokeWidth="2" />
+
+      {/* fatias (giram) */}
       <g
         style={{
           transform: `rotate(${rotation}deg)`,
-          transformOrigin: "220px 220px",
-          transition: "transform 5.2s cubic-bezier(0.16, 0.74, 0.1, 1)",
+          transformOrigin: "230px 230px",
+          transition: "transform 5.6s cubic-bezier(0.12, 0.74, 0.07, 1)",
         }}
       >
         {fatias.map((s) => (
           <g key={s.key}>
-            <path d={s.d} fill={CORES[s.slug]} stroke="#0e1424" strokeWidth="2" />
+            <path d={s.d} fill={`url(#g-${s.fam})`} stroke="rgba(255,225,150,.5)" strokeWidth="1.5" />
             <text
               x={s.tx}
               y={s.ty}
-              fill="#ffffff"
-              fontSize="13"
+              fill={s.txt}
+              fontSize="14"
               fontWeight="800"
+              letterSpacing="0.4"
               textAnchor="middle"
               dominantBaseline="middle"
               transform={`rotate(${s.rot} ${s.tx} ${s.ty})`}
+              style={{ textShadow: "0 1px 2px rgba(0,0,0,.35)" }}
             >
               {LABEL[s.slug]}
             </text>
           </g>
         ))}
       </g>
-      <circle cx={cx} cy={cy} r="36" fill="#0e1424" stroke={VERDE} strokeWidth="3" />
-      {/* ponteiro fixo no topo */}
-      <polygon points="220,44 203,6 237,6" fill={VERDE} stroke="#0e1424" strokeWidth="1.5" />
+
+      {/* studs dourados */}
+      {studs.map((p) => (
+        <circle key={p.key} cx={p.x} cy={p.y} r="3.4" fill="#ffe08a" filter="url(#glow)" />
+      ))}
+
+      {/* hub central */}
+      <circle cx={cx} cy={cy} r="44" fill="url(#hub)" stroke="url(#aro)" strokeWidth="4" />
+      <circle cx={cx} cy={cy} r="30" fill="none" stroke={VERDE} strokeWidth="2.5" opacity="0.9" />
+      <circle cx={cx} cy={cy} r="9" fill={VERDE} filter="url(#glow)" />
+
+      {/* ponteiro premium no topo */}
+      <g style={{ filter: "drop-shadow(0 3px 4px rgba(0,0,0,.5))" }}>
+        <path d={`M${cx},44 L${cx - 20},-4 L${cx + 20},-4 Z`} fill="url(#aro)" stroke="#7a5310" strokeWidth="1.5" />
+        <circle cx={cx} cy={6} r="5" fill="#fff6dc" />
+      </g>
     </svg>
+  );
+}
+
+/* ─── Confete ────────────────────────────────────────────────── */
+function Confete() {
+  const cores = ["#02A81E", "#43e07a", "#ffe08a", "#c6861c", "#6476ba", "#ffffff"];
+  const pecas = Array.from({ length: 70 }, (_, i) => {
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.5;
+    const dur = 2.6 + Math.random() * 2;
+    const size = 6 + Math.random() * 9;
+    const cor = cores[Math.floor(Math.random() * cores.length)];
+    const rot = Math.random() * 360;
+    return { i, left, delay, dur, size, cor, rot };
+  });
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {pecas.map((p) => (
+        <span
+          key={p.i}
+          style={{
+            position: "absolute",
+            left: `${p.left}%`,
+            top: "-6%",
+            width: p.size,
+            height: p.size * 0.45,
+            background: p.cor,
+            borderRadius: 2,
+            transform: `rotate(${p.rot}deg)`,
+            animation: `cz-fall ${p.dur}s cubic-bezier(.3,.1,.5,1) ${p.delay}s forwards`,
+          }}
+        />
+      ))}
+      <style>{`@keyframes cz-fall{to{transform:translateY(112vh) rotate(760deg);opacity:.85}}`}</style>
+    </div>
   );
 }
 
@@ -223,7 +321,7 @@ export default function RoletaClient() {
       window.setTimeout(() => {
         setResultado(r);
         setGirando(false);
-      }, 5400);
+      }, 5800);
     } catch {
       setGirando(false);
       setErroGiro("Não foi possível girar. Tente novamente.");
@@ -262,9 +360,12 @@ export default function RoletaClient() {
       if (senha.trim()) entrar(senha.trim());
     }
     return (
-      <main className="flex min-h-dvh items-center justify-center p-5" style={{ backgroundColor: "#141a2e" }}>
-        <form onSubmit={onLogin} className="w-full max-w-sm rounded-2xl bg-white/5 p-7 ring-1 ring-white/10">
-          <h1 className="font-[family-name:var(--font-basement)] text-xl font-extrabold uppercase text-white">
+      <main className="flex min-h-dvh items-center justify-center p-5 text-white" style={fundoStyle}>
+        <form onSubmit={onLogin} className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/[0.04] p-7 shadow-2xl backdrop-blur">
+          <p className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.3em] text-[#ffe08a]">
+            Grupo Carbo
+          </p>
+          <h1 className="mt-1 font-[family-name:var(--font-basement)] text-2xl font-extrabold uppercase">
             Roleta · Parada Certa
           </h1>
           <p className="mt-1 font-[family-name:var(--font-archivo)] text-sm text-white/55">
@@ -280,8 +381,8 @@ export default function RoletaClient() {
           {erroLogin && <p className="mt-3 text-sm font-medium text-red-400">{erroLogin}</p>}
           <button
             type="submit"
-            className="mt-5 w-full rounded-xl py-3.5 font-[family-name:var(--font-basement)] text-sm font-extrabold uppercase tracking-wide text-white"
-            style={{ backgroundColor: VERDE }}
+            className="mt-5 w-full rounded-xl py-3.5 font-[family-name:var(--font-basement)] text-sm font-extrabold uppercase tracking-wide text-white shadow-lg transition active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg,#02A81E,#0c8f39)" }}
           >
             Entrar
           </button>
@@ -291,22 +392,27 @@ export default function RoletaClient() {
   }
 
   return (
-    <main className="flex min-h-dvh flex-col" style={{ backgroundColor: "#141a2e" }}>
+    <main className="flex min-h-dvh flex-col text-white" style={fundoStyle}>
       {/* Topo */}
-      <header className="flex items-center justify-between border-b border-white/10 px-5 py-3">
-        <h1 className="font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase text-white">
-          Roleta · <span style={{ color: VERDE }}>Parada Certa</span>
-        </h1>
-        <div className="flex items-center gap-2">
+      <header className="flex items-center justify-between border-b border-white/10 px-6 py-3.5 backdrop-blur-sm">
+        <div className="flex items-baseline gap-2">
+          <h1 className="font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase">
+            Roleta
+          </h1>
+          <span className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-[0.25em] text-[#ffe08a]">
+            Parada Certa
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 p-1">
           <button
             onClick={() => setAba("operar")}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${aba === "operar" ? "bg-white/15 text-white" : "text-white/50 hover:text-white"}`}
+            className={`rounded-full px-5 py-1.5 text-sm font-semibold transition ${aba === "operar" ? "bg-white/15 text-white shadow" : "text-white/50 hover:text-white"}`}
           >
             Operar
           </button>
           <button
             onClick={() => setAba("painel")}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${aba === "painel" ? "bg-white/15 text-white" : "text-white/50 hover:text-white"}`}
+            className={`rounded-full px-5 py-1.5 text-sm font-semibold transition ${aba === "painel" ? "bg-white/15 text-white shadow" : "text-white/50 hover:text-white"}`}
           >
             Painel
           </button>
@@ -333,13 +439,17 @@ export default function RoletaClient() {
         <PainelView senha={senha} />
       )}
 
-      {/* Resultado em tela cheia */}
       {resultado && (
         <ResultadoOverlay resultado={resultado} onProximo={proximo} onGirarDeNovo={girarDeNovo} />
       )}
     </main>
   );
 }
+
+const fundoStyle: React.CSSProperties = {
+  background:
+    "radial-gradient(1200px 600px at 50% -10%, #223059 0%, #141a2e 45%, #0c1020 100%)",
+};
 
 /* ─── Operar ─────────────────────────────────────────────────── */
 function OperarView({
@@ -365,9 +475,10 @@ function OperarView({
   trocar: () => void;
   girar: () => void;
 }) {
-  const bloqueado = !selecionado || selecionado.ja_girou || girando;
+  const pronto = !!selecionado && !selecionado.ja_girou && !girando;
+  const bloqueado = !pronto;
   return (
-    <div className="flex flex-1 flex-col items-center gap-6 px-5 py-6 lg:flex-row lg:items-center lg:justify-center lg:gap-12">
+    <div className="flex flex-1 flex-col items-center gap-8 px-5 py-8 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
       {/* Esquerda: busca */}
       <div className="w-full max-w-sm">
         <label className="font-[family-name:var(--font-archivo)] text-xs uppercase tracking-widest text-white/50">
@@ -381,7 +492,7 @@ function OperarView({
           className="mt-1.5 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-white placeholder-white/30 focus:border-[#02A81E] focus:outline-none"
         />
         {resultados.length > 0 && !selecionado && (
-          <div className="mt-2 overflow-hidden rounded-xl border border-white/10 bg-[#1b2238]">
+          <div className="mt-2 overflow-hidden rounded-xl border border-white/10 bg-[#1b2238] shadow-xl">
             {resultados.map((c) => (
               <button
                 key={c.id}
@@ -389,28 +500,27 @@ function OperarView({
                 className="block w-full border-b border-white/5 px-4 py-2.5 text-left transition last:border-0 hover:bg-white/5"
               >
                 <span className="font-semibold text-white">{c.nome}</span>
-                <span className="ml-2 text-sm text-white/50">
-                  {c.telefone.replace(/^55/, "")}
-                </span>
-                {c.ja_girou && (
-                  <span className="ml-2 text-xs font-semibold text-amber-400">já girou</span>
-                )}
+                <span className="ml-2 text-sm text-white/50">{c.telefone.replace(/^55/, "")}</span>
+                {c.ja_girou && <span className="ml-2 text-xs font-semibold text-amber-400">já girou</span>}
               </button>
             ))}
           </div>
         )}
 
         {selecionado && (
-          <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4">
-            <p className="text-lg font-extrabold text-white">{selecionado.nome}</p>
+          <div className="mt-4 rounded-2xl border border-[#ffe08a]/30 bg-gradient-to-br from-white/[0.07] to-white/[0.02] p-5 shadow-lg">
+            <p className="font-[family-name:var(--font-archivo)] text-[11px] uppercase tracking-widest text-[#ffe08a]/80">
+              Participante
+            </p>
+            <p className="mt-1 text-2xl font-extrabold text-white">{selecionado.nome}</p>
             <p className="text-sm text-white/60">{selecionado.telefone.replace(/^55/, "")}</p>
             {selecionado.ja_girou && (
-              <p className="mt-2 text-sm font-semibold text-amber-400">
+              <p className="mt-2 rounded-lg bg-amber-400/10 px-3 py-1.5 text-sm font-semibold text-amber-300">
                 Já participou — ganhou: {selecionado.resultado}
               </p>
             )}
-            <button onClick={trocar} className="mt-2 text-xs font-semibold text-white/50 hover:text-white">
-              Trocar participante
+            <button onClick={trocar} className="mt-3 text-xs font-semibold text-white/50 hover:text-white">
+              ← Trocar participante
             </button>
           </div>
         )}
@@ -419,21 +529,30 @@ function OperarView({
 
       {/* Direita: roda + botão */}
       <div className="flex flex-col items-center">
-        <div className="relative aspect-square w-[min(72vw,440px)]">
+        <div
+          className="relative aspect-square w-[min(76vw,480px)]"
+          style={{ filter: girando ? "none" : undefined }}
+        >
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
+            style={{ background: "radial-gradient(circle, rgba(2,168,30,.25), rgba(100,118,186,.12) 60%, transparent 70%)" }}
+          />
           <Roda rotation={rotation} />
         </div>
         <button
           onClick={girar}
           disabled={bloqueado}
-          className="mt-6 rounded-xl px-12 py-4 font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase tracking-widest text-white transition active:scale-95 disabled:opacity-40"
-          style={{ backgroundColor: VERDE }}
+          className={`mt-7 rounded-2xl px-16 py-5 font-[family-name:var(--font-basement)] text-xl font-extrabold uppercase tracking-[0.15em] text-white shadow-xl transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-35 ${pronto ? "cz-pulse" : ""}`}
+          style={{ background: "linear-gradient(135deg,#02A81E,#0c8f39)", boxShadow: pronto ? "0 10px 30px rgba(2,168,30,.45)" : undefined }}
         >
           {girando ? "Girando…" : "Girar"}
         </button>
-        <p className="mt-2 text-xs text-white/40">
+        <p className="mt-3 text-xs text-white/40">
           {selecionado ? "Clique em Girar ou aperte a barra de espaço" : "Busque e selecione o participante"}
         </p>
       </div>
+
+      <style>{`@keyframes cz-pulse-kf{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}.cz-pulse{animation:cz-pulse-kf 1.8s ease-in-out infinite}`}</style>
     </div>
   );
 }
@@ -449,66 +568,68 @@ function ResultadoOverlay({
   onGirarDeNovo: () => void;
 }) {
   const { tipo, premio } = resultado;
-  let fundo = VERDE;
+  const ganhou = tipo === "premio" || tipo === "vale";
+  let fundo = "radial-gradient(900px 500px at 50% 0%, #0ea84a 0%, #046b2c 60%, #023d19 100%)";
   let titulo = "Parabéns, você ganhou!";
-  let detalhe = "Retire seu prêmio com a nossa equipe.";
+  let detalhe = "Retire seu prêmio com a nossa equipe. 🎁";
   if (tipo === "vale") {
-    detalhe = "Retire no posto! O voucher foi enviado no WhatsApp ✅";
+    detalhe = "O voucher já foi enviado no seu WhatsApp. Retire no posto! ⛽";
   } else if (tipo === "tente") {
-    fundo = "#5566a0";
+    fundo = "radial-gradient(900px 500px at 50% 0%, #4a5a9e 0%, #2f3b66 60%, #1a2140 100%)";
     titulo = "Tente outra vez!";
     detalhe = "Você ganhou mais um giro 🎉";
   } else if (tipo === "nada") {
-    fundo = AZUL;
+    fundo = "radial-gradient(900px 500px at 50% 0%, #33406e 0%, #202a4a 60%, #141a30 100%)";
     titulo = "Não foi dessa vez!";
     detalhe = "Mas o seu CarboZé já está garantido. 💚";
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 text-center" style={{ backgroundColor: fundo }}>
-      {tipo !== "tente" && tipo !== "nada" && (
-        <p className="font-[family-name:var(--font-archivo)] text-xl uppercase tracking-[0.2em] text-white/80">
-          {titulo}
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden p-6 text-center text-white" style={{ background: fundo }}>
+      {ganhou && <Confete />}
+      <div className="relative" style={{ animation: "cz-pop .45s cubic-bezier(.2,1.3,.4,1) both" }}>
+        {ganhou ? (
+          <>
+            <p className="font-[family-name:var(--font-archivo)] text-lg uppercase tracking-[0.3em] text-white/80">
+              {titulo}
+            </p>
+            <h2 className="mt-3 font-[family-name:var(--font-basement)] text-6xl font-extrabold uppercase drop-shadow-lg sm:text-7xl">
+              {premio}
+            </h2>
+          </>
+        ) : (
+          <h2 className="font-[family-name:var(--font-basement)] text-5xl font-extrabold uppercase drop-shadow-lg sm:text-6xl">
+            {titulo}
+          </h2>
+        )}
+        <p className="mx-auto mt-5 max-w-lg font-[family-name:var(--font-archivo)] text-lg text-white/90">
+          {detalhe}
         </p>
-      )}
-      {(tipo === "tente" || tipo === "nada") && (
-        <h2 className="font-[family-name:var(--font-basement)] text-4xl font-extrabold uppercase text-white sm:text-6xl">
-          {titulo}
-        </h2>
-      )}
-      {premio && tipo !== "tente" && tipo !== "nada" && (
-        <h2 className="mt-3 font-[family-name:var(--font-basement)] text-5xl font-extrabold uppercase text-white sm:text-7xl">
-          {premio}
-        </h2>
-      )}
-      <p className="mt-5 max-w-lg font-[family-name:var(--font-archivo)] text-lg text-white/90">
-        {detalhe}
-      </p>
+      </div>
 
-      <div className="mt-10 flex gap-3">
+      <div className="relative mt-11 flex gap-3">
         {tipo === "tente" ? (
           <>
             <button
               onClick={onGirarDeNovo}
-              className="rounded-xl bg-white px-10 py-4 font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase tracking-wide"
-              style={{ color: AZUL }}
+              className="rounded-xl bg-white px-10 py-4 font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase tracking-wide text-[#2f3b66] shadow-lg transition active:scale-95"
             >
               Girar de novo
             </button>
-            <button onClick={onProximo} className="rounded-xl border border-white/40 px-8 py-4 text-lg font-semibold text-white">
+            <button onClick={onProximo} className="rounded-xl border border-white/40 px-8 py-4 text-lg font-semibold text-white transition hover:bg-white/10">
               Encerrar
             </button>
           </>
         ) : (
           <button
             onClick={onProximo}
-            className="rounded-xl bg-white px-12 py-4 font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase tracking-wide"
-            style={{ color: fundo }}
+            className="rounded-xl bg-white px-12 py-4 font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase tracking-wide text-[#093a30] shadow-lg transition active:scale-95"
           >
             Próximo participante
           </button>
         )}
       </div>
+      <style>{`@keyframes cz-pop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}`}</style>
     </div>
   );
 }
@@ -588,10 +709,10 @@ function PainelView({ senha }: { senha: string }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-5">
+    <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="font-[family-name:var(--font-basement)] text-lg font-extrabold uppercase text-white">
-          {dados?.total_giros ?? 0} giros
+        <p className="font-[family-name:var(--font-basement)] text-xl font-extrabold uppercase text-white">
+          {dados?.total_giros ?? 0} <span className="text-white/50">giros</span>
         </p>
         <div className="flex gap-2">
           <button onClick={exportarCsv} className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm font-semibold text-white hover:border-[#02A81E]">
@@ -607,7 +728,7 @@ function PainelView({ senha }: { senha: string }) {
       </div>
 
       {/* Prêmios */}
-      <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+      <div className="mt-4 overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
         <table className="w-full text-left text-sm">
           <thead className="bg-white/5 text-xs uppercase tracking-wide text-white/50">
             <tr>
@@ -666,7 +787,7 @@ function PainelView({ senha }: { senha: string }) {
       <p className="mt-6 font-[family-name:var(--font-basement)] text-sm font-extrabold uppercase text-white">
         Histórico
       </p>
-      <div className="mt-2 overflow-hidden rounded-xl border border-white/10">
+      <div className="mt-2 overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
         {giros.length === 0 ? (
           <p className="p-4 text-center text-sm text-white/50">Nenhum giro ainda.</p>
         ) : (
@@ -678,7 +799,7 @@ function PainelView({ senha }: { senha: string }) {
                   <span className="ml-2 text-white/50">{g.telefone.replace(/^55/, "")}</span>
                 </div>
                 <div className="flex shrink-0 items-center gap-3">
-                  <span className={g.premio_tipo === "nada" || g.premio_tipo === "tente" ? "text-white/50" : "font-semibold text-[#02A81E]"}>
+                  <span className={g.premio_tipo === "nada" || g.premio_tipo === "tente" ? "text-white/50" : "font-semibold text-[#43e07a]"}>
                     {g.premio_nome}
                     {g.codigo ? ` · ${g.codigo}` : ""}
                   </span>
