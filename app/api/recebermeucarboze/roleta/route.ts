@@ -27,7 +27,7 @@ type Reg = {
 
 function msgVale(nome: string, codigo: string) {
   const pn = nome.trim().split(/\s+/)[0] || nome.trim();
-  return `🎉 Parabéns, ${pn}! Você ganhou um *VALE-COMBUSTÍVEL de 5 litros* do CarboZé!
+  return `🎉 Parabéns, ${pn}! Você ganhou um *VALE-COMBUSTÍVEL de 5 litros*!
 
 Seu código: *${codigo}*
 
