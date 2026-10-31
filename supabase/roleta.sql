@@ -21,7 +21,7 @@ create table if not exists public.roleta_premios (
 );
 
 insert into public.roleta_premios (slug, nome, tipo, estoque_inicial, estoque, chance_base, ordem) values
-  ('bag',        'Bag para motoqueiro',                         'premio',  2,  2,  0.4, 1),
+  ('bag',        'Mesa com 4 senhas — Stand-up Thiago Dionísio','premio',  1,  1,  0.4, 1),
   ('guardasol',  'Guarda-sol de capacete com suporte de celular','premio', 6,  6,  1.1, 2),
   ('bone',       'Boné CarboVapt',                              'premio',  20, 20, 3.6, 3),
   ('vale',       'Vale-combustível 5 L',                        'vale',    40, 40, 7.3, 4),

@@ -13,7 +13,7 @@ const SLICES = [
   "nada", "bone", "vale", "guardasol", "nada", "sache",
 ];
 const LABEL: Record<string, string> = {
-  bag: "BAG",
+  bag: "STAND-UP",
   nada: "NÃO FOI",
   vale: "VALE 5L",
   sache: "SACHÊ",
